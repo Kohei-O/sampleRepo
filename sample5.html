@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+    <meta charset ="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>契約した選手の点数</title>
+    </head>
+    <body>
+<script>
+//人数の宣言
+var N = 100;
+
+// 様子見する人数の設定
+var Ndiv = N * 0.4;
+
+//回数の分布を格納する配列の初期化．
+var bunpu = [];
+for (var i = 0; i < N; i++){
+    bunpu[i] = 0;
+}
+//console.log(bunpu)
+
+//１からNまでの要素をもつ配列の初期化
+var sampleArray = [];
+for (i = 0; i < N; i++){
+    sampleArray[i] =  i + 1;
+} 
+//配列をランダムにシャッフルする関数
+function shuffleArray2(array){
+  for (let i = array.length - 1; i >= 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+//シミュレーションを50回実施する
+for(var k = 0; k < 200; k++){
+    
+    // 1 から N までの自然数を要素にもつ配列を乱数化する
+    var Tensuu = shuffleArray2(sampleArray);
+    
+    //ブラウザへ Tensuu を出力
+    var div = document.createElement("div");
+    div.innerHTML= "Tensuu = [" + Tensuu + "]";
+    div.style.overflow = "scroll";
+    document.body.appendChild(div);
+//    console.log(Tensuu);
+//pmax の初期化
+    var pmax = 0;
+
+// 様子見のうちは　pmax を大きい方へと書き換えていく
+    for (i = 0; i < Ndiv; i++){
+        pmax = Math.max(pmax, Tensuu[i]);
+    }
+    // 変数 keiyaku の宣言．一度も更新されない場合に備え，最後の選手の点数を初期値とする
+    var keiyaku = Tensuu[N - 1];
+   
+    // 様子見を終え，pmax との比較をしていく
+    for (i = Ndiv; i < N; i++){
+        if (Tensuu[i] > pmax){
+            keiyaku = Tensuu[i];
+            break;
+        }
+    }
+    //ブラウザへ keiyaku を出力する
+    var div2 = document.createElement("div");
+    div2.innerHTML= "に対して keiyaku = " + keiyaku;
+    div2.style.overflow = "scroll";
+    document.body.appendChild(div2);
+    //console.log(keiyaku);
+    //bunpu の要素のうち，契約した選手の点数に対応するものを +1 加算する
+    bunpu[keiyaku - 1] = bunpu[keiyaku - 1] + 1;    
+// 点数の高い方から順に回数を出力する
+}
+for (m = N - 1 ;m >=0 ;m--){
+    console.log(m + 1 + "点は"+ bunpu[m]+ "回") ;
+}
+    </script>
+   </body>
+    </html>

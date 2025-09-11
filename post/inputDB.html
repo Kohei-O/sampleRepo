@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<title>用語・公式集の入力フォーム</title>    
+<link rel="stylesheet" href="inputDB.css"  >
+<meta charset="UTF-8">  
+     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script>
+           MathJax = {
+               tex: {
+                   inlineMath: [['$', '$'], ['\\(', '\\)']],
+                   macros : {
+                       rt : ["{\\sqrt{#1}}", 1] ,
+                       bun : ["{\\dfrac{#1}{#2}}", 2],
+                       li : ["{\\lim\\limits_{{#1}\\to{#2}}}", 2],
+                       bm : ["{\\boldsymbol{#1}}", 1],
+                       sig : ["{\\displaystyle \\sum_{#1}^{#2}}", 2],
+                       sekib :["{\\displaystyle\\int_{#1}^{#2}}", 2],
+                       bect : ["{\\overrightarrow{\\mathrm{#1}}}", 1],
+                       beca : "{\\vec{a}}",
+                       becb : "{\\vec{b}}",
+                       becc : "{\\vec{c}}",
+                       tatebec : ["{\\begin{pmatrix}{#1}\\\\{#2} \\end{pmatrix}}", 2],
+                       tatebeca :["{\\begin{pmatrix}{#1} \\\\{#2}\\\\{#3} \\end{pmatrix}}", 3],
+                       sita : "{\\theta}",
+                       mr : ["{\\mathrm{#1}}", 1],
+                       mugen : "{\\infty}",
+                       tri : ["{\\triangle \\mathrm{#1}}", 1],
+                       kak : ["{\\angle \\mathrm{#1}}", 1],
+                       al : "{\\alpha}",
+                       kumi : ["{{}_{#1}\\mathrm{C}_{#2}}", 2],
+                       jun : ["{{}_{#1}\\mathrm{P}_{#2}}", 2]
+                   }
+               } 
+           };
+        </script>
+        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+        </script>
+<!--関数やアクションの設定-->        
+    <script>
+        function change1(){    
+            $temp = document.getElementById("text").value;
+            document.getElementById("review1").innerHTML=$temp;    
+            MathJax.typeset();
+        }
+    	function makeCode(){
+		var topic = document.getElementById("topic").value;
+		var word = document.getElementById("word").value;
+		var text = document.getElementById("text").value;
+		text = text.replace(/\\/g,"\\\\");
+        text = text.replace(/\r/g,"");
+        text = text.replace(/\n/g,"");
+        text = text.replace(/\r\n/g,"");
+        text = text.replace(/\s{2,}/g,"");
+        var canvasScript = document.getElementById("canvas").value;
+        if (canvasScript){
+            canvasScript = canvasScript.replace(/\r/g,"");
+            canvasScript = canvasScript.replace(/\n/g,"");
+            canvasScript= canvasScript.replace(/\r\n/g,"");
+            canvasScript= canvasScript.replace(/\s{2,}/g,"");
+            canvasScript= canvasScript.replace(/\"/g,"\'");
+            document.getElementById("source").innerText = 'formula.push({topic: ' + topic +', word: "' +
+                word+ '", text: "' + text + '", canvasScript: "' + canvasScript +'"});';
+        } else {
+		document.getElementById("source").innerText = 
+            'formula.push({topic: ' + topic +', word: "' + word+ '", text: "' + text + '"});';
+        }
+        }
+    </script>
+</head>    
+<body>
+
+<h1>用語・公式集の入力フォーム</h1>
+<ul>
+<li>小問つきの問題, 解答を作るときは, 以下のコマンドをお使いください。</li>
+            &lt;ol&gt;<br>    
+            &lt;li&gt;ああ &lt;/li&gt;<br>
+            &lt;li&gt;いい &lt;/li&gt;<br>
+            &lt;/ol&gt;<br>  
+	<li>複数行立てのときは以下をどうぞ。<br>
+                \\begin{align}<br>
+                \\\\<br>
+                \\\\<br>
+                \\end{align}</li>
+</ul>
+<h2 >[topic]</h2>
+	<input type="text"id = "topic">
+	
+	<h2 >[word]</h2>	
+	<input type="text" id = "word">
+<h2 >[text]</h2>
+
+<div class="twoclm">
+<textarea id="text"  maxlength=5000 onkeyup="change1()">   
+</textarea>
+<div id="review1"></div>
+</div>
+    <h2>[canvasScript]</h2>
+    <textarea id="canvas" style="height:30em; width:15em"></textarea>
+    <div>
+    <input type="button" value = "コード作成"  length ="10" onclick = "makeCode()">
+    </div>
+
+<h2 >ソースコード</h2>
+	<textarea id="source" name ="source" rows="20" cols="100">ここに表示されます</textarea>
+
+</body>
+</html>

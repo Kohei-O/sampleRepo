@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<title>入力フォーム</title>    
+<link rel="stylesheet" href="newInput.css"  >
+<meta charset="UTF-8">  
+     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script>
+           MathJax = {
+               tex: {
+                   inlineMath: [['$', '$'], ['\\(', '\\)']],
+                   macros : {
+                       rt : ["{\\sqrt{#1}}", 1] ,
+                       bun : ["{\\dfrac{#1}{#2}}", 2],
+                       li : ["{\\lim\\limits_{{#1}\\to{#2}}}", 2],
+                       bm : ["{\\boldsymbol{#1}}", 1],
+                       sig : ["{\\displaystyle \\sum_{#1}^{#2}}", 2],
+                       sekib :["{\\displaystyle\\int_{#1}^{#2}}", 2],
+                       bect : ["{\\overrightarrow{\\mathrm{#1}}}", 1],
+                       beca : "{\\vec{a}}",
+                       becb : "{\\vec{b}}",
+                       becc : "{\\vec{c}}",
+                       tatebec : ["{\\begin{pmatrix}{#1}\\\\{#2} \\end{pmatrix}}", 2],
+                       tatebeca :["{\\begin{pmatrix}{#1} \\\\{#2}\\\\{#3} \\end{pmatrix}}", 3],
+                       sita : "{\\theta}",
+                       mr : ["{\\mathrm{#1}}", 1],
+                       mugen : "{\\infty}",
+                       tri : ["{\\triangle \\mathrm{#1}}", 1],
+                       kak : ["{\\angle \\mathrm{#1}}", 1],
+                       al : "{\\alpha}",
+                       kumi : ["{{}_{#1}\\mathrm{C}_{#2}}", 2],
+                       jun : ["{{}_{#1}\\mathrm{P}_{#2}}", 2]
+                   }
+               } 
+           };
+        </script>
+        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+        </script>
+</head>    
+<body>
+    <h1>ウェブ数学問題集の入力フォーム</h1>
+        <ul>
+            <li> 本サイトでは MathJax により TeX のコンパイルを行います。
+     使えるコマンドについては<a href="http://easy-copy-mathjax.xxxx7.com/"> Easy Copy MathJax </a> などをご覧ください。</li>    
+            <li>複数行立てのときは以下をどうぞ。
+                <ul type="none">
+                    <li>\begin{align}</li>
+                    <li>& \\\\</li> 
+                    <li>&</li>
+                    <li>\end{align}</li>
+                </ul>
+            <li>小問つきの問題, 解答を作るときは, 以下のコマンドをお使いください。</li>
+            &lt;ol&gt;<br>    
+            &lt;li&gt;ああ &lt;/li&gt;<br>
+            &lt;li&gt;いい &lt;/li&gt;<br>
+            &lt;/ol&gt;<br>  
+            <li>見出しをつけるには次をお使いください。&lt;h4&gt; &lt;/h4&gt;</li>
+        </ul>
+    <h2 >[ ID ]</h2>	
+	<input type = "number" id = "ID" min = 1>
+        <h2 >[ 問題文 ]</h2>
+        <div class="twoclm1">
+<textarea id="mondai" name="problem" maxlength=5000 onkeyup="change1()">
+&lt;ol&gt;
+&lt;li&gt; &lt;/li&gt;
+&lt;li&gt; &lt;/li&gt;
+&lt;li&gt; &lt;/li&gt;
+&lt;/ol&gt;
+</textarea>
+            <div id="review1"></div>
+        </div>
+        <h2 >[canvas用 script 1]</h2>
+		<textarea class="canvas" id="canvas-p1"  maxlength=10000></textarea>
+					<h2 >[canvas用 script 2]</h2>
+		<textarea class="canvas" id="canvas-p2"  maxlength=10000></textarea>
+					<h2 >[canvas用 script 3]</h2>
+		<textarea class="canvas" id="canvas-p3"  maxlength=10000></textarea>
+					<h2 >[canvas用 script 4]</h2>
+		<textarea class="canvas" id="canvas-p4"  maxlength=10000></textarea>
+
+<h2>[ 解答 ]</h2>
+<div class="twoclm2">
+<textarea id="kaitou" name='solution' maxlength=5000 onkeyup="change2()">
+<h4>1.</h4> 
+<h4>2.</h4> 
+<h4>3.</h4>
+<h4>4.</h4>
+</textarea>
+<div id="review2"></div>
+</div>
+
+					<h2 >[解答 canvas用 script 1]</h2>
+		<textarea class="canvas" id="canvas-s1"  width=50 maxlength=10000></textarea>
+					<h2 >[解答 canvas用 script 2]</h2>
+		<textarea class="canvas" id="canvas-s2"  maxlength=10000></textarea>
+					<h2 >[解答 canvas用 script 3]</h2>
+		<textarea class="canvas" id="canvas-s3"  maxlength=10000></textarea>
+					<h2 >[解答 canvas用 script 4]</h2>
+		<textarea class="canvas" id="canvas-s4"  maxlength=10000></textarea>
+<h2>[ topic ]</h2>
+
+		<h3>数学I</h3>
+		<input type="radio" name="topic" value=0>式の計算, 実数,１次不等式     
+		<input type="radio" name="topic"  value=1>集合と命題 
+		<input type="radio" name="topic"  value=2>２次関数
+		<input type="radio" name="topic"  value=3>三角比 
+		<input type="radio" name="topic"  value=4>データの分析 
+		<h3>数学Ⅱ</h3>	
+		<input type="radio" name="topic"  value=5>整式の除法, 高次方程式, 式と証明
+		<input type="radio" name="topic"  value=6>図形と式
+		<input type="radio" name="topic"  value=7>三角関数
+		<input type="radio" name="topic"  value=8>指数関数, 対数関数
+		<input type="radio" name="topic"  value=9>微分
+		<input type="radio" name="topic"  value=10>積分
+		<h3>数学Ⅲ</h3>
+
+<input type="radio" name="topic"  value=11>いろいろな曲線
+<input type="radio" name="topic"  value=12>複素数平面
+<input type="radio" name="topic"  value=13>関数と極限
+<input type="radio" name="topic"  value=14>微分法  
+<input type="radio" name="topic"  value=15>積分法
+
+<h3>数学A</h3>
+
+<input type="radio" name="topic"  value=16>場合の数, 確率
+<input type="radio" name="topic"  value=17>整数
+<input type="radio" name="topic"  value=18>図形の性質    
+
+<h3>数学B</h3>
+
+<input type="radio" name="topic"  value=19>数列     
+<input type="radio" name="topic"  value=20>ベクトル      
+<input type="radio" name="topic"  value=21> 確率分布と統計的な推測
+<h2 >[ difficulty ]</h2>
+<p>
+<input type="radio" name="difficulty" value="A"> A (教科書の例題レベル)   
+<input type="radio" name="difficulty" value="B"> B (入試問題の基本レベル)<br>
+<input type="radio" name="difficulty" value="C"> C (入試問題の標準レベル)
+<input type="radio" name="difficulty" value="D"> D (入試問題の難問レベル)
+</p>
+<h2 >[keyword]</h2>	
+<input type="text" name = "keyword">
+    <input type="text" name = "keyword">
+    <input type="text" name = "keyword">
+    <input type="text" name = "keyword">
+		<h2 >ソースコード</h2>
+         <p><input type="button" value = "コード作成"  length ="10" onclick = "makeCode()"></p>
+		<textarea id="source" name ="source">ここに表示されます</textarea>
+    <script>
+        function makeCode(){
+            var ID = document.getElementById("ID").value;
+            //alert(typeof(ID));
+            //var code ="allMondai.push({ID:" +ID +", ";
+            var code = "{ID:" +ID +", ";
+            var problem = document.getElementById("mondai").value;
+            //
+            //problem = problem.replace(/\'/g,"\'");
+            //
+            code = code + "problem:'" + problem+ "', ";
+            var canvasScript1 ='';
+            if( document.getElementById("canvas-p1").value){
+                canvasScript1 = canvasScript1 + "'" + document.getElementById("canvas-p1").value.replace(/\'/g,"\"") + "'";
+            //canvasScript　中の ' は " に変えることで差別する
+            }
+            if( document.getElementById("canvas-p2").value){
+                canvasScript1 = canvasScript1 + ", '" + document.getElementById("canvas-p2").value.replace(/\'/g,"\"")  +"'"
+            }
+            if( document.getElementById("canvas-p3").value){
+                canvasScript1 = canvasScript1 + ", '" + document.getElementById("canvas-p3").value.replace(/\'/g,"\"")  +"'"
+            }
+            if( document.getElementById("canvas-p4").value){
+                canvasScript1 = canvasScript1 + ", '" + document.getElementById("canvas-p4").value.replace(/\'/g,"\"")  +"'"
+            }
+          //  canvasScript1 = canvasScript1.replace(/\r/g,";");
+            //canvasScript1 = canvasScript1.replace(/\n/g,";");
+            //canvasScript1 = canvasScript1.replace(/\r\n/g,";");
+            code = code + "canvasScript1:[" + canvasScript1 + "], ";
+            var kaitou = document.getElementById("kaitou").value;
+            code = code + "solution:'" + kaitou+ "', ";
+               var canvasScript2 ='';
+            if( document.getElementById("canvas-s1").value){
+                canvasScript2 = canvasScript2 + "'" + document.getElementById("canvas-s1").value.replace(/\'/g,"\"")  +"'"
+            }
+            if( document.getElementById("canvas-s2").value){
+                canvasScript2 = canvasScript2 + ", '" + document.getElementById("canvas-s2").value.replace(/\'/g,"\"")  +"'"
+            }
+            if( document.getElementById("canvas-s3").value){
+                canvasScript2 = canvasScript2 + ", '" + document.getElementById("canvas-s3").value.replace(/\'/g,"\"")  +"'"
+            }
+            if( document.getElementById("canvas-s4").value){
+                canvasScript2 = canvasScript2 + ", '" + document.getElementById("canvas-s4").value.replace(/\'/g,"\"")  +"'"
+            }
+           // canvasScript2 = canvasScript2.replace(/\r/g,";");
+        //    canvasScript2 = canvasScript2.replace(/\n/g,";");
+        //    canvasScript2 = canvasScript2.replace(/\r\n/g,";");
+            code = code + "canvasScript2:[" + canvasScript2 + "], ";
+            var topic = document.getElementsByName("topic");
+            for (var i = 0;i <= 21; i++){
+                if(topic[i].checked === true){
+                 code = code + 'topic:' + i + ", "
+                }
+            }
+              var diff = document.getElementsByName("difficulty");
+            for (var n = 0;n <= 3; n++){
+                if(diff[n].checked === true){
+                 code = code + 'difficulty:' + n + ", "
+                }
+            }
+            var keyword = document.getElementsByName("keyword");
+            var keyText ='';
+             for (var m = 0;m <= 3; m++){
+                if(keyword[m].value){
+                keyText = keyText + keyword[m].value  + ", "
+                }
+            }
+            //code = code + "keyword:[" + keyText +"]});";
+            code = code + "keyword:[" + keyText +"]},";
+            code = code.replace(/\\/g,"\\\\");
+            code = code.replace(/\r/g,"");
+            code = code.replace(/\n/g,"");
+            code = code.replace(/\r\n/g,"");
+            code = code.replace(/\s{2,}/g,"");
+            code = code.replace(/\\\\'/g,"\\\'");
+           // code = code.replace(/\\bun/g,"\\dfrac");
+            //code = code.replace(/\\rt/g,"\\sqrt");
+            //code = code.replace(/\\bm/g,"\\boldsymbol");
+            //code = code.replace(/\\sita/g, "\\theta");
+            code = code.replace(/\&lt;ol\&gt;/g, "<ol>");
+            code = code.replace(/\&lt;\/ol\&gt;/g, "</ol>");
+            code = code.replace(/\&lt;li\&gt;/g, "<li>");
+            code = code.replace(/\&lt;\/li\&gt;/g, "</li>");
+            code = code.replace(/\&lt;div&gt;/g,"");
+            code = code.replace(/\&lt;\/div&gt;/g,"");
+            code = code.replace(/\&amp;/g,"&");
+             code = code.replace(/\&lt;h4\&gt;/g, "<h4>");
+            code = code.replace(/\&lt;\/h4\&gt;/g, "</h4>");
+            code= code.replace(/\\\\\[1mm\]/g,"\\\\");
+            code= code.replace(/\\\\\[2mm\]/g,"\\\\");
+            code = code.replace(/\&#039;/g,"\\\'");
+            code = code.replace(/\&lt;/g," < ");
+            code = code.replace(/\&gt;/g, " > ");
+            code = code.replace(/\\\[/g, "\\begin{align}");
+             code = code.replace(/\\\]/g, "\\end{align}");
+            document.getElementById("source").value = code
+        }
+    </script>
+<script src="inputform_1.js"></script>
+</body>
+</html>

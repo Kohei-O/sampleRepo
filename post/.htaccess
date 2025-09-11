@@ -1,0 +1,8 @@
+
+
+#####basicauth#####
+AuthUserFile "/home/ss831160/mathmedia.information.jp/htpasswd/post/.htpasswd"
+AuthName "Member Site"
+AuthType BASIC
+require valid-user
+#####end:basicauth#####

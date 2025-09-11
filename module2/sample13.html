@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja"  manifest = "sample13.appcache">
+	<head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <canvas id = "myCanvas"></canvas>
+        <script src="http://mathmedia.information.jp/module2/canvasString2.js"></script>
+        <script>
+            document.body.style.position="fixed";;
+            var canvas = document.getElementById("myCanvas");
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            var ctx = canvas.getContext("2d");
+            for(i in path){
+                var array = path[i];
+                switch(array[0]){
+                    case 0:
+                    ctx.beginPath();
+                    ctx.moveTo(array[1],array[2]);
+                    case 1:
+                    ctx.lineTo(array[1], array[2]);
+                    case 2:
+                    ctx.lineTo(array[1], array[2]);
+                    ctx.stroke();
+                }
+            }
+            var submitString ='';
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = findStatus;
+            document.onmousedown= function (event){
+                submitString ='path.push([0,'+ event.pageX + ',' + event.pageY +'],';
+                ctx.beginPath();
+                ctx.moveTo(event.pageX, event.pageY);
+            }
+            document.onmouseup= function (event){
+                submitString = submitString + '[2,'+ event.pageX + ',' + event.pageY +"]);"
+                xmlhttp.open("POST", "getString2.php", true);
+                ctx.lineTo(event.pageX, event.pageY);
+                ctx.stroke();
+            }
+            //document.ontouchstart= function (event){
+            document.onpointerdown = function(event){
+                //alert("onpointerdown");
+                submitString ='path.push([0,'+ event.pageX + ',' + event.pageY +'],'
+               // document.body.style.position="fixed";
+                ctx.beginPath();
+                ctx.moveTo(event.pageX, event.pageY);
+            }
+             //document.ontouchmove= function (event){//起こる間隔は15から25ms程度，ちょうど良い
+            document.onpointermove = function(event){
+                 submitString = submitString + '[1,'+ event.pageX + ',' + event.pageY +'],';
+                 ctx.lineTo(event.pageX, event.pageY);
+                 ctx.stroke();
+             }
+             //document.ontouchcancel= function (event){//何らかの原因でtouch がキャンセルされた場合はendと同じ扱い
+            document.onpointercancel=function(event){
+                submitString = submitString + '[2,'+ event.pageX + ',' + event.pageY +']);'
+                alert("touch canceled");
+              //   document.body.style.position="relative";
+                 ctx.lineTo(event.pageX, event.pageY);
+                 ctx.stroke();
+             }
+             //document.ontouchend= function (event){
+            document.onpointerup=function(event){ 
+               // alert("onpointerup");
+                submitString = submitString + '[2,'+ event.pageX + ',' + event.pageY +"]);";
+                xmlhttp.open("POST", "getString2.php", true);
+               //  document.body.style.position="relative";
+                 ctx.lineTo(event.pageX, event.pageY);
+                 ctx.stroke();
+            }
+             function findStatus(){
+                 switch(xmlhttp.readyState){
+                     case 1:
+                 //        console.log("opened");
+                        xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");      
+                        xmlhttp.send("string=" + submitString);
+                        break;
+                    case 2:
+                   //     console.log("sending");
+                        break;
+                    case 3:
+                     //   console.log("proccessing");
+                        break;
+                    case 4:
+                       // console.log("complete!" + xmlhttp.responseText);
+//                        xmlhttp.abort();
+                }
+            }
+            
+        </script>
+    </body>
+</html>

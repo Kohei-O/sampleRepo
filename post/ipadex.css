@@ -1,0 +1,74 @@
+@charset "UTF-8";
+
+body{font-family:/*'ヒラギノ明朝 Pro　W6',*/sans-serif;
+    margin-top:55px;
+    margin-bottom:100px;
+    margin-right:120px;
+    margin-left:120px;
+}
+h1{text-align:center;}
+
+h2{text-align:left;margin-top:40px;}
+
+h3{text-align:center;margin-top:40px;}
+
+h4{text-align:left;}
+
+div.twoclm{width:60em;height:70em;
+display:flex;
+display:-webkit-flex;
+flex-direction:row;
+-webkit-flex-direction:row;    
+}
+textarea#mondai{width:30em;height:70em;
+font-size: 1em;}
+
+
+textarea#kaitou{width:30em;height:70em;
+    font-size: 1em;}
+
+div#review1{width:18.5em;
+    border:solid;
+    word-wrap: break-word;
+line-height: 2.5em;
+margin-left:3em;
+overflow-y: scroll;}
+
+
+div#review2{width:18.5em;
+    border:solid;
+    word-wrap: break-word;
+line-height: 2.5em;
+margin-left:3em;
+overflow-y: scroll;}
+
+div#review1>div{width:18em;
+    overflow: scroll;
+    white-space: nowrap; }
+
+div#review2>div{width:18em;
+    overflow: scroll;
+    white-space: nowrap; }
+
+p.comment{text-align:center;}
+
+p.check{text-align:center;}
+
+p#diff{
+  text-align:center;  
+}
+p.kinyu{
+  text-align:center;  
+}
+p#sub{text-align:center;}
+
+input[type=checkbox]{
+    width:30px;
+    height:30px;
+    vertical-align:middle;
+}
+input[type=radio]{
+    width:20px;
+    height:20px;
+    vertical-align:middle;
+}

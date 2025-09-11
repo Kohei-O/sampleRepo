@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<title>用語・公式集の入力フォーム</title>    
+			<link rel="stylesheet" href="convertDB.css"  >
+			<meta charset="UTF-8">  
+	</head>    
+	<!--ここから先が本文-->
+	<body>
+		<form method="post" action="http://mathemedia.information.jp/mathData-register2.php" enctype= "multipart/form-data">
+		<h1>変換フォーム</h1>
+		<h2 >[problem]</h2>
+		<textarea id="problem"  maxlength=50000></textarea>
+			<h2 >[canvas用 script 1]</h2>
+		<textarea class="canvas" id="canvas-p1"  maxlength=10000></textarea>
+					<h2 >[canvas用 script 2]</h2>
+		<textarea class="canvas" id="canvas-p2"  maxlength=10000></textarea>
+					<h2 >[canvas用 script 3]</h2>
+		<textarea class="canvas" id="canvas-p3"  maxlength=10000></textarea>
+					<h2 >[canvas用 script 4]</h2>
+		<textarea class="canvas" id="canvas-p4"  maxlength=10000></textarea>
+		<h2 >[solution]</h2>
+		<textarea id="solution"  maxlength=5000> </textarea>
+					<h2 >[解答 canvas用 script 1]</h2>
+		<textarea class="canvas" id="canvas-s1"  maxlength=10000></textarea>
+					<h2 >[解答 canvas用 script 2]</h2>
+		<textarea class="canvas" id="canvas-s2"  maxlength=10000></textarea>
+					<h2 >[解答 canvas用 script 3]</h2>
+		<textarea class="canvas" id="canvas-s3"  maxlength=10000></textarea>
+					<h2 >[解答 canvas用 script 4]</h2>
+		<textarea class="canvas" id="canvas-s4"  maxlength=10000></textarea>
+		<h2>[topic]</h2>
+		<h3>数学I</h3>
+		<input type="radio" name="topic" value=0>式の計算, 実数,１次不等式     
+		<input type="radio" name="topic"  value=1>集合と命題 
+		<input type="radio" name="topic"  value=2>２次関数
+		<input type="radio" name="topic"  value=3>三角比 
+		<input type="radio" name="topic"  value=4>データの分析 
+		<h3>数学Ⅱ</h3>	
+		<input type="radio" name="topic"  value=5>整式の除法, 高次方程式, 式と証明
+		<input type="radio" name="topic"  value=6>図形と式
+		<input type="radio" name="topic"  value=7>三角関数
+		<input type="radio" name="topic"  value=8>指数関数, 対数関数
+		<input type="radio" name="topic"  value=9>微分
+		<input type="radio" name="topic"  value=10>積分
+		<h3>数学Ⅲ</h3>
+
+<input type="radio" name="topic"  value=11>いろいろな曲線
+<input type="radio" name="topic"  value=12>複素数平面
+<input type="radio" name="topic"  value=13>関数と極限
+<input type="radio" name="topic"  value=14>微分法  
+<input type="radio" name="topic"  value=15>積分法
+
+<h3>数学A</h3>
+
+<input type="radio" name="topic"  value=16>場合の数, 確率
+<input type="radio" name="topic"  value=17>整数
+<input type="radio" name="topic"  value=18>図形の性質    
+
+<h3>数学B</h3>
+
+<input type="radio" name="topic"  value=19>数列     
+<input type="radio" name="topic"  value=20>ベクトル      
+<input type="radio" name="topic"  value=21> 確率分布と統計的な推測
+<h2 >[ difficulty ]</h2>
+<p>
+<input type="radio" name="difficulty" value="A"> A (教科書の例題レベル)   
+<input type="radio" name="difficulty" value="B"> B (入試問題の基本レベル)<br>
+<input type="radio" name="difficulty" value="C"> C (入試問題の標準レベル)
+<input type="radio" name="difficulty" value="D"> D (入試問題の難問レベル)
+</p>
+<h2 >[ picture ]</h2>
+<p><input type="text" length =25 id="pic_pro"> 問題用</p>
+<p><input type="text" length =25 id= "pic_sol"> 解答用</p>		
+	<h2 >[word]</h2>	
+	<input type="text" id = "keyword">
+				<h2 >[ ID ]</h2>	
+	<input type = "number" id = "ID" min = 1>
+            <p><input type="button" value = "コード作成"  length ="10" onclick = "makeCode()"></p>
+		<h2 >ソースコード</h2>
+			<p><input type="submit" value="登録する"></p>
+		<textarea id="source" name ="source">ここに表示されます</textarea>
+
+		</form>
+			<script>	
+	function makeCode(){
+		var problem = document.getElementById("problem").value;
+		problem = problem.replace(/\\/g,"\\\\");
+		problem = problem.replace(/\r/g,"");
+		problem = problem.replace(/\n/g,"");
+		problem = problem.replace(/\r\n/g,"");
+		problem = problem.replace(/\s{2,}/g,"");
+		problem = problem.replace(/&lt;/g, "<");
+		problem = problem.replace(/&gt;/g, ">");
+		var temp ='{problem:"' + problem +'",';
+		var solution = document.getElementById("solution").value;
+		solution = solution.replace(/\\/g,"\\\\");
+		solution = solution.replace(/\r/g,"");
+		solution = solution.replace(/\n/g,"");
+		solution = solution.replace(/\r\n/g,"");
+		solution = solution.replace(/\s{2,}/g,"");
+		solution = solution.replace(/&lt;/g, "<");
+		solution = solution.replace(/&gt;/g, ">");
+		temp = temp + ' solution:"' + solution + '",';
+		var topic = document.getElementsByName("topic");
+	//	alert(topic);
+		var topicNumber = topic.length-1;
+	//	alert(topicNumber);
+		for (i = 0; i <= topicNumber; i++){
+			if(topic[i].checked){
+				temp = temp + ' topic:' + i + ',';
+		}
+		}
+		var difficulty = document.getElementsByName("difficulty");
+		var diffNumber = difficulty.length - 1;
+		for (i = 0; i <= diffNumber; i++){
+			if(difficulty[i].checked){
+				temp = temp + ' difficulty:' + i + ',';
+		}
+		}
+		var keyword = document.getElementById("keyword").value;
+		temp = temp + ' keyword:[' + keyword + '],';
+		temp = temp + ' record:[],';
+		temp = temp + ' bookmark:"off",';
+		var ID = document.getElementById("ID").value;
+		temp = temp + ' ID:' + ID + ',';
+		var pic_pro = document.getElementById("pic_pro").value;
+		var pic_sol = document.getElementById("pic_sol").value;
+		temp = temp + ' picture:{';
+		if (pic_pro){
+			temp = temp + 'pic_pro:"' + pic_pro + '", ';
+		} else {
+			temp = temp + 'pic_pro:null, ';
+		}
+		if (pic_sol){
+			temp = temp + 'pic_sol:"' + pic_sol + '", ';
+		} else {
+			temp = temp + 'pic_sol:null, ';	
+		}
+		//temp = temp + '}}';
+		//ここから
+		temp = temp +'}, ';
+		temp = temp + "canvasScript1:[";
+		for(i = 1;i <= 4;i++){
+			var code =document.getElementById('canvas-p' + i).value;
+			if(code){
+				code = code.replace(/\\/g,"\\\\");
+				code = code.replace(/\r/g,"");
+				code = code.replace(/\n/g,"");
+				code = code.replace(/\r\n/g,"");
+				code = code.replace(/\s{2,}/g,"");
+				temp = temp + '"' + code + '", ' ;
+			}
+		}
+		temp = temp + "], ";
+		temp = temp + "canvasScript2:[";
+		for(i = 1;i <= 4;i++){
+			var code =document.getElementById('canvas-s' + i).value;
+			if(code){
+				code = code.replace(/\\/g,"\\\\");
+				code = code.replace(/\r/g,"");
+				code = code.replace(/\n/g,"");
+				code = code.replace(/\r\n/g,"");
+				code = code.replace(/\s{2,}/g,"");
+				temp = temp + '"' + code + '", ' ;
+			}
+		}
+		temp = temp + "]}";
+		//ここまで試験中
+		document.getElementById("source").innerText = temp ;
+		document.getElementById("source").value = temp ;
+		alert(document.getElementById("source").value);
+	}
+	</script>
+</body>
+</html>

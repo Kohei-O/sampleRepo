@@ -1,0 +1,79 @@
+<!-- ノート機能実装のためのサンプル-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+</head>    
+<body style ="margin:0px;"><!--position :fixed">-->
+    <div>
+        <canvas id="mycanvas"></canvas>
+    </div>
+    <div>
+        タッチ(10px)未満で動作するので，Apple Pencilなどで機能します．<br>
+        ただのタッチペン(ディスクタイプ)や指では機能しません<br>
+        firefox(dev)では動作せず
+    </div>
+    
+<script>
+    var canvas = document.getElementById("mycanvas");
+    canvas.width = 500;
+    canvas.height =700;
+    canvas.style.backgroundColor = "yellow";
+    var ctx = canvas.getContext("2d");
+    var request = window.indexedDB.open("math",1);
+    request.onupgradeneeded =function(event){  
+        var db = event.target.result; 
+        var objectStore = db.createObjectStore("note", {keyPath:"mondaiID", autoIncrement:false});
+    }
+    var db;
+    request.onsuccess = function(event){
+        //alert("ok");
+        db = event.target.result; 
+        var transaction = db.transaction("note");
+        //alert(db);
+        var objectStore = transaction.objectStore("note");;
+        var secondRequest = objectStore.get(1);
+        secondRequest.onsuccess = function(event){
+            if(event.target.result){
+                var newData = event.target.result.imageData;
+                ctx.putImageData(newData, 0, 0);
+            }
+        }
+        secondRequest.onerror = function(event) {
+        }
+    }
+    request.onerror = function(event){
+    }
+    canvas.addEventListener("touchstart", function(event){
+         if (event.touches[0].radiusX < 10){
+             event.preventDefault();
+            ctx.beginPath();
+            ctx.moveTo(event.touches[0].clientX, event.touches[0].clientY);//ここでは body 上の座標を獲得． marginがないのでcanvas上での座標と一致
+        }
+    });
+    canvas.addEventListener("touchmove", function(event){//pointermoveはモバイルのブラウザではあてにならない
+               if (event.touches[0].radiusX< 10){
+                event.preventDefault();
+                //これが肝心！そもそもデフォルトのアクションをしないので touchAction:noneは不要
+                    ctx.lineTo(event.touches[0].clientX, event.touches[0].clientY);//ここでは body 上の座標を獲得． marginがないのでcanvas上での座標と一致
+                    ctx.stroke();
+                 }
+    });
+    canvas.addEventListener("touchend", function(event){//pointermoveはモバイルのブラウザではあてにならない
+        //alert(event.touches[0]);//touchend 発火の際にはtouches[0]は undefined
+        //if (event.touches[0].radiusX < 10){ 指やペンなどが離れた際に記録する
+            event.preventDefault();
+            var data = ctx.getImageData(0,0,500,500);
+            data.mondaiID = 1;//イメージデータオブジェクトに直接キーパスを書き込むとputできない
+            console.dir(data);
+            var obj = db.transaction("note", "readwrite");
+            var obj2 = obj.objectStore("note");
+             //このとき，トランザクションオブジェクト obj は　のオブジェクトストアオブジェクトの
+             //transaction プロパティに組み込まれる？
+            //var writeData ={mondaiID:1, imageData:data};
+            obj2.put({mondaiID:1, imageData:data});
+        //}
+   });
+</script>
+</body>
+</html>

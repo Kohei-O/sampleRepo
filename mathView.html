@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja" manifest = "mathView.appcache">
+	<head>
+		<title>スマホでできる! 問題集(数学)</title>
+		<link rel="stylesheet" href="mathView.css">
+		<meta  charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script>
+           MathJax = {
+               tex: {
+                   inlineMath: [['$', '$'], ['\\(', '\\)']],
+                   macros : {
+                       rt : ["{\\sqrt{#1}}", 1] ,
+                       bun : ["{\\dfrac{#1}{#2}}", 2],
+                       li : ["{\\lim\\limits_{{#1}\\to{#2}}}", 2],
+                       bm : ["{\\boldsymbol{#1}}", 1],
+                       sig : ["{\\displaystyle \\sum_{#1}^{#2}}", 2],
+                       sekib :["{\\displaystyle\\int_{#1}^{#2}}", 2],
+                       bect : ["{\\overrightarrow{\\mathrm{#1}}}", 1],
+                       beca : "{\\vec{a}}",
+                       becb : "{\\vec{b}}",
+                       becc : "{\\vec{c}}",
+                       tatebec : ["{\\begin{pmatrix}{#1}\\\\{#2} \\end{pmatrix}}", 2],
+                       tatebeca :["{\\begin{pmatrix}{#1} \\\\{#2}\\\\{#3} \\end{pmatrix}}", 3],
+                       sita : "{\\theta}",
+                       mr : ["{\\mathrm{#1}}", 1],
+                       mugen : "{\\infty}",
+                       tri : ["{\\triangle \\mathrm{#1}}", 1],
+                       kak : ["{\\angle \\mathrm{#1}}", 1],
+                       al : "{\\alpha}",
+                       kumi : ["{{}_{#1}\\mathrm{C}_{#2}}", 2],
+                       jun : ["{{}_{#1}\\mathrm{P}_{#2}}", 2]
+                   }
+               } 
+           };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  </head>
+	<body>
+      <script src = "canvasMaker.js"></script>
+      <script src = "mathData.js"></script>
+      <script src = "change_old_array.js"></script>
+      <script src = "formulaData.js"></script>
+			<script src = "mathView.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous">
+      </script>        
+	</body>
+</html>

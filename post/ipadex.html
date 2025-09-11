@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<title>入力フォーム</title>    
+<link rel="stylesheet" href="ipadex.css"  >
+<meta charset="UTF-8">  
+<!--MathJax関連の設定-->
+<!--数式中の自動改行はオフにしておく
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: { linebreaks: { automatic: true } },
+  "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+});
+</script>-->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+    processEscapes: true
+  }
+});
+</script>
+
+
+<!--関数やアクションの設定-->        
+<script>
+function change1(){    
+$temp = document.getElementById("mondai").value;
+document.getElementById("review1").innerHTML=$temp;    
+MathJax.Hub.Queue(["Typeset",MathJax.Hub,"review1"]);
+}
+function change2(){    
+$temp = document.getElementById("kaitou").value;
+document.getElementById("review2").innerHTML=$temp;    
+MathJax.Hub.Queue(["Typeset",MathJax.Hub,"review2"]);
+}
+</script>
+<script>
+function remove1(){
+$temp= document.getElementById("area1").innerHTML;
+document.getElementById("area1").innerHTML=$temp;    
+}
+</script>
+<script>
+function remove2(){
+$temp= document.getElementById("area2").innerHTML;
+document.getElementById("area2").innerHTML=$temp;    
+}
+</script>
+</head>    
+<!--ここから先が本文-->
+<body>
+<h1>ウェブ数学問題集の入力フォーム</h1>
+<form method="post" action="http://mathemedia.information.jp/receipt.php" enctype= "multipart/form-data">
+<ul>
+<li>小問つきの問題, 解答を作るときは, 以下のコマンドをお使いください。</li>
+            &lt;ol&gt;<br>    
+            &lt;li&gt;ああ &lt;/li&gt;<br>
+            &lt;li&gt;いい &lt;/li&gt;<br>
+            &lt;/ol&gt;<br>  
+
+</ul>
+<h2 >[ 問題文 ]</h2>
+<p class="comment">
+問題文に画像を添える場合はこちらへ &rarr; 
+<span id="area1"> <input type="file" name="upfile[]" size="30" /></span>
+<input type="button" value="リセット" onclick="remove1()"></p>
+<div class="twoclm">
+<textarea id="mondai"name="problem" maxlength=5000 onkeyup="change1()">   
+</textarea>
+<div id="review1"></div>
+</div>
+<h2>[ 解答 ]</h2>
+<p class="comment">
+解答に画像を添える場合はこちらへ &rarr;
+<span id="area2"> <input type="file" name="upfile[]" size="30" /></span>
+<input type="button" value="リセット" onclick="remove2()"></p>
+<div class="twoclm">
+<textarea id="kaitou"name='solution' maxlength=10000 onkeyup="change2()">   
+</textarea>
+<div id="review2"></div>
+</div>    
+<h2>[ 項目 ]</h2>
+<p class="comment">
+        (１つ以上を選択)
+</p>
+<h3>数学I</h3>
+<h4>1章. 数と式</h4>
+<p class="check">
+<input type="checkbox" name=":I10"value="I10">式の計算          
+<input type="checkbox" name=":I11"value="I11">実数
+<input type="checkbox" name=":I12"value="I12">１次不等式
+</p>
+       
+<h4>2章. 集合と論証</h4>
+<p class="check">
+<input type="checkbox" name=":I13"value="I13">集合 
+<input type="checkbox" name=":I14"value="I14">命題と論証
+</p>
+<h4 >3章. ２次関数</h4>
+<p class="check">
+<input type="checkbox" name=":I15"value="I15">関数とグラフ 
+<input type="checkbox" name=":I16"value="I16">２次方程式・２次不等式
+</p>
+<h4>4章. 図形と計量</h4>
+<p class="check">
+<input type="checkbox" name=":I17"value="I17">鋭角の三角比 
+<input type="checkbox" name=":I18"value="I18">三角比の拡張
+<input type="checkbox" name=":I19"value="I19">三角形への応用
+</p>
+<h4>5章. データの分析</h4>
+<p class="check">
+<input type="checkbox" name=":I20"value="I20">データの整理と分析 
+<input type="checkbox" name=":I21"value="I21">データの相関
+</p>
+<h3>数学Ⅱ</h3>
+<h4>1章. 方程式・式と証明</h4>
+<p class="check">
+<input type="checkbox" name=":J10"value="J10">整式の乗法・除法と分数式
+<input type="checkbox" name=":J11"value="J11">２次方程式
+<input type="checkbox" name=":J12"value="J12">高次方程式
+<input type="checkbox" name=":J13"value="J13">式と証明
+</p>
+<h4>2章. 図形と方程式</h4>
+<p class="check">
+<input type="checkbox" name=":J14"value="J14">点と直線
+<input type="checkbox" name=":J15"value="J15">円
+<input type="checkbox" name=":J16"value="J16">軌跡と領域
+</p>
+<h4 >3章. 三角関数</h4>
+<p class="check">
+<input type="checkbox" name=":J17"value="J17">三角関数
+<input type="checkbox" name=":J18"value="J18">加法定理
+</p>
+<h4>4章. 指数関数・対数関数</h4>
+<p class="check">
+<input type="checkbox" name=":J19"value="J19">指数関数
+<input type="checkbox" name=":J20"value="J20">対数関数
+</p>
+<h4>5章. 微分と積分</h4>
+<p class="check">
+<input type="checkbox" name=":J21"value="J21">微分係数と導関数
+<input type="checkbox" name=":J22"value="J22">導関数の応用
+<input type="checkbox" name=":J23"value="J23">積分
+</p> 
+<h3>数学Ⅲ</h3>
+<h4 align ="left">1章. 平面上の曲線</h4>
+<p class="check">
+<input type="checkbox" name=":K10"value="K10">２次曲線
+<input type="checkbox" name=":K11"value="K11">媒介変数と極表示
+</p>
+<h4>2章. 複素数平面 </h4>
+<p class="check">
+<input type="checkbox" name=":K12"value="K12">複素数平面
+<input type="checkbox" name=":K13"value="K13">図形への応用
+</p>
+<h4>3章. 関数と極限</h4>
+<p class="check">
+<input type="checkbox" name=":K14"value="K14">関数
+<input type="checkbox" name=":K15"value="K15">数列の極限
+<input type="checkbox" name=":K16"value="K16">関数の極限
+</p>
+<h4>4章. 微分</h4>
+<p class="check">
+<input type="checkbox" name=":K17"value="K17">微分法  
+<input type="checkbox" name=":K18"value="K18">いろいろな関数の導関数            
+</p>
+<h4>5章. 微分の応用</h4>
+<p class="check">
+<input type="checkbox" name=":K19"value="K19">接線, 関数の増減
+<input type="checkbox" name=":K20"value="K20">微分のいろいろな応用           
+</p>
+<h4>6章. 積分とその応用</h4>
+<p class="check">
+<input type="checkbox" name=":K21"value="K21">不定積分
+<input type="checkbox" name=":K22"value="K22">定積分
+<input type="checkbox" name=":K23"value="K23">面積・体積・長さ        
+</p>
+<h3>数学A</h3>
+<h4>1章. 場合の数と確率</h4>
+<p class="check">
+<input type="checkbox" name=":A10"value="A10">集合
+<input type="checkbox" name=":A11"value="A11">場合の数
+<input type="checkbox" name=":A12"value="A12">確率とその基本性質
+<input type="checkbox" name=":A13"value="A13">いろいろな確率
+</p>
+<h4>2章. 整数の性質</h4>
+<p class="check">
+<input type="checkbox" name=":A14"value="A14">約数と倍数
+<input type="checkbox" name=":A15"value="A15">ユークリッドの互除法と不定方程式
+<input type="checkbox" name=":A16"value="A16">整数の性質の利用        
+</p>
+<h4>3章. 図形の性質</h4>
+<p class="check">
+<input type="checkbox" name=":A17"value="A17">三角形の性質
+<input type="checkbox" name=":A18"value="A18">円の性質
+<input type="checkbox" name=":A19"value="A19">作図
+<input type="checkbox" name=":A20"value="A20">空間図形        
+</p>
+<h3>数学B</h3>
+<h4>1章. 数列 </h4>
+<p class="check">
+<input type="checkbox" name=":B10"value="B10">数列
+<input type="checkbox" name=":B11"value="B11">漸化式と数学的帰納法       
+</p>
+<h4>2章. ベクトル </h4>
+<p class="check">
+<input type="checkbox" name=":B12"value="B12">平面上のベクトル
+<input type="checkbox" name=":B13"value="B13">ベクトルの応用
+<input type="checkbox" name=":B14"value="B14">空間におけるベクトル        
+</p>
+<h4>3章. 確率分布と統計的な推測 </h4>
+<p class="check">
+<input type="checkbox" name=":B15"value="B15">確率分布
+<input type="checkbox" name=":B16"value="B16">正規分布
+<input type="checkbox" name=":B17"value="B17">統計的な推測        
+</p>
+<h2 >[ 難易度 ]</h2>
+<p class="comment">(1つを選択)</p>
+<p id='diff'>
+<input type="radio" name="difficulty" value="A"> A (教科書の例題レベル)   
+<input type="radio" name="difficulty" value="B"> B (入試問題の基本レベル)<br>
+<input type="radio" name="difficulty" value="C"> C (入試問題の標準レベル)
+<input type="radio" name="difficulty" value="D"> D (入試問題の難問レベル)
+</p>
+<h2>[ キーワード ]</h2>
+<p class="comment">(任意。数字については半角数字を利用。複数を入力するときは「,( カンマ) 」で分けてください)   </p>  
+<p class="kinyu">
+<input type="text "id="keyword"name='keyword' size="30"  maxlengt="60">  </p>　
+<h2>[ 作題者 ]</h2>
+<p class="comment">(任意。問題集には表示されません)  </p> 
+<p class="kinyu">
+<input type="text "id="author"name='author' 
+                    size="20"maxlengt="20">  　</p>
+<h2>[ パスワード ]</h2>
+<p class="comment">
+           上記の内容をよく確認した後に入力してください。
+              <br>現在, パスワード「math」で動作試験中
+</p>
+<p class="kinyu">
+<input type="password"id="password"name='password' maxlengt="30">   </p>       
+<p id="sub">
+<input type="submit" value="登録する">
+</p>
+</form>         
+</body>
+</html>

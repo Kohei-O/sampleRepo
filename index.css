@@ -1,0 +1,39 @@
+@charset "UTF-8";
+
+body{font-size: 16px;
+    font-family:/*'Hiragino Mincho ProN W3','Hiragino Mincho ProN W6',serif,*/sans-serif;
+    line-height: 1.7em;
+    margin-top:1em;
+    margin-bottom:2em;
+    margin-right:1em;
+    margin-left:1em;
+-webkit-text-size-adjust:100%;}
+
+div[id="mainView"]{
+	overflow-y: scroll;
+	height:85vh;	
+}
+table[id="mainTable"]{
+overflow-y: scroll;	
+border-style: groove;
+}
+th{border-bottom: solid}
+td.category{
+	 border-bottom:thin solid;
+	border-right:thin solid;
+}
+img{width:100%;
+    height:auto;
+    margin-top:20px;
+    margin-bottom:20px;
+}
+div{overflow: scroll;
+    white-space: nowrap; }
+div#tclm{
+/*width:60em;height:30em;*/
+display:flex;
+display:-webkit-flex;
+flex-direction:row;
+-webkit-flex-direction:row;    
+}
+#search{width: 5em;height: 1.5em;font-size: 16px}

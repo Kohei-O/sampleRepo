@@ -1,0 +1,12 @@
+@charset "UTF-8";
+
+body{font-family:sans-serif;
+    line-height: 1.5em;
+}
+select{
+     font-size: 1em;
+height:2em;
+width:19em;
+}
+div{overflow: scroll;
+    white-space: nowrap; }

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<link rel="stylesheet" href="javaex5.css"  >
+<meta charset="UTF-8">
+ <script>
+//モードが変化するたびに、ボタンの表示、画面の固定・流動を変える function
+function modechange(){
+var mode =document.getElementById("mode").value;
+if(mode==="現在 標準モード"){
+document.getElementById("mode").value="現在 書きこみモード" ;
+document.body.style.position="fixed";
+}else if(mode==="現在 書きこみモード"){
+document.getElementById("mode").value="現在 消しゴムモード" ;   
+}else{
+document.getElementById("mode").value="現在 標準モード" ;
+document.body.style.position="relative";}
+}
+//モードに応じ、タッチ開始時の動作を分ける function
+document.ontouchstart=touchAction;
+function touchAction(event){
+var mode =document.getElementById("mode").value;
+if(mode==="現在 書きこみモード"){
+// context にバーをつけないことで,writing(), stop()でも共通のグローバル変数として扱える
+context=document.getElementById("mycanvas").getContext('2d');
+//一度消しゴムを使ったあとに備えて、上書きモードに戻す。
+context.globalCompositeOperation = 'source-over';    
+//書きこみモードでは色を red 太さを 1 pxとした
+context.globalAlpha = 0.5;
+context.strokeStyle="red";
+context.lineWidth=1;
+var x0=event.pageX;
+var y0=event.pageY;
+context.beginPath();
+context.moveTo(x0,y0);
+//書き込みするインターバル全体の名を timer とする
+timer =setInterval('writing()',10);
+}else if(mode==="現在 消しゴムモード"){
+context=document.getElementById("mycanvas").getContext('2d');
+//消しゴムモードのときは以下のようにするそうだ。
+context.globalCompositeOperation = 'destination-out';
+context.lineWidth=25;
+var x0=event.pageX;
+var y0=event.pageY;
+context.beginPath();
+context.moveTo(x0,y0);
+//書き込みするインターバル全体の名を timer とする
+timer =setInterval('writing()',10);}}
+     
+//１０ミリ秒ごとのマウスの位置を線で結ぶ関数を writing とした
+  function writing(){
+document.ontouchmove=kakikomi;
+function kakikomi(a){
+//a はイベント引き数
+//通常モードのときは書きこみをしないように条件づけ
+var mode =document.getElementById("mode").value;
+if(mode!=="現在 標準モード" ){
+var x=a.pageX;
+var y=a.pageY;      
+context.lineTo(x,y);
+context.stroke();}}}
+
+//touch が up したら 「timer」を終了する
+document.ontouchend=stop;
+function stop(){
+ clearInterval(timer);}
+</script>
+</head>    
+<body>
+
+<div class="canvas">
+<canvas id="mycanvas" ></canvas>
+</div>
+<div>Josephine Butler (1828–1906) was an English feminist and social reformer in the Victorian era. She campaigned for women's suffrage and better education for women. She was instrumental in the 1886 repeal of the Contagious Diseases Acts, which had subjected prostitutes to invasive medical examinations, and she founded an organisation to combat similar practices across Europe. After she became aware that English women and children were being sold into prostitution on the continent, her allegations led to the sacking of a Belgian police commissionaire and the imprisonment of his deputy and 12 brothel owners. Josephine fought child prostitution with help from the campaigning editor of The Pall Mall Gazette, William Thomas Stead, leading to the Criminal Law Amendment Act 1885, which raised the age of consent from 13 to 16 years of age. Her final campaign came in the late 1890s, against medical mistreatment of prostitutes in the British Raj. 
+    </div>
+
+<input type="button" id="mode" value="現在 標準モード" onclick="modechange()">
+
+    <script>
+//document.width は firefox では廃止されたようだ。以下で良い。+50は最後の行の少し下まで描画領域とするため。
+ document.getElementById("mycanvas").width=document.body.clientWidth;
+document.getElementById("mycanvas").height=document.body.clientHeight*0.7;
+//どうも element.dom.sty. はスタイルシートと相性が悪い
+        /*
+style プロパティは、要素のインライン style 属性で設定された CSS 宣言のみを表し、><head> セクションのスタイルルールまたは外部スタイルシートなどの、他のスタイルルールからのスタイル宣言を表さないため、一般に要素のスタイルに関する学習には役立ちません。 要素のすべてのCSSプロパティの値を取得するには、代わりに window.getComputedStyle() を使用する必要があります。*/
+
+//document.getElementById("mycanvas").width=document.getElementById("text").width;
+//alert(document.getElementById("bunsho").style.width);
+
+    </script> 
+
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+body{font-family:sans-serif,'YuGothic';
+font-size: 16px}
+h1{text-align: center;
+font-family: serif}
+h2{text-align: center}
+div#tclm{
+/*width:60em;height:30em;*/
+display:flex;
+display:-webkit-flex;
+flex-direction:row;
+-webkit-flex-direction:row;    
+}
+div#canvasSpace{
+    margin-left: 15px;
+    border: solid;
+}
+div.detail{
+display:none;
+background-color:  lavender;
+}
+ul{
+list-style: none;
+}
+ul.command{
+background-color: paleturquoise
+}
+ul#lesson{list-style: disc}
+textarea#textarea{
+    margin-left: 25px;
+    font-family:sans-serif,'YuGothic';
+    font-size: 14px
+}
+div#storage{
+    height: 20em;
+    width:15em;
+    overflow: scroll;
+}
+dl{
+    background-color: paleturquoise;
+    padding: 10px;
+}
+dt{color:red}
+p{margin-top: 0px;
+    margin-bottom: 0px;
+margin-left : 20px}
+
+.susiki{
+    font-family: "STIX Two Text", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: italic;
+  }
+  

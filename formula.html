@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<title>[ スマホ問題集 ] 用語・公式集</title>
+		<meta  charset="UTF-8">	
+		<link rel="stylesheet" href="formula.css">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0">    
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script>
+           MathJax = {
+               tex: {
+                   inlineMath: [['$', '$'], ['\\(', '\\)']],
+                   macros : {
+                       rt : ["{\\sqrt{#1}}", 1] ,
+                       bun : ["{\\dfrac{#1}{#2}}", 2],
+                       li : ["{\\lim\\limits_{{#1}\\to{#2}}}", 2],
+                       bm : ["{\\boldsymbol{#1}}", 1],
+                       sig : ["{\\displaystyle \\sum_{#1}^{#2}}", 2],
+                       sekib :["{\\displaystyle\\int_{#1}^{#2}}", 2],
+                       bect : ["{\\overrightarrow{\\mathrm{#1}}}", 1],
+                       beca : "{\\vec{a}}",
+                       becb : "{\\vec{b}}",
+                       becc : "{\\vec{c}}",
+                       tatebec : ["{\\begin{pmatrix}{#1}\\\\{#2} \\end{pmatrix}}", 2],
+                       tatebeca :["{\\begin{pmatrix}{#1} \\\\{#2}\\\\{#3} \\end{pmatrix}}", 3],
+                       sita : "{\\theta}",
+                       mr : ["{\\mathrm{#1}}", 1],
+                       mugen : "{\\infty}",
+                       tri : ["{\\triangle \\mathrm{#1}}", 1],
+                       kak : ["{\\angle \\mathrm{#1}}", 1],
+                       al : "{\\alpha}",
+                       kumi : ["{{}_{#1}\\mathrm{C}_{#2}}", 2],
+                       jun : ["{{}_{#1}\\mathrm{P}_{#2}}", 2]
+                   }
+               } 
+           };
+        </script>
+        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+        </script>
+	</head>
+	<body> 
+        <h1>用語・公式集</h1>
+		<select id ="select" onchange="changeTopic()">
+			<option value="11" selected>【数学 I 】式の計算, 実数, 1 次不等式</option>
+			<option value="12">【数学 I 】集合, 命題と論証</option>
+			<option value="13">【数学 I 】2次関数とグラフ </option>
+			<option value="14">【数学 I 】三角比</option>
+			<option value="15">【数学 I 】データの分析</option>
+			<option value="21">【数学 II 】整式の乗法・除法と分数式, 高次方程式, 式と証明</option>
+			<option value="22">【数学 II 】図形と方程式
+            <option value="23">【数学 II 】三角関数</option>
+			<option value="24">【数学 II 】指数関数, 対数関数</option>
+			<option value="25">【数学 II 】微分法</option>
+			<option value="26">【数学 II 】積分法</option>
+			<option value="31">【数学 III 】いろいろな曲線</option>
+			<option value="32">【数学 III 】複素数平面</option>
+			<option value="33">【数学 III 】関数と極限</option>
+			<option value="34">【数学 III 】微分法</option>
+			<option value="35">【数学 III 】積分法</option>
+            <option value="41">【数学 A 】場合と確率</option>
+			<option value="42">【数学 A 】整数</option>
+			<option value="43">【数学 A 】図形の性質</option>
+			<option value="51">【数学 B 】数列</option>
+			<option value="52">【数学 B 】ベクトル</option>
+			<option value="53">【数学 B 】確率分布と統計的な推測</option>
+		</select>
+        <script src = "canvasMaker.js"></script>
+        <script src = "formulaData.js"></script>
+        <script>
+            var baseFont = "20px serif";
+            var baseColor = 'black';
+            var baseLineWidth = 1;
+            var canvasWidth = 330;
+            var canvasHeight = 330;
+            var ctx;
+            var sec1 = document.createElement("section");
+            document.body.appendChild(sec1);
+            changeTopic();
+        function changeTopic(){
+            var topic = parseInt(document.getElementById("select").value) / 10;
+            //alert(topic);
+            var newArray = formula.filter(element => element.topic >= topic && element.topic < topic + 0.1);
+            document.body.removeChild(sec1);
+            sec1 = document.createElement("section");
+            newArray.forEach(makeHtml);
+            document.body.appendChild(sec1);
+           // MathJax.typeset();
+            MathJax.typesetPromise();
+            function makeHtml(element){
+                var sec2 = document.createElement("section");
+                sec2.setAttribute("style", "margin:10px");
+                var head = document.createElement("h3");
+                head.innerHTML = '[' + element.topic + '] '+ element.word;
+                sec2.appendChild(head);
+                var para1 = document.createElement("p");
+                para1.innerHTML = element.text;
+                sec2.appendChild(para1);
+                  if (element.canvasScript !== undefined) {//canvasScript が undefined でない場合に行う
+                      myCanvas = document.createElement("canvas");
+                      sec2.appendChild(myCanvas);
+                      myCanvas.width = canvasWidth;
+                      myCanvas.height = canvasHeight;
+                      ctx = myCanvas.getContext("2d");
+                      ctx.font = baseFont;
+                      ctx.fillStyle = baseColor;
+                      eval(element.canvasScript);
+                      baseFont = "20px serif";
+                      baseColor = 'black';
+                      baseLineWidth = 1; 
+                  }
+                para2 = document.createElement("p");
+                var anchor = document.createElement("a");
+                anchor.href = "javascript:setQuery('keyword', " + element.topic + ");";
+                anchor.innerHTML = "「" + element.word + "」を含む問題を検索する";
+                para2.appendChild(anchor);
+                sec2.appendChild(para2);
+                sec1.appendChild(sec2);
+            }
+        }
+            function setQuery(newTopic, newDifficulty) {
+                'use strict';
+                var request = window.indexedDB.open("mathematics"); //データベースへの接続
+                request.onsuccess = function () {
+                    var objectStore = request.result.transaction(["query"], "readwrite").objectStore("query");
+                    var data = {topic: newTopic, difficulty: newDifficulty, ID: 0};//queryのレコードは ID:0 のみ。そこに要求したnewTopic, newDifficultyを上書きする。
+                    var secondRequest  = objectStore.put(data);
+                    secondRequest.onsuccess = function () {
+                        window.location.href = "http://mathemedia.information.jp/mathView.html";
+                    }
+                }
+            }
+        </script>
+	</body>
+</html>

@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<title>入力フォーム</title>    
+<link rel="stylesheet" href="inputform-style.css"  >
+<meta charset="UTF-8">  
+<!--MathJax関連の設定-->
+<!--数式中の自動改行はオフにしておく
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: { linebreaks: { automatic: true } },
+  "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }});
+</script>-->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+processEscapes: true
+}
+});
+</script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML"></script>
+</head>    
+<body>
+    <span id="macro">$$ \newcommand{\rt}[1]{\sqrt{#1}} \newcommand{\bun}[2]{\dfrac{#1}{#2}} \newcommand{\li}[2]{\lim\limits_{{#1} \to {#2}}} \newcommand{\bm}[1]{\boldsymbol{#1}} \newcommand{\sig}[2]{\displaystyle \sum_{#1}^{#2}} \newcommand{\sekib}[2]{\displaystyle\int _{#1}^{#2}} \newcommand{\bect}[1]{\overrightarrow{\mathrm{#1}}} \newcommand{\beca}{\vec{a}} \newcommand{\becb}{\vec{b}} \newcommand{\becc}{\vec{c}} \newcommand{\tatebec}[2]{\begin{pmatrix} {#1} \\ {#2} \end{pmatrix}}\newcommand{\tatebeca}[3]{\begin{pmatrix} {#1} \\ {#2}\\{#3} \\ \end{pmatrix}}\newcommand{\sita}{\theta} \newcommand{\mr}[1]{\mathrm{#1}} \newcommand{\mugen}{\infty} \newcommand{\tri}[1]{\triangle \mathrm{#1}} \newcommand{\kak}[1]{\angle \mathrm{#1}} \newcommand{\bm}[1]{\boldsymbol{#1}} \newcommand{\al}{\alpha} \newcommand{\kumi}[2]{{}_{#1}\mathrm{C}_{#2}}\newcommand{\jun}[2]{{}_{#1}\mathrm{P}_{#2}}$$</span>  
+    <h1>ウェブ数学問題集の入力フォーム</h1>
+    <form method="post" action="http://mathemedia.information.jp/receipt.php" enctype= "multipart/form-data">
+        <ul>
+            <li>文字の読み書きは文字コード UTF-8 で行ってください。    </li>
+            <li>問題集はこちら &rarr;<a href="http://mathemedia.information.jp/index.html"> ウェブ数学問題集 (スマホ版) </a></li>
+            <li>著作権の侵害をしないようオリジナルの問題を投稿してください。</li>
+            <li> 本サイトでは MathJax により TeX のコンパイルを行います。
+     使えるコマンドについては<a href="http://easy-copy-mathjax.xxxx7.com/"> Easy Copy MathJax </a> などをご覧ください。</li>
+            <li>数式を表示するには \$数式\$ としてください。</li>
+            <li>数式だけの行をセンタリングして表示するには次のようにしてください。$\[ 数式] \]$ 
+            <li>数式中の不等号 (&lt;) の次には必ず半角スペースを入れてください。</li>
+            <li>連続した半角スペースは１つとして認識されます。数式内での &sim; (チルダ) は通常通り使えます。</li>
+            <li>改行は自動で行われます。意図的に改行するには改行コマンド &lt;br&gt; をお使いください。コマンドには半角スペースを入れないでください。
+            </li>
+            <li>複数行立てのときは以下をどうぞ。<br>
+                $\begin{align}$<br>
+                \\<br>
+        <br>
+                $\end{align}$
+            <li>小問つきの問題, 解答を作るときは, 以下のコマンドをお使いください。</li>
+            &lt;ol&gt;<br>    
+            &lt;li&gt;ああ &lt;/li&gt;<br>
+            &lt;li&gt;いい &lt;/li&gt;<br>
+            &lt;/ol&gt;<br>  
+            <li>見出しをつけるには次をお使いください。&lt;h4&gt; &lt;/h4&gt;</li>
+        <li>添付できる画像は「.png」「.gif」「.jpg」形式に限ります。サイズは1枚当たり 100KB 以下としてください。</li>
+            <li>マクロを使いたい場合は次のように冒頭に書き込んでください。</li>
+                \$\$\newcommand{?}{?}\newcommand{?}{?} \$\$ 
+            <li>登録した問題・解答に訂正がある場合は, 改訂版を登録したのち管理人に削除を申し出てください。
+                <a href="mailto:admin@mathemedia.information.jp">admin@mathemedia.information.jp</a></li>
+            <li>ブラウザで問題・解答のHTMLソースを表示すると,その中にTeXソースが含まれています。それを用いると訂正が容易です。ただし,不等号など一部の記号はMathJaxにより改変されているので必ず元に戻してお使いください。</li>
+        </ul>
+        <h2 >[ 問題文 ]</h2>
+        <p class="comment">
+            問題文に画像を添える場合はこちらへ &rarr; 
+            <span id="area1"> <input type="file" name="upfile[]" size="30" /></span>
+            <input type="button" value="リセット" onclick="remove1()"></p>
+        <div class="twoclm1">
+<textarea id="mondai" name="problem" maxlength=5000 onkeyup="change1()">
+&lt;ol&gt;
+&lt;li&gt; &lt;/li&gt;
+&lt;li&gt; &lt;/li&gt;
+&lt;li&gt; &lt;/li&gt;
+&lt;/ol&gt;
+</textarea>
+            <div id="review1"></div>
+        </div>
+        <h3>javascript でグラフを描画する場合</h3>
+        <input type="button" value = " フォーム 1 のモード切り替え" onclick="changeMode(1)">
+      <input type="button" value = " フォーム 2 のモード切り替え" onclick="changeMode(2)">
+          <input type="button" value = " フォーム 3 のモード切り替え" onclick="changeMode(3)">
+          <input type="button" value = " フォーム 4 のモード切り替え" onclick="changeMode(4)">
+
+            <h4>[図1]</h4>
+            <div class="twoclm3">
+                <div>
+                    <div id="modeEmpty1" style="display:block">描画モード off</div>
+                    <div id="range1" style="display:none">
+                    <p><input type="radio" name = "scaleAxis_1" value = "scaleAxis" checked>座標軸あり（目盛りあり）<br>
+                        <input type="radio" name = "scaleAxis_1" value = "scale">座標軸あり（目盛りなし）<br>
+                    <input type="radio" name = "scaleAxis_1" value = "none">座標軸なし</p>
+                    xの下限 <input type="number" id="1_xmin" name="mondai1[]" step="0.1"><br>
+                    xの上限 <input type="number" id="1_xmax" name="mondai1[]" step="0.1"><br>
+                    yの下限 <input type="number" id="1_ymin" name="mondai1[]" step="0.1"><br>
+                    yの上限 <input type="number" id="1_ymax" name="mondai1[]" step="0.1">
+                    <h4>グラフ①</h4>
+                    グラフ①の式 y=<input type="text" id="1_y1" name="mondai1[]"><br>
+                    定義域の下限 <input type="number" id="1_xstart1" name="mondai1[]" step="0.1"><br>
+                    定義域の上限 <input type="number" id="1_xend1" name="mondai1[]" step="0.1">
+                    <h4>グラフ②</h4>
+                    グラフ②の式 y=<input type="text" id="1_y2" name="mondai1[]"><br>
+                    定義域の下限 <input type="number" id="1_xstart2" name="mondai1[]" step="0.1"><br>
+                    定義域の上限 <input type="number" id="1_xend2" name="mondai1[]" step="0.1">
+                    <h4>グラフ③</h4>
+                    グラフ③の式 y=<input type="text" id="1_y3" name="mondai1[]"><br>
+                    定義域の下限 <input type="number" id="1_xstart3" name="mondai1[]" step="0.1"><br>
+                    定義域の上限 <input type="number" id="1_xend3" name="mondai1[]" step="0.1">
+                    </div>
+                    <div id="string1" style="display:none">
+                    <h4>文字列</h4>
+                    文字列① <input type="text" id="1_str1" name="str1[]"><br>
+                    x座標    <input type="number"  id="x1_str1" name="str1[]" step="0.1">
+                    y座標     <input type="number"  id="y1_str1" name="str1[]" step="0.1"><br>
+                    文字列② <input type="text" id="2_str1" name="str1[]" ><br> 
+                    x座標    <input type="number"  id="x2_str1" name="str1[]" step="0.1">
+                    y座標     <input type="number"  id="y2_str1" name="str1[]" step="0.1"><br>
+                    文字列③ <input type="text" id="3_str1" name="str1[]" ><br>
+                    x座標    <input type="number"  id="x3_str1" name="str1[]" step="0.1">
+                    y座標     <input type="number"  id="y3_str1" name="str1[]" step="0.1"><br>
+                    文字列④ <input type="text" id="4_str1" name="str1[]"><br>
+                    x座標    <input type="number"  id="x4_str1" name="str1[]" step="0.1">
+                    y座標     <input type="number"  id="y4_str1" name="str1[]" step="0.1"><br>
+                    文字列⑤ <input type="text" id="5_str1" name="str1[]"><br>
+                    x座標    <input type="number"  id="x5_str1" name="str1[]" step="0.1">
+                    y座標     <input type="number"  id="y5_str1" name="str1[]" step="0.1"><br>
+                    文字列⑥ <input type="text" id="6_str1" name="str1[]"><br>
+                    x座標    <input type="number"  id="x6_str1" name="str1[]" step="0.1">
+                    y座標     <input type="number"  id="y6_str1" name="str1[]" step="0.1">
+                    </div>
+                <div id="line1" style="display:none">
+                    <h4>折れ線 A</h4>
+                    以下の順に結ぶ<br>
+                    点① x座標    <input type="number" name="line1A[]" step="0.1">
+                    y座標     <input type="number" name="line1A[]" step="0.1"><br>
+                    点② x座標    <input type="number" name="line1A[]" step="0.1">
+                    y座標     <input type="number" name="line1A[]" step="0.1"><br>
+                    点③ x座標    <input type="number" name="line1A[]" step="0.1">
+                    y座標     <input type="number" name="line1A[]" step="0.1"><br>
+                    点④ x座標    <input type="number" name="line1A[]" step="0.1">
+                    y座標     <input type="number" name="line1A[]" step="0.1"><br>
+                    点⑤ x座標    <input type="number" name="line1A[]" step="0.1">
+                    y座標     <input type="number" name="line1A[]" step="0.1">
+                    <h4>折れ線 B</h4>
+                    以下の順に結ぶ<br>
+                    点① x座標    <input type="number" name="line1B[]" step="0.1">
+                    y座標     <input type="number" name="line1B[]" step="0.1"><br>
+                    点② x座標    <input type="number" name="line1B[]" step="0.1">
+                    y座標     <input type="number" name="line1B[]" step="0.1"><br>
+                    点③ x座標    <input type="number" name="line1B[]" step="0.1">
+                    y座標     <input type="number" name="line1B[]" step="0.1"><br>
+                    点④ x座標    <input type="number" name="line1B[]" step="0.1">
+                    y座標     <input type="number" name="line1B[]" step="0.1"><br>
+                    点⑤ x座標    <input type="number" name="line1B[]" step="0.1">
+                    y座標     <input type="number" name="line1B[]" step="0.1">
+                    <h4>折れ線 C</h4>
+                    以下の順に結ぶ<br>
+                    点① x座標    <input type="number" name="line1C[]" step="0.1">
+                    y座標     <input type="number" name="line1C[]" step="0.1"><br>
+                    点② x座標    <input type="number" name="line1C[]" step="0.1">
+                    y座標     <input type="number" name="line1C[]" step="0.1"><br>
+                    点③ x座標    <input type="number" name="line1C[]" step="0.1">
+                    y座標     <input type="number" name="line1C[]" step="0.1"><br>
+                    点④ x座標    <input type="number" name="line1C[]" step="0.1">
+                    y座標     <input type="number" name="line1C[]" step="0.1"><br>
+                    点⑤ x座標    <input type="number" name="line1C[]" step="0.1">
+                    y座標     <input type="number" name="line1C[]" step="0.1">
+                    </div>
+					<div id="dotline1" style="display:none">
+                    <h4>破線 A</h4>
+                    以下の順に結ぶ<br>
+                    点① x座標    <input type="number" name="dotline1A[]" step="0.1">
+                    y座標     <input type="number" name="dotline1A[]" step="0.1"><br>
+                    点② x座標    <input type="number" name="dotline1A[]" step="0.1">
+                    y座標     <input type="number" name="dotline1A[]" step="0.1"><br>
+                    点③ x座標    <input type="number" name="dotline1A[]" step="0.1">
+                    y座標     <input type="number" name="dotline1A[]" step="0.1"><br>
+                    点④ x座標    <input type="number" name="dotline1A[]" step="0.1">
+                    y座標     <input type="number" name="dotline1A[]" step="0.1"><br>
+                    点⑤ x座標    <input type="number" name="dotline1A[]" step="0.1">
+                    y座標     <input type="number" name="dotline1A[]" step="0.1">
+                    <h4>破線 B</h4>
+                    以下の順に結ぶ<br>
+                    点① x座標    <input type="number" name="dotline1B[]" step="0.1">
+                    y座標     <input type="number" name="dotline1B[]" step="0.1"><br>
+                    点② x座標    <input type="number" name="dotline1B[]" step="0.1">
+                    y座標     <input type="number" name="dotline1B[]" step="0.1"><br>
+                    点③ x座標    <input type="number" name="dotline1B[]" step="0.1">
+                    y座標     <input type="number" name="dotline1B[]" step="0.1"><br>
+                    点④ x座標    <input type="number" name="dotline1B[]" step="0.1">
+                    y座標     <input type="number" name="dotline1B[]" step="0.1"><br>
+                    点⑤ x座標    <input type="number" name="dotline1B[]" step="0.1">
+                    y座標     <input type="number" name="dotline1B[]" step="0.1">
+                    <h4>破線 C</h4>
+                    以下の順に結ぶ<br>
+                    点① x座標    <input type="number" name="dotline1C[]" step="0.1">
+                    y座標     <input type="number" name="dotline1C[]" step="0.1"><br>
+                    点② x座標    <input type="number" name="dotline1C[]" step="0.1">
+                    y座標     <input type="number" name="dotline1C[]" step="0.1"><br>
+                    点③ x座標    <input type="number" name="dotline1C[]" step="0.1">
+                    y座標     <input type="number" name="dotline1C[]" step="0.1"><br>
+                    点④ x座標    <input type="number" name="dotline1C[]" step="0.1">
+                    y座標     <input type="number" name="dotline1C[]" step="0.1"><br>
+                    点⑤ x座標    <input type="number" name="dotline1C[]" step="0.1">
+                    y座標     <input type="number" name="dotline1C[]" step="0.1">
+                    </div>
+                    <div id="circle1" style="display:none">
+                    <h4>円弧</h4>
+						<h5>円弧 A</h5>
+                    <p>中心のx座標 <input type="number" name="m1_circleA[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="m1_circleA[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="m1_circleA[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="m1_circleA[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="m1_circleA[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "m1_clockA" value= "true" checked>反時計回りに<input type ="radio" name="m1_clockA" value="false">時計回りに結ぶ </p>      
+                    ※ x 軸、y 軸の１目盛あたりの長さが異なる場合に出力されている円は、<br>
+                    実際には入力した値が x 方向の半径であるようなだ円です。
+									<h5>円弧 B</h5>
+                    <p>中心のx座標 <input type="number" name="m1_circleB[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="m1_circleB[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="m1_circleB[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="m1_circleB[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="m1_circleB[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "m1_clockB" value= "true" checked>反時計回りに<input type ="radio" name="m1_clockB" value="false">時計回りに結ぶ </p>
+							<h5>円弧 C</h5>
+                    <p>中心のx座標 <input type="number" name="m1_circleC[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="m1_circleC[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="m1_circleC[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="m1_circleC[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="m1_circleC[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "m1_clockC" value= "true" checked>反時計回りに<input type ="radio" name="m1_clockC" value="false">時計回りに結ぶ </p>
+                    </div>
+                </div>
+                <div>
+                    <canvas id="1_mycanvas" width="400" height="400" style ="display:none" ></canvas>
+                </div>
+            </div>
+
+<h4>[図2]</h4>
+    <div class="twoclm3">
+        <div>
+           <div id="modeEmpty2" style="display:block">描画モード off</div>
+       <div id="range2" style="display:none">
+           <p>
+<input type="radio" name = "scaleAxis_2" value = "scaleAxis" checked>座標軸あり（目盛りあり）<br>
+<input type="radio" name = "scaleAxis_2" value = "scale">座標軸あり（目盛りなし）<br>
+<input type="radio" name = "scaleAxis_2" value = "none">座標軸なし</p>
+xの下限 <input type="number" id="2_xmin" name="mondai2[]" step="0.1"><br>
+xの上限 <input type="number" id="2_xmax" name="mondai2[]" step="0.1"><br>
+yの下限 <input type="number" id="2_ymin" name="mondai2[]" step="0.1"><br>
+yの上限 <input type="number" id="2_ymax" name="mondai2[]" step="0.1">
+<h4>グラフ①</h4>
+グラフ①の式 y=<input type="text" id="2_y1" name="mondai2[]"><br>
+定義域の下限 <input type="number" id="2_xstart1" name="mondai2[]" step="0.1"><br>
+定義域の上限 <input type="number" id="2_xend1" name="mondai2[]" step="0.1">
+<h4>グラフ②</h4>
+グラフ②の式 y=<input type="text" id="2_y2" name="mondai2[]"><br>
+定義域の下限 <input type="number" id="2_xstart2" name="mondai2[]" step="0.1"><br>
+定義域の上限 <input type="number" id="2_xend2" name="mondai2[]" step="0.1">
+<h4>グラフ③</h4>
+グラフ③の式 y=<input type="text" id="2_y3" name="mondai2[]"><br>
+定義域の下限 <input type="number" id="2_xstart3" name="mondai2[]" step="0.1"><br>
+           定義域の上限 <input type="number" id="2_xend3" name="mondai2[]" step="0.1">
+            </div>
+              <div id="string2" style="display:none">
+<h4>文字列</h4>
+文字列① <input type="text" id="1_str2" name="str2[]"><br>
+x座標    <input type="number"  id="x1_str2" name="str2[]" step="0.1">
+y座標     <input type="number"  id="y1_str2" name="str2[]" step="0.1"><br>
+文字列② <input type="text" id="2_str2" name="str2[]" ><br>
+x座標    <input type="number"  id="x2_str2" name="str2[]" step="0.1">
+y座標     <input type="number"  id="y2_str2" name="str2[]" step="0.1"><br>
+文字列③ <input type="text" id="3_str2" name="str2[]" ><br>
+x座標    <input type="number"  id="x3_str2" name="str2[]" step="0.1">
+y座標     <input type="number"  id="y3_str2" name="str2[]" step="0.1"><br>
+文字列④ <input type="text" id="4_str2" name="str2[]"><br>
+x座標    <input type="number"  id="x4_str2" name="str2[]" step="0.1">
+y座標     <input type="number"  id="y4_str2" name="str2[]" step="0.1"><br>
+文字列⑤ <input type="text" id="5_str2" name="str2[]"><br>
+x座標    <input type="number"  id="x5_str2" name="str2[]" step="0.1">
+y座標     <input type="number"  id="y5_str2" name="str2[]" step="0.1"><br>
+文字列⑥ <input type="text" id="6_str2" name="str2[]"><br>
+x座標    <input type="number"  id="x6_str2" name="str2[]" step="0.1">
+y座標     <input type="number"  id="y6_str2" name="str2[]" step="0.1">
+            </div>
+              <div id="line2" style="display:none">
+<h4>折れ線 A</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="line2A[]" step="0.1">
+y座標     <input type="number" name="line2A[]" step="0.1"><br>
+点② x座標    <input type="number" name="line2A[]" step="0.1">
+y座標     <input type="number" name="line2A[]" step="0.1"><br>
+点③ x座標    <input type="number" name="line2A[]" step="0.1">
+y座標     <input type="number" name="line2A[]" step="0.1"><br>
+点④ x座標    <input type="number" name="line2A[]" step="0.1">
+y座標     <input type="number" name="line2A[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="line2A[]" step="0.1">
+y座標     <input type="number" name="line2A[]" step="0.1">
+<h4>折れ線 B</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="line2B[]" step="0.1">
+y座標     <input type="number" name="line2B[]" step="0.1"><br>
+点② x座標    <input type="number" name="line2B[]" step="0.1">
+y座標     <input type="number" name="line2B[]" step="0.1"><br>
+点③ x座標    <input type="number" name="line2B[]" step="0.1">
+y座標     <input type="number" name="line2B[]" step="0.1"><br>
+点④ x座標    <input type="number" name="line2B[]" step="0.1">
+y座標     <input type="number" name="line2B[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="line2B[]" step="0.1">
+y座標     <input type="number" name="line2B[]" step="0.1">
+<h4>折れ線 C</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="line2C[]" step="0.1">
+y座標     <input type="number" name="line2C[]" step="0.1"><br>
+点② x座標    <input type="number" name="line2C[]" step="0.1">
+y座標     <input type="number" name="line2C[]" step="0.1"><br>
+点③ x座標    <input type="number" name="line2C[]" step="0.1">
+y座標     <input type="number" name="line2C[]" step="0.1"><br>
+点④ x座標    <input type="number" name="line2C[]" step="0.1">
+y座標     <input type="number" name="line2C[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="line2C[]" step="0.1">
+y座標     <input type="number" name="line2C[]" step="0.1">
+            </div>
+			<div id="dotline2" style="display:none">
+                    <h4>破線 A</h4>
+                    以下の順に結ぶ<br>
+                    点① x座標    <input type="number" name="dotline2A[]" step="0.1">
+                    y座標     <input type="number" name="dotline2A[]" step="0.1"><br>
+                    点② x座標    <input type="number" name="dotline2A[]" step="0.1">
+                    y座標     <input type="number" name="dotline2A[]" step="0.1"><br>
+                    点③ x座標    <input type="number" name="dotline2A[]" step="0.1">
+                    y座標     <input type="number" name="dotline2A[]" step="0.1"><br>
+                    点④ x座標    <input type="number" name="dotline2A[]" step="0.1">
+                    y座標     <input type="number" name="dotline2A[]" step="0.1"><br>
+                    点⑤ x座標    <input type="number" name="dotline2A[]" step="0.1">
+                    y座標     <input type="number" name="dotline2A[]" step="0.1">
+                    <h4>破線 B</h4>
+                    以下の順に結ぶ<br>
+                    点① x座標    <input type="number" name="dotline2B[]" step="0.1">
+                    y座標     <input type="number" name="dotline2B[]" step="0.1"><br>
+                    点② x座標    <input type="number" name="dotline2B[]" step="0.1">
+                    y座標     <input type="number" name="dotline2B[]" step="0.1"><br>
+                    点③ x座標    <input type="number" name="dotline2B[]" step="0.1">
+                    y座標     <input type="number" name="dotline2B[]" step="0.1"><br>
+                    点④ x座標    <input type="number" name="dotline2B[]" step="0.1">
+                    y座標     <input type="number" name="dotline2B[]" step="0.1"><br>
+                    点⑤ x座標    <input type="number" name="dotline2B[]" step="0.1">
+                    y座標     <input type="number" name="dotline2B[]" step="0.1">
+                    <h4>破線 C</h4>
+                    以下の順に結ぶ<br>
+                    点① x座標    <input type="number" name="dotline2C[]" step="0.1">
+                    y座標     <input type="number" name="dotline2C[]" step="0.1"><br>
+                    点② x座標    <input type="number" name="dotline2C[]" step="0.1">
+                    y座標     <input type="number" name="dotline2C[]" step="0.1"><br>
+                    点③ x座標    <input type="number" name="dotline2C[]" step="0.1">
+                    y座標     <input type="number" name="dotline2C[]" step="0.1"><br>
+                    点④ x座標    <input type="number" name="dotline2C[]" step="0.1">
+                    y座標     <input type="number" name="dotline2C[]" step="0.1"><br>
+                    点⑤ x座標    <input type="number" name="dotline2C[]" step="0.1">
+                    y座標     <input type="number" name="dotline2C[]" step="0.1">
+                    </div>
+              <div id="circle2" style="display:none">
+        <h4>円弧</h4>
+ 		<p>中心のx座標 <input type="number" name="m2_circleA[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="m2_circleA[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="m2_circleA[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="m2_circleA[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="m2_circleA[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "m2_clockA" value= "true" checked>反時計回りに<input type ="radio" name="m2_clockA" value="false">時計回りに結ぶ </p>      
+                    ※ x 軸、y 軸の１目盛あたりの長さが異なる場合に出力されている円は、<br>
+                    実際には入力した値が x 方向の半径であるようなだ円です。
+									<h5>円弧 B</h5>
+                    <p>中心のx座標 <input type="number" name="m2_circleB[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="m2_circleB[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="m2_circleB[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="m2_circleB[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="m2_circleB[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "m2_clockB" value= "true" checked>反時計回りに<input type ="radio" name="m2_clockB" value="false">時計回りに結ぶ </p>
+							<h5>円弧 C</h5>
+                    <p>中心のx座標 <input type="number" name="m2_circleC[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="m2_circleC[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="m2_circleC[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="m2_circleC[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="m2_circleC[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "m2_clockC" value= "true" checked>反時計回りに<input type ="radio" name="m2_clockC" value="false">時計回りに結ぶ </p>
+            </div>
+    </div>
+    <div>
+        <canvas id="2_mycanvas" width="400" height="400" style ="display:none"></canvas>
+    </div>
+            </div>
+ 
+
+    <h4>[図3]</h4>
+    <div class="twoclm3">
+        <div>
+             <div id="modeEmpty3" style="display:block">描画モード off</div>
+       <div id="range3" style="display:none">
+            <p>
+<input type="radio" name = "scaleAxis_3" value = "scaleAxis" checked>座標軸あり（目盛りあり）<br>
+<input type="radio" name = "scaleAxis_3" value = "scale">座標軸あり（目盛りなし）<br>
+<input type="radio" name = "scaleAxis_3" value = "none">座標軸なし</p>
+xの下限 <input type="number" id="3_xmin" name="mondai3[]" step="0.1"><br>
+xの上限 <input type="number" id="3_xmax" name="mondai3[]" step="0.1"><br>
+yの下限 <input type="number" id="3_ymin" name="mondai3[]" step="0.1"><br>
+yの上限 <input type="number" id="3_ymax" name="mondai3[]" step="0.1">
+<h4>グラフ①</h4>
+グラフ①の式 y=<input type="text" id="3_y1" name="mondai3[]"><br>
+定義域の下限 <input type="number" id="3_xstart1" name="mondai3[]" step="0.1"><br>
+定義域の上限 <input type="number" id="3_xend1" name="mondai3[]" step="0.1">
+<h4>グラフ②</h4>
+グラフ②の式 y=<input type="text" id="3_y2" name="mondai3[]"><br>
+定義域の下限 <input type="number" id="3_xstart2" name="mondai3[]"  step="0.1"><br>
+定義域の上限 <input type="number" id="3_xend2" name="mondai3[]" step="0.1">
+<h4>グラフ③</h4>
+グラフ③の式 y=<input type="text" id="3_y3" name="mondai3[]"><br>
+定義域の下限 <input type="number" id="3_xstart3" name="mondai3[]" step="0.1"><br>
+定義域の上限 <input type="number" id="3_xend3" name="mondai3[]" step="0.1">
+            </div>
+            <div id="string3" style="display:none">
+<h4>文字列</h4>
+文字列① <input type="text" id="1_str3" name="str3[]"><br>
+x座標    <input type="number"  id="x1_str3" name="str3[]" step="0.1">
+y座標     <input type="number"  id="y1_str3" name="str3[]" step="0.1"><br>
+文字列② <input type="text" id="2_str3" name="str3[]" ><br>
+x座標    <input type="number"  id="x2_str3" name="str3[]" step="0.1">
+y座標     <input type="number"  id="y2_str3" name="str3[]" step="0.1"><br>
+文字列③ <input type="text" id="3_str3" name="str3[]" ><br>
+x座標    <input type="number"  id="x3_str3" name="str3[]" step="0.1">
+y座標     <input type="number"  id="y3_str3" name="str3[]" step="0.1"><br>
+文字列④ <input type="text" id="4_str3" name="str3[]"><br>
+x座標    <input type="number"  id="x4_str3" name="str3[]" step="0.1">
+y座標     <input type="number"  id="y4_str3" name="str3[]" step="0.1"><br>
+文字列⑤ <input type="text" id="5_str3" name="str3[]"><br>
+x座標    <input type="number"  id="x5_str3" name="str3[]" step="0.1">
+y座標     <input type="number"  id="y5_str3" name="str3[]" step="0.1"><br>
+文字列⑥ <input type="text" id="6_str3" name="str3[]"><br>
+x座標    <input type="number"  id="x6_str3" name="str3[]" step="0.1">
+y座標     <input type="number"  id="y6_str3" name="str3[]" step="0.1">
+                 </div>
+                    <div id="line3" style="display:none">
+<h4>折れ線 A</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="line3A[]" step="0.1">
+y座標     <input type="number" name="line3A[]" step="0.1"><br>
+点② x座標    <input type="number" name="line3A[]" step="0.1">
+y座標     <input type="number" name="line3A[]" step="0.1"><br>
+点③ x座標    <input type="number" name="line3A[]" step="0.1">
+y座標     <input type="number" name="line3A[]" step="0.1"><br>
+点④ x座標    <input type="number" name="line3A[]" step="0.1">
+y座標     <input type="number" name="line3A[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="line3A[]" step="0.1">
+y座標     <input type="number" name="line3A[]" step="0.1">
+<h4>折れ線 B</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="line3B[]" step="0.1">
+y座標     <input type="number" name="line3B[]" step="0.1"><br>
+点② x座標    <input type="number" name="line3B[]" step="0.1">
+y座標     <input type="number" name="line3B[]" step="0.1"><br>
+点③ x座標    <input type="number" name="line3B[]" step="0.1">
+y座標     <input type="number" name="line3B[]" step="0.1"><br>
+点④ x座標    <input type="number" name="line3B[]" step="0.1">
+y座標     <input type="number" name="line3B[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="line3B[]" step="0.1">
+y座標     <input type="number" name="line3B[]" step="0.1">
+<h4>折れ線 C</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="line3C[]" step="0.1">
+y座標     <input type="number" name="line3C[]" step="0.1"><br>
+点② x座標    <input type="number" name="line3C[]" step="0.1">
+y座標     <input type="number" name="line3C[]" step="0.1"><br>
+点③ x座標    <input type="number" name="line3C[]" step="0.1">
+y座標     <input type="number" name="line3C[]" step="0.1"><br>
+点④ x座標    <input type="number" name="line3C[]" step="0.1">
+y座標     <input type="number" name="line3C[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="line3C[]" step="0.1">
+y座標     <input type="number" name="line3C[]" step="0.1">
+                         </div>
+				<div id="dotline3" style="display:none">
+                    <h4>破線 A</h4>
+                    以下の順に結ぶ<br>
+                    点① x座標    <input type="number" name="dotline3A[]" step="0.1">
+                    y座標     <input type="number" name="dotline3A[]" step="0.1"><br>
+                    点② x座標    <input type="number" name="dotline3A[]" step="0.1">
+                    y座標     <input type="number" name="dotline3A[]" step="0.1"><br>
+                    点③ x座標    <input type="number" name="dotline3A[]" step="0.1">
+                    y座標     <input type="number" name="dotline3A[]" step="0.1"><br>
+                    点④ x座標    <input type="number" name="dotline3A[]" step="0.1">
+                    y座標     <input type="number" name="dotline3A[]" step="0.1"><br>
+                    点⑤ x座標    <input type="number" name="dotline3A[]" step="0.1">
+                    y座標     <input type="number" name="dotline3A[]" step="0.1">
+                    <h4>破線 B</h4>
+                    以下の順に結ぶ<br>
+                    点① x座標    <input type="number" name="dotline3B[]" step="0.1">
+                    y座標     <input type="number" name="dotline3B[]" step="0.1"><br>
+                    点② x座標    <input type="number" name="dotline3B[]" step="0.1">
+                    y座標     <input type="number" name="dotline3B[]" step="0.1"><br>
+                    点③ x座標    <input type="number" name="dotline3B[]" step="0.1">
+                    y座標     <input type="number" name="dotline3B[]" step="0.1"><br>
+                    点④ x座標    <input type="number" name="dotline3B[]" step="0.1">
+                    y座標     <input type="number" name="dotline3B[]" step="0.1"><br>
+                    点⑤ x座標    <input type="number" name="dotline3B[]" step="0.1">
+                    y座標     <input type="number" name="dotline3B[]" step="0.1">
+                    <h4>破線 C</h4>
+                    以下の順に結ぶ<br>
+                    点① x座標    <input type="number" name="dotline3C[]" step="0.1">
+                    y座標     <input type="number" name="dotline3C[]" step="0.1"><br>
+                    点② x座標    <input type="number" name="dotline3C[]" step="0.1">
+                    y座標     <input type="number" name="dotline3C[]" step="0.1"><br>
+                    点③ x座標    <input type="number" name="dotline3C[]" step="0.1">
+                    y座標     <input type="number" name="dotline3C[]" step="0.1"><br>
+                    点④ x座標    <input type="number" name="dotline3C[]" step="0.1">
+                    y座標     <input type="number" name="dotline3C[]" step="0.1"><br>
+                    点⑤ x座標    <input type="number" name="dotline3C[]" step="0.1">
+                    y座標     <input type="number" name="dotline3C[]" step="0.1">
+                    </div>
+                    <div id="circle3" style="display:none">
+        <h4>円弧</h4>
+	<p>中心のx座標 <input type="number" name="m3_circleA[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="m3_circleA[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="m3_circleA[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="m3_circleA[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="m3_circleA[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "m3_clockA" value= "true" checked>反時計回りに<input type ="radio" name="m3_clockA" value="false">時計回りに結ぶ </p>      
+                    ※ x 軸、y 軸の１目盛あたりの長さが異なる場合に出力されている円は、<br>
+                    実際には入力した値が x 方向の半径であるようなだ円です。
+									<h5>円弧 B</h5>
+                    <p>中心のx座標 <input type="number" name="m3_circleB[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="m3_circleB[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="m3_circleB[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="m3_circleB[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="m3_circleB[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "m3_clockB" value= "true" checked>反時計回りに<input type ="radio" name="m3_clockB" value="false">時計回りに結ぶ </p>
+							<h5>円弧 C</h5>
+                    <p>中心のx座標 <input type="number" name="m3_circleC[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="m3_circleC[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="m3_circleC[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="m3_circleC[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="m3_circleC[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "m3_clockC" value= "true" checked>反時計回りに<input type ="radio" name="m3_clockC" value="false">時計回りに結ぶ </p>
+    </div>
+        </div>
+    <div>
+        <canvas id="3_mycanvas" width="400" height="400" style ="display:none"></canvas>
+    </div>
+    </div>
+
+
+    <h4>[図4]</h4>
+<div class="twoclm3">
+<div>
+     <div id="modeEmpty4" style="display:block">描画モード off</div>
+       <div id="range4" style="display:none">
+    <p>
+<input type="radio" name = "scaleAxis_4" value = "scaleAxis" checked>座標軸あり（目盛りあり）<br>
+<input type="radio" name = "scaleAxis_4" value = "scale">座標軸あり（目盛りなし）<br>
+<input type="radio" name = "scaleAxis_4" value = "none">座標軸なし</p>
+xの下限 <input type="number" id="4_xmin" name="mondai4[]" step="0.1"><br>
+xの上限 <input type="number" id="4_xmax" name="mondai4[]" step="0.1"><br>
+yの下限 <input type="number" id="4_ymin" name="mondai4[]" step="0.1"><br>
+yの上限 <input type="number" id="4_ymax" name="mondai4[]" step="0.1">
+<h4>グラフ①</h4>
+グラフ①の式 y=<input type="text" id="4_y1" name="mondai4[]"><br>
+定義域の下限 <input type="number" id="4_xstart1" name="mondai4[]" step="0.1"><br>
+定義域の上限 <input type="number" id="4_xend1" name="mondai4[]" step="0.1">
+<h4>グラフ②</h4>
+グラフ②の式 y=<input type="text" id="4_y2" name="mondai4[]"><br>
+定義域の下限 <input type="number" id="4_xstart2" name="mondai4[]" step="0.1"><br>
+定義域の上限 <input type="number" id="4_xend2" name="mondai4[]" step="0.1">
+<h4>グラフ③</h4>
+グラフ③の式 y=<input type="text" id="4_y3" name="mondai4[]"><br>
+定義域の下限 <input type="number" id="4_xstart3" name="mondai4[]" step="0.1"><br>
+定義域の上限 <input type="number" id="4_xend3" name="mondai4[]" step="0.1">
+            </div>
+                    <div id="string4" style="display:none">
+<h4>文字列</h4>
+文字列① <input type="text" id="1_str4" name="str4[]"><br>
+x座標    <input type="number"  id="x1_str4" name="str4[]" step="0.1">
+y座標     <input type="number"  id="y1_str4" name="str4[]" step="0.1"><br>
+文字列② <input type="text" id="2_str4" name="str4[]" ><br>
+x座標    <input type="number"  id="x2_str4" name="str4[]" step="0.1">
+y座標     <input type="number"  id="y2_str4" name="str4[]" step="0.1"><br>
+文字列③ <input type="text" id="3_str4" name="str4[]" ><br>
+x座標    <input type="number"  id="x3_str4" name="str4[]" step="0.1">
+y座標     <input type="number"  id="y3_str4" name="str4[]" step="0.1"><br>
+文字列④ <input type="text" id="4_str4" name="str4[]"><br>
+x座標    <input type="number"  id="x4_str4" name="str4[]" step="0.1">
+y座標     <input type="number"  id="y4_str4" name="str4[]" step="0.1"><br>
+文字列⑤ <input type="text" id="5_str4" name="str4[]"><br>
+x座標    <input type="number"  id="x5_str4" name="str4[]" step="0.1">
+y座標     <input type="number"  id="y5_str4" name="str4[]" step="0.1"><br>
+文字列⑥ <input type="text" id="6_str4" name="str4[]"><br>
+x座標    <input type="number"  id="x6_str4" name="str4[]" step="0.1">
+y座標     <input type="number"  id="y6_str4" name="str4[]" step="0.1">
+                         </div>
+                    <div id="line4" style="display:none">
+<h4>折れ線 A</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="line4A[]" step="0.1">
+y座標     <input type="number" name="line4A[]" step="0.1"><br>
+点② x座標    <input type="number" name="line4A[]" step="0.1">
+y座標     <input type="number" name="line4A[]" step="0.1"><br>
+点③ x座標    <input type="number" name="line4A[]" step="0.1">
+y座標     <input type="number" name="line4A[]" step="0.1"><br>
+点④ x座標    <input type="number" name="line4A[]" step="0.1">
+y座標     <input type="number" name="line4A[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="line4A[]" step="0.1">
+y座標     <input type="number" name="line4A[]" step="0.1">
+<h4>折れ線 B</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="line4B[]" step="0.1">
+y座標     <input type="number" name="line4B[]" step="0.1"><br>
+点② x座標    <input type="number" name="line4B[]" step="0.1">
+y座標     <input type="number" name="line4B[]" step="0.1"><br>
+点③ x座標    <input type="number" name="line4B[]" step="0.1">
+y座標     <input type="number" name="line4B[]" step="0.1"><br>
+点④ x座標    <input type="number" name="line4B[]" step="0.1">
+y座標     <input type="number" name="line4B[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="line4B[]" step="0.1">
+y座標     <input type="number" name="line4B[]" step="0.1">
+<h4>折れ線 C</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="line4C[]" step="0.1">
+y座標     <input type="number" name="line4C[]" step="0.1"><br>
+点② x座標    <input type="number" name="line4C[]" step="0.1">
+y座標     <input type="number" name="line4C[]" step="0.1"><br>
+点③ x座標    <input type="number" name="line4C[]" step="0.1">
+y座標     <input type="number" name="line4C[]" step="0.1"><br>
+点④ x座標    <input type="number" name="line4C[]" step="0.1">
+y座標     <input type="number" name="line4C[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="line4C[]" step="0.1">
+y座標     <input type="number" name="line4C[]" step="0.1">
+                         </div>
+				<div id="dotline4" style="display:none">
+                    <h4>破線 A</h4>
+                    以下の順に結ぶ<br>
+                    点① x座標    <input type="number" name="dotline4A[]" step="0.1">
+                    y座標     <input type="number" name="dotline4A[]" step="0.1"><br>
+                    点② x座標    <input type="number" name="dotline4A[]" step="0.1">
+                    y座標     <input type="number" name="dotline4A[]" step="0.1"><br>
+                    点③ x座標    <input type="number" name="dotline4A[]" step="0.1">
+                    y座標     <input type="number" name="dotline4A[]" step="0.1"><br>
+                    点④ x座標    <input type="number" name="dotline4A[]" step="0.1">
+                    y座標     <input type="number" name="dotline4A[]" step="0.1"><br>
+                    点⑤ x座標    <input type="number" name="dotline4A[]" step="0.1">
+                    y座標     <input type="number" name="dotline4A[]" step="0.1">
+                    <h4>破線 B</h4>
+                    以下の順に結ぶ<br>
+                    点① x座標    <input type="number" name="dotline4B[]" step="0.1">
+                    y座標     <input type="number" name="dotline4B[]" step="0.1"><br>
+                    点② x座標    <input type="number" name="dotline4B[]" step="0.1">
+                    y座標     <input type="number" name="dotline4B[]" step="0.1"><br>
+                    点③ x座標    <input type="number" name="dotline4B[]" step="0.1">
+                    y座標     <input type="number" name="dotline4B[]" step="0.1"><br>
+                    点④ x座標    <input type="number" name="dotline4B[]" step="0.1">
+                    y座標     <input type="number" name="dotline4B[]" step="0.1"><br>
+                    点⑤ x座標    <input type="number" name="dotline4B[]" step="0.1">
+                    y座標     <input type="number" name="dotline4B[]" step="0.1">
+                    <h4>破線 C</h4>
+                    以下の順に結ぶ<br>
+                    点① x座標    <input type="number" name="dotline4C[]" step="0.1">
+                    y座標     <input type="number" name="dotline4C[]" step="0.1"><br>
+                    点② x座標    <input type="number" name="dotline4C[]" step="0.1">
+                    y座標     <input type="number" name="dotline4C[]" step="0.1"><br>
+                    点③ x座標    <input type="number" name="dotline4C[]" step="0.1">
+                    y座標     <input type="number" name="dotline4C[]" step="0.1"><br>
+                    点④ x座標    <input type="number" name="dotline4C[]" step="0.1">
+                    y座標     <input type="number" name="dotline4C[]" step="0.1"><br>
+                    点⑤ x座標    <input type="number" name="dotline4C[]" step="0.1">
+                    y座標     <input type="number" name="dotline4C[]" step="0.1">
+                    </div>
+                    <div id="circle4" style="display:none">
+         <h4>円弧</h4>
+   	<p>中心のx座標 <input type="number" name="m4_circleA[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="m4_circleA[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="m4_circleA[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="m4_circleA[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="m4_circleA[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "m4_clockA" value= "true" checked>反時計回りに<input type ="radio" name="m4_clockA" value="false">時計回りに結ぶ </p>      
+                    ※ x 軸、y 軸の１目盛あたりの長さが異なる場合に出力されている円は、<br>
+                    実際には入力した値が x 方向の半径であるようなだ円です。
+									<h5>円弧 B</h5>
+                    <p>中心のx座標 <input type="number" name="m4_circleB[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="m4_circleB[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="m4_circleB[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="m4_circleB[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="m4_circleB[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "m4_clockB" value= "true" checked>反時計回りに<input type ="radio" name="m4_clockB" value="false">時計回りに結ぶ </p>
+							<h5>円弧 C</h5>
+                    <p>中心のx座標 <input type="number" name="m4_circleC[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="m4_circleC[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="m4_circleC[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="m4_circleC[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="m4_circleC[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "m4_clockC" value= "true" checked>反時計回りに<input type ="radio" name="m4_clockC" value="false">時計回りに結ぶ </p>
+</div>
+    </div>
+<div>
+<canvas id="4_mycanvas" width="400" height="400" style ="display:none"></canvas>
+</div>
+    
+        </div>
+<h2>[ 解答 ]</h2>
+<p class="comment">
+解答に画像を添える場合はこちらへ &rarr;
+<span id="area2"> <input type="file" name="upfile[]" size="30" /></span>
+<input type="button" value="リセット" onclick="remove2()"></p>
+<div class="twoclm2">
+<textarea id="kaitou" name='solution' maxlength=10000 onkeyup="change2()">
+<h4>1.</h4> 
+<h4>2.</h4> 
+<h4>3.</h4>
+<h4>4.</h4>
+</textarea>
+<div id="review2"></div>
+</div>
+<h3>javascript でグラフを描画する場合</h3>
+<input type="button" value = " フォーム 1 のモード切り替え" onclick="changeMode('k1')">
+    <input type="button" value = " フォーム 2 のモード切り替え" onclick="changeMode('k2')">
+    <input type="button" value = " フォーム 3 のモード切り替え" onclick="changeMode('k3')">
+        <input type="button" value = " フォーム 4 のモード切り替え" onclick="changeMode('k4')">
+
+
+<h4>[図1]</h4>
+<div class="twoclm3">
+<div>
+     <div id="modeEmptyk1" style="display:block">描画モード off</div>
+                    <div id="rangek1" style="display:none">
+    <p>
+<input type="radio" name = "scaleAxis_k1" value = "scaleAxis" checked>座標軸あり（目盛りあり）<br>
+<input type="radio" name = "scaleAxis_k1" value = "scale">座標軸あり（目盛りなし）<br>
+<input type="radio" name = "scaleAxis_k1" value = "none">座標軸なし</p>
+xの下限 <input type="number" id="k1_xmin" name="kaitou1[]" step="0.1"><br>
+xの上限 <input type="number" id="k1_xmax" name="kaitou1[]" step="0.1"><br>
+yの下限 <input type="number" id="k1_ymin" name="kaitou1[]" step="0.1"><br>
+yの上限 <input type="number" id="k1_ymax" name="kaitou1[]" step="0.1">
+<h4>グラフ①</h4>
+グラフ①の式 y=<input type="text" id="k1_y1" name="kaitou1[]"><br>
+定義域の下限 <input type="number" id="k1_xstart1" name="kaitou1[]" step="0.1"><br>
+定義域の上限 <input type="number" id="k1_xend1" name="kaitou1[]" step="0.1">
+<h4>グラフ②</h4>
+グラフ②の式 y=<input type="text" id="k1_y2" name="kaitou1[]"><br>
+定義域の下限 <input type="number" id="k1_xstart2" name="kaitou1[]" step="0.1"><br>
+定義域の上限 <input type="number" id="k1_xend2" name="kaitou1[]" step="0.1">
+<h4>グラフ③</h4>
+グラフ③の式 y=<input type="text" id="k1_y3" name="kaitou1[]"><br>
+定義域の下限 <input type="number" id="k1_xstart3" name="kaitou1[]" step="0.1"><br>
+定義域の上限 <input type="number" id="k1_xend3" name="kaitou1[]" step="0.1">
+    </div>
+       <div id="stringk1" style="display:none">
+<h4>文字列</h4>
+文字列① <input type="text" id="1_strk1" name="strk1[]"><br>
+x座標    <input type="number"  id="x1_strk1" name="strk1[]" step="0.1">
+y座標     <input type="number"  id="y1_strk1" name="strk1[]" step="0.1"><br>
+文字列② <input type="text" id="2_strk1" name="strk1[]" ><br>
+x座標    <input type="number"  id="x2_strk1" name="strk1[]" step="0.1">
+y座標     <input type="number"  id="y2_strk1" name="strk1[]" step="0.1"><br>
+文字列③ <input type="text" id="3_strk1" name="strk1[]" ><br>
+x座標    <input type="number"  id="x3_strk1" name="strk1[]" step="0.1">
+y座標     <input type="number"  id="y3_strk1" name="strk1[]" step="0.1"><br>
+文字列④ <input type="text" id="4_strk1" name="strk1[]"><br>
+x座標    <input type="number"  id="x4_strk1" name="strk1[]" step="0.1">
+y座標     <input type="number"  id="y4_strk1" name="strk1[]" step="0.1"><br>
+文字列⑤ <input type="text" id="5_strk1" name="strk1[]"><br>
+x座標    <input type="number"  id="x5_strk1" name="strk1[]" step="0.1">
+y座標     <input type="number"  id="y5_strk1" name="strk1[]" step="0.1"><br>
+文字列⑥ <input type="text" id="6_strk1" name="strk1[]"><br>
+x座標    <input type="number"  id="x6_strk1" name="strk1[]" step="0.1">
+y座標     <input type="number"  id="y6_strk1" name="strk1[]" step="0.1">
+    </div>
+       <div id="linek1" style="display:none">
+<h4>折れ線 A</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="linek1A[]" step="0.1">
+y座標     <input type="number" name="linek1A[]" step="0.1"><br>
+点② x座標    <input type="number" name="linek1A[]" step="0.1">
+y座標     <input type="number" name="linek1A[]" step="0.1"><br>
+点③ x座標    <input type="number" name="linek1A[]" step="0.1">
+y座標     <input type="number" name="linek1A[]" step="0.1"><br>
+点④ x座標    <input type="number" name="linek1A[]" step="0.1">
+y座標     <input type="number" name="linek1A[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="linek1A[]" step="0.1">
+y座標     <input type="number" name="linek1A[]" step="0.1">
+<h4>折れ線 B</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="linek1B[]" step="0.1">
+y座標     <input type="number" name="linek1B[]" step="0.1"><br>
+点② x座標    <input type="number" name="linek1B[]" step="0.1">
+y座標     <input type="number" name="linek1B[]" step="0.1"><br>
+点③ x座標    <input type="number" name="linek1B[]" step="0.1">
+y座標     <input type="number" name="linek1B[]" step="0.1"><br>
+点④ x座標    <input type="number" name="linek1B[]" step="0.1">
+y座標     <input type="number" name="linek1B[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="linek1B[]" step="0.1">
+y座標     <input type="number" name="linek1B[]" step="0.1">
+<h4>折れ線 C</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="linek1C[]" step="0.1">
+y座標     <input type="number" name="linek1C[]" step="0.1"><br>
+点② x座標    <input type="number" name="linek1C[]" step="0.1">
+y座標     <input type="number" name="linek1C[]" step="0.1"><br>
+点③ x座標    <input type="number" name="linek1C[]" step="0.1">
+y座標     <input type="number" name="linek1C[]" step="0.1"><br>
+点④ x座標    <input type="number" name="linek1C[]" step="0.1">
+y座標     <input type="number" name="linek1C[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="linek1C[]" step="0.1">
+y座標     <input type="number" name="linek1C[]" step="0.1">
+    </div>
+	 <div id="dotlinek1" style="display:none">
+<h4>破線 A</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="dotlinek1A[]" step="0.1">
+y座標     <input type="number" name="dotlinek1A[]" step="0.1"><br>
+点② x座標    <input type="number" name="dotlinek1A[]" step="0.1">
+y座標     <input type="number" name="dotlinek1A[]" step="0.1"><br>
+点③ x座標    <input type="number" name="dotlinek1A[]" step="0.1">
+y座標     <input type="number" name="dotlinek1A[]" step="0.1"><br>
+点④ x座標    <input type="number" name="dotlinek1A[]" step="0.1">
+y座標     <input type="number" name="dotlinek1A[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="dotlinek1A[]" step="0.1">
+y座標     <input type="number" name="dotlinek1A[]" step="0.1">
+<h4>破線 B</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="dotlinek1B[]" step="0.1">
+y座標     <input type="number" name="dotlinek1B[]" step="0.1"><br>
+点② x座標    <input type="number" name="dotlinek1B[]" step="0.1">
+y座標     <input type="number" name="dotlinek1B[]" step="0.1"><br>
+点③ x座標    <input type="number" name="dotlinek1B[]" step="0.1">
+y座標     <input type="number" name="dotlinek1B[]" step="0.1"><br>
+点④ x座標    <input type="number" name="dotlinek1B[]" step="0.1">
+y座標     <input type="number" name="dotlinek1B[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="dotlinek1B[]" step="0.1">
+y座標     <input type="number" name="dotlinek1B[]" step="0.1">
+<h4>破線 C</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="dotlinek1C[]" step="0.1">
+y座標     <input type="number" name="dotlinek1C[]" step="0.1"><br>
+点② x座標    <input type="number" name="dotlinek1C[]" step="0.1">
+y座標     <input type="number" name="dotlinek1C[]" step="0.1"><br>
+点③ x座標    <input type="number" name="dotlinek1C[]" step="0.1">
+y座標     <input type="number" name="dotlinek1C[]" step="0.1"><br>
+点④ x座標    <input type="number" name="dotlinek1C[]" step="0.1">
+y座標     <input type="number" name="dotlinek1C[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="dotlinek1C[]" step="0.1">
+y座標     <input type="number" name="dotlinek1C[]" step="0.1">
+    </div>
+       <div id="circlek1" style="display:none">
+         <h4>円弧</h4>
+		   	<h5>円弧 A</h5>
+		   <p>中心のx座標 <input type="number" name="k1_circleA[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="k1_circleA[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="k1_circleA[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="k1_circleA[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="k1_circleA[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "k1_clockA" value= "true" checked>反時計回りに<input type ="radio" name="k1_clockA" value="false">時計回りに結ぶ </p>      
+                    ※ x 軸、y 軸の１目盛あたりの長さが異なる場合に出力されている円は、<br>
+                    実際には入力した値が x 方向の半径であるようなだ円です。
+									<h5>円弧 B</h5>
+                    <p>中心のx座標 <input type="number" name="k1_circleB[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="k1_circleB[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="k1_circleB[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="k1_circleB[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="k1_circleB[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "k1_clockB" value= "true" checked>反時計回りに<input type ="radio" name="k1_clockB" value="false">時計回りに結ぶ </p>
+							<h5>円弧 C</h5>
+                    <p>中心のx座標 <input type="number" name="k1_circleC[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="k1_circleC[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="k1_circleC[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="k1_circleC[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="k1_circleC[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "k1_clockC" value= "true" checked>反時計回りに<input type ="radio" name="k1_clockC" value="false">時計回りに結ぶ </p>
+    </div> 
+
+    </div>
+
+<div>
+<canvas id="k1_mycanvas" width="400" height="400" style ="display:none"></canvas>
+</div>
+    </div>
+ 
+
+<h4>[図2]</h4>
+<div class="twoclm3">
+<div>
+    <div id="modeEmptyk2" style="display:block">描画モード off</div>
+    <div id="rangek2" style="display:none">
+    <p>
+<input type="radio" name = "scaleAxis_k2" value = "scaleAxis" checked>座標軸あり（目盛りあり）<br>
+<input type="radio" name = "scaleAxis_k2" value = "scale">座標軸あり（目盛りなし）<br>
+<input type="radio" name = "scaleAxis_k2" value = "none">座標軸なし</p>
+xの下限 <input type="number" id="k2_xmin" name="kaitou2[]" step="0.1"><br>
+xの上限 <input type="number" id="k2_xmax" name="kaitou2[]" step="0.1"><br>
+yの下限 <input type="number" id="k2_ymin" name="kaitou2[]" step="0.1"><br>
+yの上限 <input type="number" id="k2_ymax" name="kaitou2[]" step="0.1">
+<h4>グラフ①</h4>
+グラフ①の式 y=<input type="text" id="k2_y1" name="kaitou2[]" ><br>
+定義域の下限 <input type="number" id="k2_xstart1" name="kaitou2[]" step="0.1"><br>
+定義域の上限 <input type="number" id="k2_xend1" name="kaitou2[]" step="0.1">
+<h4>グラフ②</h4>
+グラフ②の式 y=<input type="text" id="k2_y2" name="kaitou2[]"><br>
+定義域の下限 <input type="number" id="k2_xstart2" name="kaitou2[]" step="0.1"><br>
+定義域の上限 <input type="number" id="k2_xend2" name="kaitou2[]" step="0.1">
+<h4>グラフ③</h4>
+グラフ③の式 y=<input type="text" id="k2_y3" name="kaitou2[]"><br>
+定義域の下限 <input type="number" id="k2_xstart3" name="kaitou2[]" step="0.1"><br>
+定義域の上限 <input type="number" id="k2_xend3" name="kaitou2[]" step="0.1">
+    </div>
+    <div id="stringk2" style="display:none">
+<h4>文字列</h4>
+文字列① <input type="text" id="1_strk2" name="strk2[]"><br>
+x座標    <input type="number"  id="x1_strk2" name="strk2[]" step="0.1">
+y座標     <input type="number"  id="y1_strk2" name="strk2[]" step="0.1"><br>
+文字列② <input type="text" id="2_strk2" name="strk2[]" ><br>
+x座標    <input type="number"  id="x2_strk2" name="strk2[]" step="0.1">
+y座標     <input type="number"  id="y2_strk2" name="strk2[]" step="0.1"><br>
+文字列③ <input type="text" id="3_strk2" name="strk2[]" ><br>
+x座標    <input type="number"  id="x3_strk2" name="strk2[]" step="0.1">
+y座標     <input type="number"  id="y3_strk2" name="strk2[]" step="0.1"><br>
+文字列④ <input type="text" id="4_strk2" name="strk2[]"><br>
+x座標    <input type="number"  id="x4_strk2" name="strk2[]" step="0.1">
+y座標     <input type="number"  id="y4_strk2" name="strk2[]" step="0.1"><br>
+文字列⑤ <input type="text" id="5_strk2" name="strk2[]"><br>
+x座標    <input type="number"  id="x5_strk2" name="strk2[]" step="0.1">
+y座標     <input type="number"  id="y5_strk2" name="strk2[]" step="0.1"><br>
+文字列⑥ <input type="text" id="6_strk2" name="strk2[]"><br>
+x座標    <input type="number"  id="x6_strk2" name="strk2[]" step="0.1">
+y座標     <input type="number"  id="y6_strk2" name="strk2[]" step="0.1">
+        </div>
+<div id="linek2" style="display:none">
+<h4>折れ線 A</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="linek2A[]" step="0.1">
+y座標     <input type="number" name="linek2A[]" step="0.1"><br>
+点② x座標    <input type="number" name="linek2A[]" step="0.1">
+y座標     <input type="number" name="linek2A[]" step="0.1"><br>
+点③ x座標    <input type="number" name="linek2A[]" step="0.1">
+y座標     <input type="number" name="linek2A[]" step="0.1"><br>
+点④ x座標    <input type="number" name="linek2A[]" step="0.1">
+y座標     <input type="number" name="linek2A[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="linek2A[]" step="0.1">
+y座標     <input type="number" name="linek2A[]" step="0.1">
+<h4>折れ線 B</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="linek2B[]" step="0.1">
+y座標     <input type="number" name="linek2B[]" step="0.1"><br>
+点② x座標    <input type="number" name="linek2B[]" step="0.1">
+y座標     <input type="number" name="linek2B[]" step="0.1"><br>
+点③ x座標    <input type="number" name="linek2B[]" step="0.1">
+y座標     <input type="number" name="linek2B[]" step="0.1"><br>
+点④ x座標    <input type="number" name="linek2B[]" step="0.1">
+y座標     <input type="number" name="linek2B[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="linek2B[]" step="0.1">
+y座標     <input type="number" name="linek2B[]" step="0.1">
+<h4>折れ線 C</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="linek2C[]" step="0.1">
+y座標     <input type="number" name="linek2C[]" step="0.1"><br>
+点② x座標    <input type="number" name="linek2C[]" step="0.1">
+y座標     <input type="number" name="linek2C[]" step="0.1"><br>
+点③ x座標    <input type="number" name="linek2C[]" step="0.1">
+y座標     <input type="number" name="linek2C[]" step="0.1"><br>
+点④ x座標    <input type="number" name="linek2C[]" step="0.1">
+y座標     <input type="number" name="linek2C[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="linek2C[]" step="0.1">
+y座標     <input type="number" name="linek2C[]" step="0.1">
+    </div>
+	 <div id="dotlinek2" style="display:none">
+<h4>破線 A</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="dotlinek2A[]" step="0.1">
+y座標     <input type="number" name="dotlinek2A[]" step="0.1"><br>
+点② x座標    <input type="number" name="dotlinek2A[]" step="0.1">
+y座標     <input type="number" name="dotlinek2A[]" step="0.1"><br>
+点③ x座標    <input type="number" name="dotlinek2A[]" step="0.1">
+y座標     <input type="number" name="dotlinek2A[]" step="0.1"><br>
+点④ x座標    <input type="number" name="dotlinek2A[]" step="0.1">
+y座標     <input type="number" name="dotlinek2A[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="dotlinek2A[]" step="0.1">
+y座標     <input type="number" name="dotlinek2A[]" step="0.1">
+<h4>破線 B</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="dotlinek2B[]" step="0.1">
+y座標     <input type="number" name="dotlinek2B[]" step="0.1"><br>
+点② x座標    <input type="number" name="dotlinek2B[]" step="0.1">
+y座標     <input type="number" name="dotlinek2B[]" step="0.1"><br>
+点③ x座標    <input type="number" name="dotlinek2B[]" step="0.1">
+y座標     <input type="number" name="dotlinek2B[]" step="0.1"><br>
+点④ x座標    <input type="number" name="dotlinek2B[]" step="0.1">
+y座標     <input type="number" name="dotlinek2B[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="dotlinek2B[]" step="0.1">
+y座標     <input type="number" name="dotlinek2B[]" step="0.1">
+<h4>破線 C</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="dotlinek2C[]" step="0.1">
+y座標     <input type="number" name="dotlinek2C[]" step="0.1"><br>
+点② x座標    <input type="number" name="dotlinek2C[]" step="0.1">
+y座標     <input type="number" name="dotlinek2C[]" step="0.1"><br>
+点③ x座標    <input type="number" name="dotlinek2C[]" step="0.1">
+y座標     <input type="number" name="dotlinek2C[]" step="0.1"><br>
+点④ x座標    <input type="number" name="dotlinek2C[]" step="0.1">
+y座標     <input type="number" name="dotlinek2C[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="dotlinek2C[]" step="0.1">
+y座標     <input type="number" name="dotlinek2C[]" step="0.1">
+    </div>
+      <div id="circlek2" style="display:none">
+         <h4>円弧</h4>
+    	<h5>円弧 A</h5>
+		   <p>中心のx座標 <input type="number" name="k2_circleA[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="k2_circleA[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="k2_circleA[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="k2_circleA[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="k2_circleA[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "k2_clockA" value= "true" checked>反時計回りに<input type ="radio" name="k2_clockA" value="false">時計回りに結ぶ </p>      
+                    ※ x 軸、y 軸の１目盛あたりの長さが異なる場合に出力されている円は、<br>
+                    実際には入力した値が x 方向の半径であるようなだ円です。
+									<h5>円弧 B</h5>
+                    <p>中心のx座標 <input type="number" name="k2_circleB[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="k2_circleB[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="k2_circleB[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="k2_circleB[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="k2_circleB[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "k2_clockB" value= "true" checked>反時計回りに<input type ="radio" name="k2_clockB" value="false">時計回りに結ぶ </p>
+							<h5>円弧 C</h5>
+                    <p>中心のx座標 <input type="number" name="k2_circleC[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="k2_circleC[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="k2_circleC[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="k2_circleC[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="k2_circleC[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "k2_clockC" value= "true" checked>反時計回りに<input type ="radio" name="k2_clockC" value="false">時計回りに結ぶ </p>
+</div>
+    </div>
+<div>
+<canvas id="k2_mycanvas" width="400" height="400" style ="display:none"></canvas>
+</div>
+    </div>
+   
+<h4>[図3]</h4>
+<div class="twoclm3">
+<div>
+    <div id="modeEmptyk3" style="display:block">描画モード off</div>
+    <div id="rangek3" style="display:none">
+    <p>
+	<input type="radio" name = "scaleAxis_k3" value = "scaleAxis" checked>座標軸あり（目盛りあり）<br>
+<input type="radio" name = "scaleAxis_k3" value = "scale">座標軸あり（目盛りなし）<br>
+<input type="radio" name = "scaleAxis_k3" value = "none">座標軸なし</p>
+xの下限 <input type="number" id="k3_xmin" name="kaitou3[]" step="0.1"><br>
+xの上限 <input type="number" id="k3_xmax" name="kaitou3[]" step="0.1"><br>
+yの下限 <input type="number" id="k3_ymin" name="kaitou3[]" step="0.1"><br>
+yの上限 <input type="number" id="k3_ymax" name="kaitou3[]" step="0.1">
+<h4>グラフ①</h4>
+グラフ①の式 y=<input type="text" id="k3_y1" name="kaitou3[]"><br>
+定義域の下限 <input type="number" id="k3_xstart1" name="kaitou3[]" step="0.1"><br>
+定義域の上限 <input type="number" id="k3_xend1" name="kaitou3[]" step="0.1">
+<h4>グラフ②</h4>
+グラフ②の式 y=<input type="text" id="k3_y2" name="kaitou3[]"><br>
+定義域の下限 <input type="number" id="k3_xstart2" name="kaitou3[]" step="0.1"><br>
+定義域の上限 <input type="number" id="k3_xend2" name="kaitou3[]" step="0.1">
+<h4>グラフ③</h4>
+グラフ③の式 y=<input type="text" id="k3_y3" name="kaitou3[]"><br>
+定義域の下限 <input type="number" id="k3_xstart3" name="kaitou3[]" step="0.1"><br>
+        定義域の上限 <input type="number" id="k3_xend3" name="kaitou3[]" step="0.1"></div>
+     <div id="stringk3" style="display:none">
+<h4>文字列</h4>
+文字列① <input type="text" id="1_strk3" name="strk3[]"><br>
+x座標    <input type="number"  id="x1_strk3" name="strk3[]" step="0.1">
+y座標     <input type="number"  id="y1_strk3" name="strk3[]" step="0.1"><br>
+文字列② <input type="text" id="2_strk3" name="strk3[]" ><br>
+x座標    <input type="number"  id="x2_strk3" name="strk3[]" step="0.1">
+y座標     <input type="number"  id="y2_strk3" name="strk3[]" step="0.1"><br>
+文字列③ <input type="text" id="3_strk3" name="strk3[]" ><br>
+x座標    <input type="number"  id="x3_strk3" name="strk3[]" step="0.1">
+y座標     <input type="number"  id="y3_strk3" name="strk3[]" step="0.1"><br>
+文字列④ <input type="text" id="4_strk3" name="strk3[]"><br>
+x座標    <input type="number"  id="x4_strk3" name="strk3[]" step="0.1">
+y座標     <input type="number"  id="y4_strk3" name="strk3[]" step="0.1"><br>
+文字列⑤ <input type="text" id="5_strk3" name="strk3[]"><br>
+x座標    <input type="number"  id="x5_strk3" name="strk3[]" step="0.1">
+y座標     <input type="number"  id="y5_strk3" name="strk3[]" step="0.1"><br>
+文字列⑥ <input type="text" id="6_strk3" name="strk3[]"><br>
+x座標    <input type="number"  id="x6_strk3" name="strk3[]" step="0.1">
+         y座標     <input type="number"  id="y6_strk3" name="strk3[]" step="0.1"></div>
+     <div id="linek3" style="display:none">
+<h4>折れ線 A</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="linek3A[]" step="0.1">
+y座標     <input type="number" name="linek3A[]" step="0.1"><br>
+点② x座標    <input type="number" name="linek3A[]" step="0.1">
+y座標     <input type="number" name="linek3A[]" step="0.1"><br>
+点③ x座標    <input type="number" name="linek3A[]" step="0.1">
+y座標     <input type="number" name="linek3A[]" step="0.1"><br>
+点④ x座標    <input type="number" name="linek3A[]" step="0.1">
+y座標     <input type="number" name="linek3A[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="linek3A[]" step="0.1">
+y座標     <input type="number" name="linek3A[]" step="0.1">
+<h4>折れ線 B</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="linek3B[]" step="0.1">
+y座標     <input type="number" name="linek3B[]" step="0.1"><br>
+点② x座標    <input type="number" name="linek3B[]" step="0.1">
+y座標     <input type="number" name="linek3B[]" step="0.1"><br>
+点③ x座標    <input type="number" name="linek3B[]" step="0.1">
+y座標     <input type="number" name="linek3B[]" step="0.1"><br>
+点④ x座標    <input type="number" name="linek3B[]" step="0.1">
+y座標     <input type="number" name="linek3B[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="linek3B[]" step="0.1">
+y座標     <input type="number" name="linek3B[]" step="0.1">
+<h4>折れ線 C</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="linek3C[]" step="0.1">
+y座標     <input type="number" name="linek3C[]" step="0.1"><br>
+点② x座標    <input type="number" name="linek3C[]" step="0.1">
+y座標     <input type="number" name="linek3C[]" step="0.1"><br>
+点③ x座標    <input type="number" name="linek3C[]" step="0.1">
+y座標     <input type="number" name="linek3C[]" step="0.1"><br>
+点④ x座標    <input type="number" name="linek3C[]" step="0.1">
+y座標     <input type="number" name="linek3C[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="linek3C[]" step="0.1">
+         y座標     <input type="number" name="linek3C[]" step="0.1">
+	</div>
+     <div id="dotlinek3" style="display:none">
+<h4>破線 A</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="dotlinek3A[]" step="0.1">
+y座標     <input type="number" name="dotlinek3A[]" step="0.1"><br>
+点② x座標    <input type="number" name="dotlinek3A[]" step="0.1">
+y座標     <input type="number" name="dotlinek3A[]" step="0.1"><br>
+点③ x座標    <input type="number" name="dotlinek3A[]" step="0.1">
+y座標     <input type="number" name="dotlinek3A[]" step="0.1"><br>
+点④ x座標    <input type="number" name="dotlinek3A[]" step="0.1">
+y座標     <input type="number" name="dotlinek3A[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="dotlinek3A[]" step="0.1">
+y座標     <input type="number" name="dotlinek3A[]" step="0.1">
+<h4>破線 B</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="dotlinek3B[]" step="0.1">
+y座標     <input type="number" name="dotlinek3B[]" step="0.1"><br>
+点② x座標    <input type="number" name="dotlinek3B[]" step="0.1">
+y座標     <input type="number" name="dotlinek3B[]" step="0.1"><br>
+点③ x座標    <input type="number" name="dotlinek3B[]" step="0.1">
+y座標     <input type="number" name="dotlinek3B[]" step="0.1"><br>
+点④ x座標    <input type="number" name="dotlinek3B[]" step="0.1">
+y座標     <input type="number" name="dotlinek3B[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="dotlinek3B[]" step="0.1">
+y座標     <input type="number" name="dotlinek3B[]" step="0.1">
+<h4>破線 C</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="dotlinek3C[]" step="0.1">
+y座標     <input type="number" name="dotlinek3C[]" step="0.1"><br>
+点② x座標    <input type="number" name="dotlinek3C[]" step="0.1">
+y座標     <input type="number" name="dotlinek3C[]" step="0.1"><br>
+点③ x座標    <input type="number" name="dotlinek3C[]" step="0.1">
+y座標     <input type="number" name="dotlinek3C[]" step="0.1"><br>
+点④ x座標    <input type="number" name="dotlinek3C[]" step="0.1">
+y座標     <input type="number" name="dotlinek3C[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="dotlinek3C[]" step="0.1">
+y座標     <input type="number" name="dotlinek3C[]" step="0.1">
+    </div>
+	<div id="circlek3" style="display:none">
+         <h4>円弧</h4>
+   <h5>円弧 A</h5>
+		   <p>中心のx座標 <input type="number" name="k3_circleA[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="k3_circleA[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="k3_circleA[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="k3_circleA[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="k3_circleA[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "k3_clockA" value= "true" checked>反時計回りに<input type ="radio" name="k3_clockA" value="false">時計回りに結ぶ </p>      
+                    ※ x 軸、y 軸の１目盛あたりの長さが異なる場合に出力されている円は、<br>
+                    実際には入力した値が x 方向の半径であるようなだ円です。
+									<h5>円弧 B</h5>
+                    <p>中心のx座標 <input type="number" name="k3_circleB[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="k3_circleB[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="k3_circleB[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="k3_circleB[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="k3_circleB[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "k3_clockB" value= "true" checked>反時計回りに<input type ="radio" name="k3_clockB" value="false">時計回りに結ぶ </p>
+							<h5>円弧 C</h5>
+                    <p>中心のx座標 <input type="number" name="k3_circleC[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="k3_circleC[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="k3_circleC[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="k3_circleC[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="k3_circleC[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "k3_clockC" value= "true" checked>反時計回りに<input type ="radio" name="k3_clockC" value="false">時計回りに結ぶ </p>
+</div>
+    </div>
+<div>
+<canvas id="k3_mycanvas" width="400" height="400" style ="display:none"></canvas>
+</div>
+    </div>
+
+<h4>[図4]</h4>
+<div class="twoclm3">
+<div>
+     <div id="modeEmptyk4" style="display:block">描画モード off</div>
+    <div id="rangek4" style="display:none">
+    <p>
+	<input type="radio" name = "scaleAxis_k4" value = "scaleAxis" checked>座標軸あり（目盛りあり）<br>
+<input type="radio" name = "scaleAxis_k4" value = "scale">座標軸あり（目盛りなし）<br>
+<input type="radio" name = "scaleAxis_k4" value = "none">座標軸なし</p>
+xの下限 <input type="number" id="k4_xmin" name="kaitou4[]" step="0.1"><br>
+xの上限 <input type="number" id="k4_xmax" name="kaitou4[]" step="0.1"><br>
+yの下限 <input type="number" id="k4_ymin" name="kaitou4[]" step="0.1"><br>
+yの上限 <input type="number" id="k4_ymax" name="kaitou4[]" step="0.1">
+<h4>グラフ①</h4>
+グラフ①の式 y=<input type="text" id="k4_y1" name="kaitou4[]"><br>
+定義域の下限 <input type="number" id="k4_xstart1" name="kaitou4[]" step="0.1"><br>
+定義域の上限 <input type="number" id="k4_xend1" name="kaitou4[]" step="0.1">
+<h4>グラフ②</h4>
+グラフ②の式 y=<input type="text" id="k4_y2" name="kaitou4[]"><br>
+定義域の下限 <input type="number" id="k4_xstart2" name="kaitou4[]" step="0.1"><br>
+        定義域の上限 <input type="number" id="k4_xend2" name="kaitou4[]" step="0.1">
+
+    <h4>グラフ③</h4>
+グラフ③の式 y=<input type="text" id="k4_y3" name="kaitou4[]"><br>
+定義域の下限 <input type="number" id="k4_xstart3" name="kaitou4[]" step="0.1"><br>
+        定義域の上限 <input type="number" id="k4_xend3" name="kaitou4[]" step="0.1"></div>
+     <div id="stringk4" style="display:none">
+<h4>文字列</h4>
+文字列① <input type="text" id="1_strk4" name="strk4[]"><br>
+x座標    <input type="number"  id="x1_strk4" name="strk4[]" step="0.1">
+y座標     <input type="number"  id="y1_strk4" name="strk4[]" step="0.1"><br>
+文字列② <input type="text" id="2_strk4" name="strk4[]" ><br>
+x座標    <input type="number"  id="x2_strk4" name="strk4[]" step="0.1">
+y座標     <input type="number"  id="y2_strk4" name="strk4[]" step="0.1"><br>
+文字列③ <input type="text" id="3_strk4" name="strk4[]" ><br>
+x座標    <input type="number"  id="x3_strk4" name="strk4[]" step="0.1">
+y座標     <input type="number"  id="y3_strk4" name="strk4[]" step="0.1"><br>
+文字列④ <input type="text" id="4_strk4" name="strk4[]"><br>
+x座標    <input type="number"  id="x4_strk4" name="strk4[]" step="0.1">
+y座標     <input type="number"  id="y4_strk4" name="strk4[]" step="0.1"><br>
+文字列⑤ <input type="text" id="5_strk4" name="strk4[]"><br>
+x座標    <input type="number"  id="x5_strk4" name="strk4[]" step="0.1">
+y座標     <input type="number"  id="y5_strk4" name="strk4[]" step="0.1"><br>
+文字列⑥ <input type="text" id="6_strk4" name="strk4[]"><br>
+x座標    <input type="number"  id="x6_strk4" name="strk4[]" step="0.1">
+         y座標     <input type="number"  id="y6_strk4" name="strk4[]" step="0.1"></div>
+     <div id="linek4" style="display:none">
+<h4>折れ線 A</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="linek4A[]" step="0.1">
+y座標     <input type="number" name="linek4A[]" step="0.1"><br>
+点② x座標    <input type="number" name="linek4A[]" step="0.1">
+y座標     <input type="number" name="linek4A[]" step="0.1"><br>
+点③ x座標    <input type="number" name="linek4A[]" step="0.1">
+y座標     <input type="number" name="linek4A[]" step="0.1"><br>
+点④ x座標    <input type="number" name="linek4A[]" step="0.1">
+y座標     <input type="number" name="linek4A[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="linek4A[]" step="0.1">
+y座標     <input type="number" name="linek4A[]" step="0.1">
+<h4>折れ線 B</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="linek4B[]" step="0.1">
+y座標     <input type="number" name="linek4B[]" step="0.1"><br>
+点② x座標    <input type="number" name="linek4B[]" step="0.1">
+y座標     <input type="number" name="linek4B[]" step="0.1"><br>
+点③ x座標    <input type="number" name="linek4B[]" step="0.1">
+y座標     <input type="number" name="linek4B[]" step="0.1"><br>
+点④ x座標    <input type="number" name="linek4B[]" step="0.1">
+y座標     <input type="number" name="linek4B[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="linek4B[]" step="0.1">
+y座標     <input type="number" name="linek4B[]" step="0.1">
+<h4>折れ線 C</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="linek4C[]" step="0.1">
+y座標     <input type="number" name="linek4C[]" step="0.1"><br>
+点② x座標    <input type="number" name="linek4C[]" step="0.1">
+y座標     <input type="number" name="linek4C[]" step="0.1"><br>
+点③ x座標    <input type="number" name="linek4C[]" step="0.1">
+y座標     <input type="number" name="linek4C[]" step="0.1"><br>
+点④ x座標    <input type="number" name="linek4C[]" step="0.1">
+y座標     <input type="number" name="linek4C[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="linek4C[]" step="0.1">
+         y座標     <input type="number" name="linek4C[]" step="0.1">
+	</div>
+     <div id="dotlinek4" style="display:none">
+<h4>破線 A</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="dotlinek4A[]" step="0.1">
+y座標     <input type="number" name="dotlinek4A[]" step="0.1"><br>
+点② x座標    <input type="number" name="dotlinek4A[]" step="0.1">
+y座標     <input type="number" name="dotlinek4A[]" step="0.1"><br>
+点③ x座標    <input type="number" name="dotlinek4A[]" step="0.1">
+y座標     <input type="number" name="dotlinek4A[]" step="0.1"><br>
+点④ x座標    <input type="number" name="dotlinek4A[]" step="0.1">
+y座標     <input type="number" name="dotlinek4A[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="dotlinek4A[]" step="0.1">
+y座標     <input type="number" name="dotlinek4A[]" step="0.1">
+<h4>破線 B</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="dotlinek4B[]" step="0.1">
+y座標     <input type="number" name="dotlinek4B[]" step="0.1"><br>
+点② x座標    <input type="number" name="dotlinek4B[]" step="0.1">
+y座標     <input type="number" name="dotlinek4B[]" step="0.1"><br>
+点③ x座標    <input type="number" name="dotlinek4B[]" step="0.1">
+y座標     <input type="number" name="dotlinek4B[]" step="0.1"><br>
+点④ x座標    <input type="number" name="dotlinek4B[]" step="0.1">
+y座標     <input type="number" name="dotlinek4B[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="dotlinek4B[]" step="0.1">
+y座標     <input type="number" name="dotlinek4B[]" step="0.1">
+<h4>破線 C</h4>
+以下の順に結ぶ<br>
+点① x座標    <input type="number" name="dotlinek4C[]" step="0.1">
+y座標     <input type="number" name="dotlinek4C[]" step="0.1"><br>
+点② x座標    <input type="number" name="dotlinek4C[]" step="0.1">
+y座標     <input type="number" name="dotlinek4C[]" step="0.1"><br>
+点③ x座標    <input type="number" name="dotlinek4C[]" step="0.1">
+y座標     <input type="number" name="dotlinek4C[]" step="0.1"><br>
+点④ x座標    <input type="number" name="dotlinek4C[]" step="0.1">
+y座標     <input type="number" name="dotlinek4C[]" step="0.1"><br>
+点⑤ x座標    <input type="number" name="dotlinek4C[]" step="0.1">
+y座標     <input type="number" name="dotlinek4C[]" step="0.1">
+    </div>
+	<div id="circlek4" style="display:none">
+    <h5>円弧 A</h5>
+		   <p>中心のx座標 <input type="number" name="k4_circleA[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="k4_circleA[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="k4_circleA[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="k4_circleA[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="k4_circleA[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "k4_clockA" value= "true" checked>反時計回りに<input type ="radio" name="k4_clockA" value="false">時計回りに結ぶ </p>      
+                    ※ x 軸、y 軸の１目盛あたりの長さが異なる場合に出力されている円は、<br>
+                    実際には入力した値が x 方向の半径であるようなだ円です。
+									<h5>円弧 B</h5>
+                    <p>中心のx座標 <input type="number" name="k4_circleB[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="k4_circleB[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="k4_circleB[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="k4_circleB[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="k4_circleB[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "k4_clockB" value= "true" checked>反時計回りに<input type ="radio" name="k4_clockB" value="false">時計回りに結ぶ </p>
+							<h5>円弧 C</h5>
+                    <p>中心のx座標 <input type="number" name="k4_circleC[]" step="0.1"></p>
+                    <p>中心のy座標 <input type="number" name="k4_circleC[]" step="0.1"></p>
+                    <p>半径 <input type="number" name="k4_circleC[]" step="0.1" min ="0.1"></p>
+                    <p><input type="number" name="k4_circleC[]" step="5" min="0" max="360"> 度の位置から</p>
+                    <p><input type="number" name="k4_circleC[]" step="5" min="0" max="360"> 度の位置まで</p>
+                    <p><input type ="radio" name= "k4_clockC" value= "true" checked>反時計回りに<input type ="radio" name="k4_clockC" value="false">時計回りに結ぶ </p>
+</div>
+    </div>
+<div>
+<canvas id="k4_mycanvas" width="400" height="400" style ="display:none"></canvas>
+</div>
+    </div>
+
+<h2>[ 項目 ]</h2>
+<p class="comment">
+        (１つ以上を選択)
+</p>
+<h3>数学I</h3>
+<h4>1章. 数と式</h4>
+<p class="check">
+<input type="checkbox" name=":I10" value="I10">式の計算          
+<input type="checkbox" name=":I11" value="I11">実数
+<input type="checkbox" name=":I12" value="I12">１次不等式
+</p>
+       
+<h4>2章. 集合と論証</h4>
+<p class="check">
+<input type="checkbox" name=":I13" value="I13">集合 
+<input type="checkbox" name=":I14" value="I14">命題と論証
+</p>
+<h4 >3章. ２次関数</h4>
+<p class="check"> 
+<input type="checkbox" name=":I15" value="I15">関数とグラフ 
+<input type="checkbox" name=":I16" value="I16">２次方程式・２次不等式
+</p>
+<h4>4章. 図形と計量</h4>
+<p class="check">
+<input type="checkbox" name=":I17" value="I17">鋭角の三角比 
+<input type="checkbox" name=":I18" value="I18">三角比の拡張
+<input type="checkbox" name=":I19" value="I19">三角形への応用
+</p>
+<h4>5章. データの分析</h4>
+<p class="check">
+<input type="checkbox" name=":I20" value="I20">データの整理と分析 
+<input type="checkbox" name=":I21" value="I21">データの相関
+</p>
+<h3>数学Ⅱ</h3>
+<h4>1章. 方程式・式と証明</h4>
+<p class="check">
+<input type="checkbox" name=":J10" value="J10">整式の乗法・除法と分数式
+<input type="checkbox" name=":J11" value="J11">２次方程式
+<input type="checkbox" name=":J12" value="J12">高次方程式
+<input type="checkbox" name=":J13" value="J13">式と証明
+</p>
+<h4>2章. 図形と方程式</h4>
+<p class="check">
+<input type="checkbox" name=":J14" value="J14">点と直線
+<input type="checkbox" name=":J15" value="J15">円
+<input type="checkbox" name=":J16" value="J16">軌跡と領域
+</p>
+<h4 >3章. 三角関数</h4>
+<p class="check">
+<input type="checkbox" name=":J17" value="J17">三角関数
+<input type="checkbox" name=":J18" value="J18">加法定理
+</p>
+<h4>4章. 指数関数・対数関数</h4>
+<p class="check">
+<input type="checkbox" name=":J19" value="J19">指数関数
+<input type="checkbox" name=":J20" value="J20">対数関数
+</p>
+<h4>5章. 微分と積分</h4>
+<p class="check">
+<input type="checkbox" name=":J21" value="J21">微分係数と導関数
+<input type="checkbox" name=":J22" value="J22">導関数の応用
+<input type="checkbox" name=":J23" value="J23">積分
+</p> 
+<h3>数学Ⅲ</h3>
+<h4 align ="left">1章. 平面上の曲線</h4>
+<p class="check">
+<input type="checkbox" name=":K10" value="K10">２次曲線
+<input type="checkbox" name=":K11" value="K11">媒介変数と極表示
+</p>
+<h4>2章. 複素数平面 </h4>
+<p class="check">
+<input type="checkbox" name=":K12" value="K12">複素数平面
+<input type="checkbox" name=":K13" value="K13">図形への応用
+</p>
+<h4>3章. 関数と極限</h4>
+<p class="check">
+<input type="checkbox" name=":K14" value="K14">関数
+<input type="checkbox" name=":K15" value="K15">数列の極限
+<input type="checkbox" name=":K16" value="K16">関数の極限
+</p>
+<h4>4章. 微分</h4>
+<p class="check">
+<input type="checkbox" name=":K17" value="K17">微分法  
+<input type="checkbox" name=":K18" value="K18">いろいろな関数の導関数            
+</p>
+<h4>5章. 微分の応用</h4>
+<p class="check">
+<input type="checkbox" name=":K19" value="K19">接線, 関数の増減
+<input type="checkbox" name=":K20" value="K20">微分のいろいろな応用           
+</p>
+<h4>6章. 積分とその応用</h4>
+<p class="check">
+<input type="checkbox" name=":K21" value="K21">不定積分
+<input type="checkbox" name=":K22" value="K22">定積分
+<input type="checkbox" name=":K23" value="K23">面積・体積・長さ        
+</p>
+<h3>数学A</h3>
+<h4>1章. 場合の数と確率</h4>
+<p class="check">
+<input type="checkbox" name=":A10" value="A10">集合
+<input type="checkbox" name=":A11" value="A11">場合の数
+<input type="checkbox" name=":A12" value="A12">確率とその基本性質
+<input type="checkbox" name=":A13" value="A13">いろいろな確率
+</p>
+<h4>2章. 整数の性質</h4>
+<p class="check">
+<input type="checkbox" name=":A14" value="A14">約数と倍数
+<input type="checkbox" name=":A15" value="A15">ユークリッドの互除法と不定方程式
+<input type="checkbox" name=":A16" value="A16">整数の性質の利用        
+</p>
+<h4>3章. 図形の性質</h4>
+<p class="check">
+<input type="checkbox" name=":A17" value="A17">三角形の性質
+<input type="checkbox" name=":A18" value="A18">円の性質
+<input type="checkbox" name=":A19" value="A19">作図
+<input type="checkbox" name=":A20" value="A20">空間図形        
+</p>
+<h3>数学B</h3>
+<h4>1章. 数列 </h4>
+<p class="check">
+<input type="checkbox" name=":B10" value="B10">数列
+<input type="checkbox" name=":B11" value="B11">漸化式と数学的帰納法       
+</p>
+<h4>2章. ベクトル </h4>
+<p class="check">
+<input type="checkbox" name=":B12" value="B12">平面上のベクトル
+<input type="checkbox" name=":B13" value="B13">ベクトルの応用
+<input type="checkbox" name=":B14" value="B14">空間におけるベクトル        
+</p>
+<h4>3章. 確率分布と統計的な推測 </h4>
+<p class="check">
+<input type="checkbox" name=":B15" value="B15">確率分布
+<input type="checkbox" name=":B16" value="B16">正規分布
+<input type="checkbox" name=":B17" value="B17">統計的な推測        
+</p>
+<h2 >[ 難易度 ]</h2>
+<p class="comment">(1つを選択)</p>
+<p id='diff'>
+<input type="radio" name="difficulty" value="A"> A (教科書の例題レベル)   
+<input type="radio" name="difficulty" value="B"> B (入試問題の基本レベル)<br>
+<input type="radio" name="difficulty" value="C"> C (入試問題の標準レベル)
+<input type="radio" name="difficulty" value="D"> D (入試問題の難問レベル)
+</p>
+<h2>[ キーワード ]</h2>
+<p class="comment">(任意。数字については半角数字を利用。複数を入力するときは「,( カンマ) 」で分けてください)   </p>  
+<p class="kinyu">
+<input type="text "id="keyword"name='keyword' size="30"  maxlengt="60">  </p>　
+<h2>[ 作題者 ]</h2>
+<p class="comment">(任意。問題集には表示されません)  </p> 
+<p class="kinyu">
+<input type="text "id="author"name='author' 
+                    size="20"maxlengt="20">  　</p>
+<h2>[ パスワード ]</h2>
+<p class="comment">
+           上記の内容をよく確認した後に入力してください。
+</p>
+<p class="kinyu">
+<input type="password"id="password"name='password' maxlengt="30">   </p>       
+<p id="sub">
+<input type="submit" value="登録する">
+</p>
+</form>
+<script src="inputform_1.js"></script>
+<script src="inputform_2.js"></script>
+</body>
+</html>
