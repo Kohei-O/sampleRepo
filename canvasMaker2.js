@@ -108,9 +108,10 @@ function putString(
 
         throw new Error("【putString】 at には配列 [x座標(数値), y座標(数値)] を代入してください")
     
+        //font が適切な文字列でない時の処理
     } else if (typeof font !== 'string') {
 
-        throw new Error('【putString】 font にはフォント名（文字列）を代入してください。"green" や "#EE11FF"など')
+        throw new Error('【putString】 font にはフォント名（文字列）を代入してください。 "20px serif" など')
 
     } else if (typeof color !== 'string') {
 
@@ -157,6 +158,8 @@ function putString(
     const zahyou = getZahyou(at);
    
     const pixelAdjust = 5;
+
+    ctx.font = font;
   
     ctx.lineWidth = width;
         
@@ -355,11 +358,11 @@ function drawLine(
 
     } else if(typeof color !== "string"){
 
-        throw new Error("【drawLine】color は色名(文字列)で指定してください");
+        throw new Error('【drawLine】color は色名(文字列)で指定してください。"green" や "#EE11FF" など');
 
     } else if(polygon !== false && polygon !== true && typeof polygon !== "string"){
 
-        throw new Error("【drawLine】polygon は true か false か色名(文字列)で指定してください");
+        throw new Error('【drawLine】polygon は true か false か色名(文字列)で指定してください。"green" や "#EE11FF" など');
 
     }
 
@@ -415,81 +418,136 @@ function drawLine(
 
 }
 
-function drawAxisFoot(args){
-    'use strict';
-    //x軸y軸へ垂線を下す関数
-    //args:from は仮想座標[x,y]
-    //args.lineDashは 破線の間隔, false のとき実線に
-    //args.width
-    //args.color
-    //args.to はどの軸へ垂線を下すか。'x'か'y'か　undefined(既定値)。undefined のときx,y軸へ。
-    //args.stringX は文字列,
-    //args.stringY
-    //args.stringXmove
-    //args.stringYmove
-    //args.font
-    //args.color
-    var hootX = [args.from[0], 0];
-    var hootY = [0, args.from[1]];
-    var inputWidth = undefined;
-    if (!isNaN(args.width) === true) {
-        inputWidth = args.width;
+  //x軸y軸へ垂線を下す関数
+    //from は仮想座標[x,y]
+    //lineDashは 破線の間隔, false のとき実線に
+    //width
+    //color
+    //to はどの軸へ垂線を下すか。'x'か'y'か　'xy'（既定値）
+    //stringX は文字列,
+    //stringY
+    //stringXmove
+    //stringYmove
+    //font
+function drawAxisFoot(
+    {
+        from = undefined,
+        lineDash = 3,
+        width = baseLineWidth,
+        color = baseColor,
+        to = 'xy',
+        stringX = '',
+        stringY = '',
+        stringXmove = [0, 0],
+        stringYmove = [0, 0],
+        font = baseFont
+    } = {}
+){
+    if (Array.isArray(from) === false || from.length <= 1 || typeof from[0] !== 'number' || typeof from[1] !== 'number') {
+
+        throw new Error('【drawAxisFoot】from には配列 [x座標, y座標] を代入してください');
+
+        // lineDash が「false か正の数」でないとき
+    } else if ( lineDash !== false && (typeof lineDash !== "number" || lineDash <= 0 ) ) {
+
+        throw new Error("【drawAxisFoot】lineDash には 0 より大きい値か false（このとき実線）を指定してください");
+
+        //width に正の数値でないものが代入されたとき
+    } else if (typeof width !== 'number' || width <=0 ){
+
+        throw new Error('【drawAxisFoot】width には正の数値を代入してください');
+
+        //to が 'xy' でも 'x' でも'y'でないとき
+    } else if (to !== 'xy' && to !== 'x' && to !== 'y'){
+
+        throw new Error('【drawAxisFoot】to には "xy" か "x" か "y" を代入してください');
+
+        //stringX が文字列でないとき
+    } else if (typeof stringX !== 'string'){
+
+        throw new Error('【drawAxisFoot】stringX には文字列を代入してください');
+    
+        //stringY が文字列でないとき
+    } else if (typeof stringY !== 'string'){
+
+        throw new Error('【drawAxisFoot】stringY には文字列を代入してください');
+    
+    } else if (typeof font !== 'string') {
+
+        throw new Error('【drawAxisFoot】font にはフォント名（文字列）を代入してください。 "20px serif" など');
+
+    } else if (typeof color !== 'string') {
+
+        throw new Error('【drawAxisFoot】color には色名（文字列）を代入してください。 "green" や "#EE11FF" など');
+
     }
-    if (args.color === undefined){
-        var inputColor = undefined;
+  
+    const hootX = [from[0], 0];
+    
+    const hootY = [0, from[1]];
+    
+    let inputPoints = [0, 0];
+
+    if (to === 'x'){
+        
+        inputPoints = [hootX, from];
+
+    } else if (to === 'y'){
+
+        inputPoints = [hootY, from];
+    
     } else {
-        inputColor = args.color;
-    }   
-    if (args.lineDash === undefined){
-        var inputLineDash = 3;
+    
+        inputPoints = [hootX, from, hootY];
+    
+    }
+    
+    //lineDash が false のとき実線
+	if ( lineDash === false ) {
+		drawLine(
+            {
+                between: inputPoints,
+                color : color,
+                width : width
+            }
+        );
     } else {
-        inputLineDash = args.lineDash;
+        drawLine(
+            {
+                between: inputPoints,
+                color : color,
+                width : width,
+                lineDash : lineDash
+            }
+        );
     }
-    if (args.to === 'x'){
-        var inputPoints = [hootX, args.from];
-    } else if (args.to === 'y'){
-        inputPoints = [hootY, args.from];
-    } else {
-       inputPoints = [hootX, args.from, hootY];
+    // stringX が空文字でないとき
+    if (stringX !== '') {
+        putString(
+            {
+                at : hootX,
+                string : stringX,
+                font : font,
+                color : color,
+                move : stringXmove
+            }
+        );
     }
-	if (args.lineDash === false) {//args.lineDash がfalse のときに限り実線とする
-		drawLine({
-            between: inputPoints,
-			color : inputColor,
-			width : inputWidth,
-    	})
-    } else {
-        drawLine({
-			between: inputPoints,
-			color : inputColor,
-			width : inputWidth,
-			lineDash : inputLineDash
-		})
-    }
-    if (typeof(args.stringX) === 'string') {
-        putString({
-            at : hootX,
-            string : args.stringX,
-            font : args.font,
-            color : inputColor,
-            move : args.stringXmove
-           // moveX : args.stringXmoveX,
-        //    moveY : args.stringXmoveY
-        });
-    }
-    if (typeof(args.stringY) === 'string') {
-        putString({
-            at : hootY,
-            string : args.stringY,
-            font : args.font,
-            color : inputColor,
-            move : args.stringYmove
-           // moveX : args.stringYmoveX,
-            //moveY : args.stringYmoveY
-        });
+    // stringY が空文字でないとき
+    if ( stringY !== '') {
+        putString(
+            {
+                at : hootY,
+                string : stringY,
+                font : font,
+                color : color,
+                move : stringYmove
+            }
+        );
     }
     baseCFL();
 }
+
 function drawAxisHoot(args){
     drawAxisFoot(args);
 }
