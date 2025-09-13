@@ -9,37 +9,6 @@
  */
 function getZahyou(point) {
     'use strict';
-    /*
-    try {
-        if (Array.isArray(point) === false){
-
-            //引数が配列でないときのエラー処理
-            throw new Error("【getZahyou】点は配列 [x座標, y座標] で指定してください");
-    
-        } else if (point.length !== 2){
-
-            //引数が配列でないときのエラー処理
-            throw new Error("【getZahyou】点は配列 [x座標, y座標] で指定してください");
-
-        } else if (typeof point[0] !== "number" || typeof point[1] !== "number"){
-
-            //要素が数値でないときのエラー処理 
-            throw new Error("【getZahyou】点の座標は数値で指定してください");
-
-        }
-        
-        const x = margin + (canvasWidth - margin * 2) * (point[0] - start[0]) / (end[0] - start[0]);
-        
-        const y = margin + (canvasHeight - margin * 2) * (end[1] - point[1]) / (end[1] - start[1]);
-        
-        return [x, y];
-
-    } catch(err) {
-
-        console.log(err.message);
-    
-    }
-*/
 
     if (Array.isArray(point) === false){
 
@@ -65,337 +34,254 @@ function getZahyou(point) {
     return [x, y];
 
 }
+/**
+ * キャンバス上の実座標から仮想座標を返す関数。追加
+ *
+ * @param {number[]} point - 変換したい点の canvas 上の実座標 [x座標, y座標]。
+ * @description グローバル変数 start（左下の端点の仮想座標）, end（右上の端点の仮想座標）, margin, canvasWidth, canvasHeight を利用します。
+ * @returns {number[]} 仮想座標 [x, y]。
+ * @throws {Error} 引数が配列でない場合、配列の長さが2でない場合、要素が数値でない場合にエラーを投げます。
+ *
+ */
+function getZahyouInverse(point) {
+    'use strict';
 
-function getZahyouInverse(realPoint) {
-    'use strict';
-//canvas 要素上の仮想座標[x, y]を返す関数
-//start は左下の端点の仮想座標[x,y]。関数の呼び出し時点で定義済みであるグローバル変数。
-//end は右上の端点の仮想座標[x,y]。その時点で定義済みであるグローバル変数。
-//realPoint は変換したい点の実座標[x,y]
-    //var margin = canvasWidth / 30
-    var x = start[0] + (realPoint[0] - margin) * (end[0] - start[0]) / (canvasWidth - margin * 2);
-	var y = end[1] - (realPoint[1] - margin) * (end[1] - start[1]) / (canvasHeight- margin * 2);
-	return [x, y];
-}
-function putString(args){
-    'use strict';
-    //args.at は仮想座標[x, y]
-    //args.string は文字列
-    //args.font は フォントの種類とサイズの指定。例えば "italic bold 20px sans-serif"
-    //args.color は文字の色。色の指定がない場合は既定値のbaseColorとする
-    //指定がない場合は デフォルトの baseFont となる
-	//args.move は位置の調整。単位は unitLength = その図での文字「x」の幅 
+     if (Array.isArray(point) === false){
+
+        //引数が配列でないときのエラー処理
+        throw new Error("点は配列 [x座標, y座標] で指定してください");
+
+    } else if (point.length !== 2){
+
+        //引数が配列でないときのエラー処理
+        throw new Error("点は配列 [x座標, y座標] で指定してください");
+
+    } else if (typeof point[0] !== "number" || typeof point[1] !== "number"){
+
+        //要素が数値でないときのエラー処理 
+        throw new Error("点の座標は数値で指定してください");
+
+    }
+
+    const x = start[0] + (point[0] - margin) * (end[0] - start[0]) / (canvasWidth - margin * 2);
 	
-    if(args.font === undefined){// フォントの指定がない場合は既定値のbaseFontとする
-        ctx.font = baseFont;
-    } else {
-        ctx.font = args.font;
-    }
-    var inputColor;
-    if(args.color === undefined){
-        inputColor = baseColor;
-        //  ctx.fillStyle = baseColor;
-        //    ctx.strokeStyle = baseColor;
-    } else {
-        inputColor = args.color;
-        //  ctx.fillStyle = args.color;
-        //    ctx.strokeStyle =args.color;
-    }
-	var unitLength = ctx.measureText('x').width;//そのコマンド描画されるでのフォントx の幅をMove の単位長さとする
-    var moveX;
-    var moveY;
-    if (Array.isArray(args.move) === true){
-        moveX = unitLength * args.move[0];
-        moveY = - unitLength * args.move[1];
-    } else {
-        moveX = 0;
-        moveY = 0; 
-    }
-    var zahyou = getZahyou(args.at);
-   // ctx.fillText(args.string, zahyou[0]+ moveX, zahyou[1] + moveY);
-   if(args.width === undefined){
-        ctx.lineWidth = baseLineWidth;
-    } else {
-        ctx.lineWidth = args.width;
-    }
-    var pixelAdjust;
-    if(args.circle === true) {
-        ctx.beginPath();
-        pixelAdjust = 5;
-        var stringWidth = ctx.measureText(args.string).width;
-        var stringHeight = ctx.measureText('w').width;
-        ctx.arc(zahyou[0]+ moveX + stringWidth / 2, zahyou[1] + moveY - stringHeight / 2,  pixelAdjust + stringWidth / 2 , 0, 2 * Math.PI);//1.1　は円の大きさを考えた補正
-        ctx.fillStyle = 'white';
-        ctx.fill();
-        ctx.strokeStyle = inputColor;
-        ctx.stroke();
-        ctx.fillStyle = inputColor;
-        ctx.fillText(args.string, zahyou[0]+ moveX, zahyou[1] + moveY);
-    } else if (args.circle === false) {
-        ctx.beginPath();
-        pixelAdjust = 5;
-        var stringWidth = ctx.measureText(args.string).width;
-        var stringHeight = ctx.measureText('w').width;
-        ctx.arc(zahyou[0]+ moveX + stringWidth / 2, zahyou[1] + moveY - stringHeight / 2,  pixelAdjust + stringWidth / 2 , 0, 2 * Math.PI);//1.1　は円の大きさを考えた補正
-        ctx.fillStyle = inputColor;
-        ctx.fill();
-        ctx.fillStyle = 'white';
-        ctx.fillText(args.string, zahyou[0]+ moveX, zahyou[1] + moveY);
-    } else if (args.box === true) {
-        var boxWidth = ctx.measureText(args.string).width;
-        var boxHeight = ctx.measureText('w').width;
-        pixelAdjust = 5;
-        ctx.fillStyle = 'white';
-        ctx.fillRect(zahyou[0]+ moveX - pixelAdjust, zahyou[1] + moveY- boxHeight -pixelAdjust, boxWidth + 2 * pixelAdjust, boxHeight + 2 * pixelAdjust);
-        ctx.strokeStyle = inputColor;
-        ctx.strokeRect(zahyou[0]+ moveX - pixelAdjust, zahyou[1] + moveY- boxHeight -pixelAdjust, boxWidth + 2 * pixelAdjust, boxHeight + 2 * pixelAdjust);
-        ctx.fillStyle = inputColor;
-        ctx.fillText(args.string, zahyou[0]+ moveX, zahyou[1] + moveY);
-    }  else if (args.box === false) {
-        var boxWidth = ctx.measureText(args.string).width;
-        var boxHeight = ctx.measureText('w').width;
-        pixelAdjust = 5;
-        ctx.fillStyle = inputColor;
-        ctx.fillRect(zahyou[0]+ moveX - pixelAdjust, zahyou[1] + moveY- boxHeight -pixelAdjust, boxWidth + 2 * pixelAdjust, boxHeight + 2 * pixelAdjust);
-        ctx.fillStyle = 'white';
-        ctx.fillText(args.string, zahyou[0]+ moveX, zahyou[1] + moveY);
-    } else if (args.vector === true) {
-        ctx.fillStyle = inputColor;
-        ctx.fillText(args.string, zahyou[0]+ moveX, zahyou[1] + moveY); 
-        var pixelAdjustX = 2;
-        var pixelAdjustY = 3;
-        var headSize = 7;
-        var vectorLength = ctx.measureText(args.string).width;
-        var vectorHeight = ctx.measureText('w').width;
-        var vectorStart = [zahyou[0] + moveX - pixelAdjustX, zahyou[1]+ moveY - vectorHeight - pixelAdjustY];
-        var vectorEnd = [zahyou[0] + moveX + vectorLength + pixelAdjustX, zahyou[1] + moveY - vectorHeight - pixelAdjustY];
-        var idealVectorStart = getZahyouInverse(vectorStart);
-        var idealVectorEnd = getZahyouInverse(vectorEnd);
-        drawArrow({
-            from : idealVectorStart,
-            to : idealVectorEnd,
-            size : headSize,
-            color : inputColor
-        });
-    } else {
-        ctx.fillStyle = inputColor;
-        ctx.fillText(args.string, zahyou[0]+ moveX, zahyou[1] + moveY); 
-    }
-    baseCFL();
+    const y = end[1] - (point[1] - margin) * (end[1] - start[1]) / (canvasHeight- margin * 2);
+	
+    return [x, y];
+
 }
 
-function putString2(args){
 
-    'use strict';
+function putString(
+    {
+        font = baseFont,
+        color = baseColor,
+        move = [0, 0],
+        string = undefined,
+        width = baseLineWidth,
+        box = undefined,
+        circle = undefined,
+        arrow = false,
+        at = undefined,
+        //広報互換性のための処理
+        vector = false
+    } = {}
+){
+ 
+    //string の入力が文字列でない時
+    if (typeof string !== "string"){
 
-    //args.at は仮想座標[x, y]
-    //args.string は文字列
-    //args.font は フォントの種類とサイズの指定。例えば "italic bold 20px sans-serif"
-    //指定がない場合は デフォルトの baseFont となる
-    //args.color は文字の色。色の指定がない場合は既定値のbaseColorとする
-	//args.move は位置の調整。単位は unitLength = その図での文字「x」の幅
-    //args.width は囲む線の太さ（circle か box が true のとき）
+        throw new Error('【putString】 string に"文字列"を代入してください')
 	
-    if(args.font === undefined){// フォントの指定がない場合は既定値のbaseFontとする
+        // at に入力がない時
+    } else  if (at === undefined) {
 
-        ctx.font = baseFont;
+        throw new Error("【putString】 atに座標を代入してください")
 
-    } else if(typeof args.font !== "string"){
-            
-            console.log("[putString] font は文字列を指定してください");
-         
-    } else {
-            
-        ctx.font = args.font;
+        // at が配列でない場合か要素が1つ以下の場合
+    } else if ( Array.isArray(at) === false || at.length <= 1) {
+
+        throw new Error("【putString】 at には配列 [x座標, y座標] を代入してください")
+
+        //atの要素に数値でないものが入っている場合
+    } else if ( typeof at[0] !== 'number' || typeof at[1] !== 'number'){
+
+        throw new Error("【putString】 at には配列 [x座標(数値), y座標(数値)] を代入してください")
     
+    } else if (typeof font !== 'string') {
+
+        throw new Error('【putString】 font にはフォント名（文字列）を代入してください。"green" や "#EE11FF"など')
+
+    } else if (typeof color !== 'string') {
+
+        throw new Error('【putString】 color には色名（文字列）を代入してください。"green" や "#EE11FF"など')
+	
+        // move が配列でない場合か要素が1つ以下の場合
+    } else if ( Array.isArray(move) === false || move.length <= 1 ) {
+
+        throw new Error("【putString】 move には配列 [x方向の移動量, y方向の移動量] を代入してください")
+
+    } else if ( typeof move[0] !== 'number' || typeof move[1] !== 'number'){
+
+        throw new Error("【putString】 move には配列 [数値, 数値] を代入してください")
+    
+        // numberが数値でないまたは0以下の時
+    } else if (typeof width !== 'number' || width <= 0){
+
+        throw new Error('【putString】width には正の数値を代入してください')
+
+        // box が入力されていて true/false でない時
+    } else if ( box !== undefined && typeof box !== 'boolean') {
+
+        throw new Error('【putString】box には true か false を代入してください')
+        
+        // circle が入力されていて true/false でない時
+    } else if ( circle !== undefined && typeof circle !== 'boolean') {
+
+        throw new Error('【putString】circle には true か false を代入してください')
+
+        // arrow がtrue/false でない時
+    } else if (typeof arrow !== 'boolean') {
+
+        throw new Error('【putString】arrow には true か false を代入してください')
+
     }
 
-    if(args.color === undefined){
-        
-        var inputColor = baseColor;
-
-    } else  if(typeof args.color !== "string"){
-
-        console.log("[putString] color は文字列を指定してください");
-
-    } else {
+    //そのコマンドで描画されるフォント x の幅を moveの単位あたりの長さとする
+	const unitLength = ctx.measureText('x').width;
     
-        var inputColor = args.color;
-        
-    }
-
-	var unitLength = ctx.measureText('x').width;//そのコマンド描画されるでのフォントx の幅をMove の単位長さとする
-
-    if (Array.isArray(args.move) === false){
-
-        console.log("[putString] move は配列を指定してください");
-
-        var moveX = 0;
-
-        var moveY = 0;
+    const moveX = unitLength * move[0];
     
-    } else if (args.move.length <= 1){
+    const moveY = - unitLength * move[1];
 
-        console.log("[putString] move は2次元配列を指定してください");
-    
-    } else {
-
-        var moveX = unitLength * args.move[0];
-
-        var moveY = - unitLength * args.move[1];
-
-    } 
+    const zahyou = getZahyou(at);
    
-    if(Array.isArray(args.at) === false){
-
-        console.log("[putString] at は配列を指定してください");
-
-    } else if(args.at.length <= 1){
-
-        console.log("[putString] at は2次元配列を指定してください");
-    
-    } else {
-    
-        var zahyou = getZahyou(args.at);
-
-    }
-
-    if(args.width === undefined){
+    const pixelAdjust = 5;
   
-        ctx.lineWidth = baseLineWidth;
-    
-    } else if(typeof args.width !== "number" || args.width <= 0){
+    ctx.lineWidth = width;
+        
+    // circle が true の時
+    if(circle === true) {
 
-        ctx.lineWidth = baseLineWidth;
-
-        console.log("[putString] width は正の数値を指定してください");
-
-    } else {
-
-    ctx.lineWidth = args.width;
-
-    }
-
-    var pixelAdjust = 5;
-
-    if(args.circle === true) {
-    
         ctx.beginPath();
+        
+        const stringWidth = ctx.measureText(string).width;
 
-        var stringWidth = ctx.measureText(args.string).width;
+        const  stringHeight = ctx.measureText('w').width;
 
-        var stringHeight = ctx.measureText('w').width;
-
-        ctx.arc(zahyou[0]+ moveX + stringWidth / 2, zahyou[1] + moveY - stringHeight / 2,  pixelAdjust + stringWidth / 2 , 0, 2 * Math.PI);//1.1　は円の大きさを考えた補正
+        ctx.arc(zahyou[0]+ moveX + stringWidth / 2, zahyou[1] + moveY - stringHeight / 2,  pixelAdjust + stringWidth / 2 , 0, 2 * Math.PI);
 
         ctx.fillStyle = 'white';
-
+        
         ctx.fill();
-
-        ctx.strokeStyle = inputColor;
-
+        
+        ctx.strokeStyle = color;
+        
         ctx.stroke();
+        
+        ctx.fillStyle = color;
+        
+        ctx.fillText(string, zahyou[0]+ moveX, zahyou[1] + moveY);
 
-        ctx.fillStyle = inputColor;
-
-        ctx.fillText(args.string, zahyou[0]+ moveX, zahyou[1] + moveY);
-
-
-    } else if (args.circle === false) {
+    // circle が false の時
+    } else if (circle === false) {
 
         ctx.beginPath();
         
-        var stringWidth = ctx.measureText(args.string).width;
-   
-        var stringHeight = ctx.measureText('w').width;
-   
-        ctx.arc(zahyou[0]+ moveX + stringWidth / 2, zahyou[1] + moveY - stringHeight / 2,  pixelAdjust + stringWidth / 2 , 0, 2 * Math.PI);//1.1　は円の大きさを考えた補正
-   
-        ctx.fillStyle = inputColor;
-   
-        ctx.fill();
-   
-        ctx.fillStyle = 'white';
-   
-        ctx.fillText(args.string, zahyou[0]+ moveX, zahyou[1] + moveY);
-   
-    } else if (args.box === true) {
-   
-        var boxWidth = ctx.measureText(args.string).width;
-   
-        var boxHeight = ctx.measureText('w').width;
-   
-        ctx.fillStyle = 'white';
-   
-        ctx.fillRect(zahyou[0]+ moveX - pixelAdjust, zahyou[1] + moveY- boxHeight -pixelAdjust, boxWidth + 2 * pixelAdjust, boxHeight + 2 * pixelAdjust);
-   
-        ctx.strokeStyle = inputColor;
-   
-        ctx.strokeRect(zahyou[0]+ moveX - pixelAdjust, zahyou[1] + moveY- boxHeight -pixelAdjust, boxWidth + 2 * pixelAdjust, boxHeight + 2 * pixelAdjust);
-   
-        ctx.fillStyle = inputColor;
-   
-        ctx.fillText(args.string, zahyou[0]+ moveX, zahyou[1] + moveY);
-   
-    }  else if (args.box === false) {
-   
-        var boxWidth = ctx.measureText(args.string).width;
-   
-        var boxHeight = ctx.measureText('w').width;
-   
-        ctx.fillStyle = inputColor;
-   
-        ctx.fillRect(zahyou[0]+ moveX - pixelAdjust, zahyou[1] + moveY- boxHeight -pixelAdjust, boxWidth + 2 * pixelAdjust, boxHeight + 2 * pixelAdjust);
-   
-        ctx.fillStyle = 'white';
-   
-        ctx.fillText(args.string, zahyou[0]+ moveX, zahyou[1] + moveY);
-   
-    } else if (args.vector === true) {
-   
-        ctx.fillStyle = inputColor;
-   
-        ctx.fillText(args.string, zahyou[0]+ moveX, zahyou[1] + moveY); 
-   
-        var pixelAdjustX = 2;
-   
-        var pixelAdjustY = 3;
-   
-        var headSize = 7;
-   
-        var vectorLength = ctx.measureText(args.string).width;
-   
-        var vectorHeight = ctx.measureText('w').width;
-   
-        var vectorStart = [zahyou[0] + moveX - pixelAdjustX, zahyou[1]+ moveY - vectorHeight - pixelAdjustY];
-   
-        var vectorEnd = [zahyou[0] + moveX + vectorLength + pixelAdjustX, zahyou[1] + moveY - vectorHeight - pixelAdjustY];
-   
-        var idealVectorStart = getZahyouInverse(vectorStart);
-   
-        var idealVectorEnd = getZahyouInverse(vectorEnd);
-   
-        drawArrow({
-   
-            from : idealVectorStart,
-   
-            to : idealVectorEnd,
-   
-            size : headSize,
-
-            color : inputColor
+        const stringWidth = ctx.measureText(string).width;
         
-        });
-   
+        const stringHeight = ctx.measureText('w').width;
+        
+        ctx.arc(zahyou[0]+ moveX + stringWidth / 2, zahyou[1] + moveY - stringHeight / 2,  pixelAdjust + stringWidth / 2 , 0, 2 * Math.PI);
+        
+        ctx.fillStyle = color;
+        
+        ctx.fill();
+        
+        ctx.fillStyle = 'white';
+        
+        ctx.fillText(string, zahyou[0]+ moveX, zahyou[1] + moveY);
+    
+        // box が true の時
+    } else if (box === true) {
+
+        const boxWidth = ctx.measureText(args.string).width;
+        
+        const boxHeight = ctx.measureText('w').width;
+        
+        ctx.fillStyle = 'white';
+        
+        ctx.fillRect(zahyou[0]+ moveX - pixelAdjust, zahyou[1] + moveY- boxHeight -pixelAdjust, boxWidth + 2 * pixelAdjust, boxHeight + 2 * pixelAdjust);
+        
+        ctx.strokeStyle = color;
+        
+        ctx.strokeRect(zahyou[0]+ moveX - pixelAdjust, zahyou[1] + moveY- boxHeight -pixelAdjust, boxWidth + 2 * pixelAdjust, boxHeight + 2 * pixelAdjust);
+        
+        ctx.fillStyle = color;
+
+        ctx.fillText(string, zahyou[0]+ moveX, zahyou[1] + moveY);
+
+        // box が false の時
+    }  else if (box === false) {
+
+        const boxWidth = ctx.measureText(args.string).width;
+
+        const boxHeight = ctx.measureText('w').width;
+        
+        ctx.fillStyle = color;
+        
+        ctx.fillRect(zahyou[0]+ moveX - pixelAdjust, zahyou[1] + moveY- boxHeight -pixelAdjust, boxWidth + 2 * pixelAdjust, boxHeight + 2 * pixelAdjust);
+        
+        ctx.fillStyle = 'white';
+        
+        ctx.fillText(string, zahyou[0]+ moveX, zahyou[1] + moveY);
+
+        //arrow が true のとき，または，旧バージョンで vector がtrueのとき
+    } else if (arrow === true || vector === true) {
+
+        ctx.fillStyle = color;
+
+        ctx.fillText(string, zahyou[0]+ moveX, zahyou[1] + moveY); 
+        
+        const pixelAdjustX = 2;
+        
+        const pixelAdjustY = 3;
+        
+        const headSize = 7;
+        
+        const vectorLength = ctx.measureText(string).width;
+        
+        const vectorHeight = ctx.measureText('w').width;
+        
+        const vectorStart = [zahyou[0] + moveX - pixelAdjustX, zahyou[1]+ moveY - vectorHeight - pixelAdjustY];
+        
+        const vectorEnd = [zahyou[0] + moveX + vectorLength + pixelAdjustX, zahyou[1] + moveY - vectorHeight - pixelAdjustY];
+        
+        const idealVectorStart = getZahyouInverse(vectorStart);
+        
+        const idealVectorEnd = getZahyouInverse(vectorEnd);
+        
+        drawArrow(
+            {
+                from : idealVectorStart,
+                to : idealVectorEnd,
+                size : headSize,
+                color : color,
+                width : width
+            }
+        );
+    
+        //他の場合のとき
     } else {
-   
-        ctx.fillStyle = inputColor;
-   
-        ctx.fillText(args.string, zahyou[0]+ moveX, zahyou[1] + moveY); 
+    
+        ctx.fillStyle = color;
+    
+        ctx.fillText(string, zahyou[0]+ moveX, zahyou[1] + moveY); 
     
     }
     
     baseCFL();
+
 }
 
 /**
