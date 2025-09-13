@@ -71,7 +71,24 @@ function getZahyouInverse(point) {
 
 }
 
-
+/**
+ * @param {Object} [options={}] - 描画オプション。
+ * @param {string} [options.font=baseFont] - 描画に使うフォント（例: "20px serif"）。
+ * @param {string} [options.color=baseColor] - 描画色（文字・線・円・ボックスの色）。
+ * @param {number[]} [options.move=[0,0]] - 表示位置のオフセット [x, y]（単位は現在フォントの 'x' の幅）。
+ * @param {string} options.string - 描画する文字列（必須）。
+ * @param {number} [options.width=baseLineWidth] - 線の太さ（px）。
+ * @param {boolean} [options.box] - true: 白背景の枠＋枠線、false: 塗りつぶしの枠。
+ * @param {boolean} [options.circle] - true: 白背景の円＋枠線、false: 塗りつぶしの円。
+ * @param {boolean} [options.arrow=false] - true のとき文字列上に矢印を描画。
+ * @param {number[]} options.at - 描画する仮想座標 [x, y]（必須）。
+ * @param {boolean} [options.vector=false] - 互換性用フラグ（arrow と同様の動作）。
+ *
+ * @description 文字列を描画します。文字を四角や丸で囲んだり，矢印をつけることもできます。グローバル変数 baseFont, baseColor, baseLineWidth, ctx を利用します。内部で getZahyou, getZahyouInverse, drawArrow, baseCFL を呼び出します。
+ *
+ * @throws {Error} 引数の型や必須項目(at, string)が不正な場合に例外を投げます。
+ * @returns {undefined}
+ */
 function putString(
     {
         font = baseFont,
@@ -418,17 +435,28 @@ function drawLine(
 
 }
 
-  //x軸y軸へ垂線を下す関数
-    //from は仮想座標[x,y]
-    //lineDashは 破線の間隔, false のとき実線に
-    //width
-    //color
-    //to はどの軸へ垂線を下すか。'x'か'y'か　'xy'（既定値）
-    //stringX は文字列,
-    //stringY
-    //stringXmove
-    //stringYmove
-    //font
+/**
+ * @description 指定した点からx軸、y軸への垂線を描画します。垂線の足に文字列を表示することもできます。グローバル変数 baseLineWidth, baseColor, baseFont, ctx, getZahyou, getZahyouInverse, drawLine, putString, baseCFL を利用します。
+ * @param {object} options - 描画オプションを指定するオブジェクト。
+ * @param {number[]} options.from - 垂線を描画する元の点の座標 [x, y]。必須です。
+ * @param {number|false} [options.lineDash=3] - 線の破線の間隔。falseを指定すると実線になります。
+ * @param {number} [options.width=baseLineWidth] - 線の太さ。
+ * @param {string} [options.color=baseColor] - 線とテキストの色。
+ * @param {'xy'|'x'|'y'} [options.to='xy'] - 垂線を描画する軸を指定します。'x'はx軸へ、'y'はy軸へ、'xy'は両方へ描画します。
+ * @param {string} [options.stringX=''] - x軸上の足に表示する文字列。
+ * @param {string} [options.stringY=''] - y軸上の足に表示する文字列。
+ * @param {number[]} [options.stringXmove=[0, 0]] - x軸上の文字列の位置を調整するための [dx, dy]。
+ * @param {number[]} [options.stringYmove=[0, 0]] - y軸上の文字列の位置を調整するための [dx, dy]。
+ * @param {string} [options.font=baseFont] - 文字列のフォントスタイル。
+ * @throws {Error} from が [x, y] 形式の配列でない場合にエラーをスローします。
+ * @throws {Error} lineDash が正の数または false でない場合にエラーをスローします。
+ * @throws {Error} width が正の数でない場合にエラーをスローします。
+ * @throws {Error} to が 'xy', 'x', 'y' のいずれでもない場合にエラーをスローします。
+ * @throws {Error} stringX または stringY が文字列でない場合にエラーをスローします。
+ * @throws {Error} font が文字列でない場合にエラーをスローします。
+ * @throws {Error} color が文字列でない場合にエラーをスローします。
+ * @returns {undefined} なし
+ */
 function drawAxisFoot(
     {
         from = undefined,
