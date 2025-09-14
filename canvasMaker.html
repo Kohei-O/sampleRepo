@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="ja">
+<meta charset="utf-8">
+<head>
+<title>canvasMaker.js</title>    
+<link rel="stylesheet" href="canvasMaker.css"  >
+<meta charset="UTF-8"> 
+		<!--<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>-->
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+        tex2jax: {
+        inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+        processEscapes: true
+        }
+        });
+        </script>   
+    <script>
+            function openClose(divName){
+				var temp = document.getElementById(divName).style.display;
+                if (temp === 'none' || temp === ''){
+                    document.getElementById(divName).style.display = 'block';
+                } else {
+                    document.getElementById(divName).style.display = 'none';
+                }
+            }
+    </script>
+    <!------   -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital@1&display=swap" rel="stylesheet">
+    
+    <!--     -->
+</head>    
+<body> 
+    <h1 class = "susiki">canvasMaker.js</h1>
+    <div id = "tclm">
+        <div id="sample">
+            <h3>サンプル</h3>
+            <ul id="sampleList">
+                <li><a href ="javascript:void(0)" onclick = "viewSample1();drawCanvas()">メネラウスの定理</a></li>
+                <li><a href ="javascript:void(0)" onclick = "viewSample2();drawCanvas()">円周角の定理</a></li>
+                <li><a href ="javascript:void(0)" onclick = "viewSample3();drawCanvas()">関数のグラフと面積</a></li>
+                <li><a href ="javascript:void(0)" onclick = "viewSample4();drawCanvas()">ベクトル</a></li>
+                <li><a href ="javascript:void(0)" onclick = "viewSample5();drawCanvas()">極方程式の表す曲線</a></li>
+                 <li><a href ="javascript:void(0)" onclick = "viewSample6();drawCanvas()">数直線</a></li>
+                 <li><a href ="javascript:void(0)" onclick = "viewSample7();drawCanvas()">双曲線</a></li>
+                <li><a href ="javascript:viewSample8();drawCanvas()">単位円</a></li>
+                <li><a href ="javascript:viewSample9();drawCanvas()">樹形図</a></li>
+                <li><a href ="javascript:viewSample10();drawCanvas()">楕円</a></li>
+                 <li><a href ="javascript:viewSample11();drawCanvas()">空間図 1</a></li>
+                 <li><a href ="javascript:viewSample12();drawCanvas()">空間図 2</a></li>
+                <li><a href ="javascript:viewSample13();drawCanvas()">パラメータ曲線</a></li>
+                <li><a href ="javascript:viewSample14();drawCanvas()">パラメータ曲線(空間)</a></li>
+                <li><a href ="javascript:viewSample15();drawCanvas()" >箱ひげ図</a></li>
+            </ul>
+              <h3>保存済み</h3>
+            <div id ="storage"></div>
+        </div>
+        <div>
+		<textarea id = "textarea" rows = "30" cols = "50"></textarea>
+            <p>
+                <input type="button" onclick="clearText();drawCanvas()" value ='クリア' size="7">
+                <input type="button" onclick="storeText()" value ='保存する' size="7">
+            </p>
+        </div>
+		<div style = "margin-left:20px">
+			<canvas id="myCanvas" style = "border:solid" width=400 height =400> </canvas>
+		</div>
+    </div>
+    <h2>コマンド</h2>
+    <h3>基本的なもの</h3>
+    <ul style="list-style:disc">
+        <li>start = [xStart, yStart];&emsp;&emsp;冒頭に必ず記述します。描画領域の左下端点の座標を start = [-1, -2]; のように指定します</li>
+        <li>end = [xEnd, yEnd];&emsp;&emsp;冒頭に必ず記述します。描画領域の右上端点の座標を end = [3, 4]; のように指定します</li>
+        <li>点の名前 = [x, y];&emsp;&emsp;点の座標を pointA = [1, -2]; のように定義します</li>
+        <li><a href="javascript:void(0)" onclick="openClose('baseLineWidth')">baseLineWidth = 数値;</a>&emsp;それ以降に用いるすべての線の太さを指定します</li>
+            <div id="baseLineWidth" class="detail">それ以降に用いるすべての線の太さ(px)が指定した値となります。
+		各種コマンドの width 属性に指定がある場合は, そちらが優先されます。</div>
+        <li><a href="javascript:void(0)" onclick="openClose('baseColor')">baseColor = '色の種類';</a>&emsp;それ以降に用いるすべての線, 文字, 塗りつぶしの色を指定します</li>
+        <div class="detail" id="baseColor">
+        それ以降に用いるすべての線, 文字, 塗りつぶしの色を, 例えば 'red' のように指定します。既定値は 'black' です。
+        各種コマンドの color 属性に指定がある場合は, そちらが優先されます。色の種類については次をご覧ください。
+			<div>
+                <a href="https://www.colordic.org/">
+                WEB色見本 原色大辞典 - HTMLカラーコード
+                </a>
+            </div>
+        </div>
+        <li><a href ="javascript:void(0)" onclick = "openClose('baseFont')">baseFont = 'フォントのサイズ・スタイル' ;</a> &emsp;それ以降に用いるすべてのフォントのサイズ・スタイルを指定します</li>
+        <div class="detail" id="baseFont">
+        それ以降に用いるすべてのフォントのサイズ・スタイルを ' 20px serif ' や ' 15px arial ' のように指定します。既定値は ' 20px serif ' です。各種コマンドの font 属性に指定がある場合は, そちらが優先されます。
+        使えるフォントについては以下をご覧ください。ただし, すべてを使えるわけではないようです。
+            <div>
+                <a href="https://w3g.jp/sample/css/font-family">
+            総称ファミリ名分類のフォント名一覧
+                </a>
+            </div>
+        </div>
+        <li><a href= "javascript:void(0)" onclick = "openClose('putString')"> putString();</a>&emsp;文字列を描画します</li>
+        <div class="detail" id="putString">
+            <dl>
+                <dt>putString({</dt>
+                <dd></dd>
+                <dt>at : [x, y],</dt>
+                <dd>必須。文字列を描画する座標</dd>
+                <dt>string : '文字列',</dt>
+                <dd>必須。描画したい文字列</dd>
+                <dt>color : '色の種類'</dt>
+                <dd>オプション。文字列が指定した色になります。既定値は baseColor (変更していない場合は 'black')。circle・box・arrow オプションをつけた場合の線・塗りつぶし・矢印の色にもなります</dd>
+                <dt>font : 'フォントの種類・サイズ',</dt>
+                <dd>オプション。文字列が指定したフォント・サイズになります。既定値は baseFont (変更していない場合は' 20px serif ')です</dd>
+                <dt>move : [数値, 数値],</dt>
+                <dd>オプション。文字列の位置を調節するベクトル量です。単位は, そのコマンドにおいて描画される「x」の幅です</dd>
+                <dt>circle : true, または false,</dt>
+                <dd>オプション。true の場合, 文字列を円で囲みます。false の場合, 文字列を白抜きにして円で囲みます</dd>
+                <dt>box : true, または false,</dt>
+                <dd>オプション。true の場合, 文字列を四角で囲みます。false の場合, 文字列を白抜きにして四角で囲みます</dd>
+                <dt>width : 数値,</dt>
+                <dd>circle・box・arrow オプションが true の場合の線の太さ(px)が指定した数値となります</dd>
+                <dt>arrow : true,（vector : true）</dt>
+                <dd>文字列の上部にベクトルであることを表す矢印をつけます</dd>
+                <dt>});</dt><dd>
+                </dd>
+            </dl>
+        </div>
+        <li><a href="javascript:void(0)" onclick ="openClose('singlePointMark')">singlePointMark();</a>&emsp;一点に黒丸(白丸)を打ちます。
+        </li>
+        <div class = "detail" id = "singlePointMark">
+            <dl>
+                <dt>singlePointMark({</dt>
+                <dd></dd>
+                <dt>at : [x, y],</dt>
+                <dd>必須。黒丸を打つ点の座標</dd>
+                <dt>size : 数値,</dt>
+                <dd>オプション。与えた値の 2 倍が丸の半径(px)となります。既定値は 1 </dd>
+                <dt>color : '色の種類',</dt>
+                <dd>オプション。丸に用いる色。既定値は baseColor (変更していない場合'black')</dd>
+                <dt>open: true,</dt>
+                <dd>オプション。true の場合, 白抜きの円となります。既定値は false</dd>
+                <dt>width : 数値,</dt>
+                <dd>オプション。open: true の場合に,指定した値の 2 倍が円弧の太さ(px)となります</dd>
+                <dt>});</dt>
+                <dd></dd>
+            </dl>
+        </div>
+         <li><a href="javascript:void(0)" onclick ="openClose('pointMark')">pointMark();</a>&emsp;複数の点に同時に黒丸(白丸)を打ちます。頂点名の描画も同時にできます
+        </li>
+        <div class = "detail" id = "pointMark">
+            <dl>
+                <dt>pointMark({</dt>
+                <dd></dd>
+                <dt>points : [</dt>
+                <dt>[ [Xa, Ya], '文字列a' , [moveXa, moveYa] ],</dt>
+                <dt> [ [Xb, Yb], '文字列b' , [moveXb, moveYb] ], </dt>
+                <dt>&hellip;],<dt>
+                <dd>[Xa, Ya] は必須。黒丸を打つ点aの座標です。'文字列' はオプション。[moveXa, moveYa] は文字列を描画する場合のオプション。左右の位置の調整です。長さの単位はそのコマンドにおいて描画される「x」の幅です</dd>
+                <dt>size : 数値,</dt>
+                <dd>オプション。与えた値の 2 倍が丸の半径(px)となります。既定値は 1 </dd>
+                <dt>color : '色の種類',</dt>
+                <dd>オプション。丸に用いる色。既定値は baseColor (変更していない場合'black')</dd>
+                <dt>font : 'フォントのサイズ・種類',</dt>
+                <dd>オプション。文字列が指定したフォント・サイズになります。既定値は baseFont (変更していない場合は' 20px serif ')です</dd>
+                <dt>open: true,</dt>
+                <dd>オプション。true の場合, 白抜きの円となります。既定値は false</dd>
+                <dt>width : 数値,</dt>
+                <dd>オプション。open: true の場合に,指定した値の 2 倍が円弧の太さ(px)となります</dd>
+                <dt>});</dt>
+                <dd></dd>
+            </dl>
+        </div>
+    </ul>
+        <h3>幾何的なもの</h3>
+    <ul style="list-style:disc">
+        <li><a href= "javascript:void(0)" onclick = "openClose('drawAxis')">drawAxis();</a>&emsp;座標軸を描画します。</li>
+  
+        <div class = "detail" id="drawAxis">
+            <dl>
+                <dt>drawAxis({</dt>
+                <dd></dd>
+                <dt>type : 'x', または 'y',</dt>
+                <dd>オプション。それぞれ横軸のみ, 縦軸のみを描画します</dd>
+                <dt>xLabel : '横軸の名前',</dt>
+                <dd>オプション。横軸の名前を定めます。既定値は 'x'。'　'(空文字)にすることもできます</dd>
+                <dt>yLabel : '縦軸の名前',</dt>
+                <dd>オプション。縦軸の名前を定めます。既定値は 'y'。'　'(空文字)にすることもできます</dd>
+                <dt>noOrigin : true ,</dt>
+                <dd>オプション。true のとき, 原点Oを描画しません。既定値は false </dd>
+                <dt>});</dt>
+            </dl>
+        </div>
+<li><a href= "javascript:void(0)" onclick = "openClose('drawLine')">drawLine();</a>&emsp;折れ線(線分)を描画します。破線も描けます。多角形を描画する際にも使えます </li>
+         <div class = "detail" id="drawLine">
+              <dl>
+                  <dt>drawLine({</dt>
+                  <dd></dd>
+                  <dt>between : [</dt>
+                  <dt>[x1, y1], [x2, y2], [x3, y3], &hellip;</dt>
+                  <dt>],</dt>
+                  <dd>必須。結びたい順に座標を入れる</dd>
+                   <dt>width : 数値,</dt>
+                  <dd>オプション。線の太さ(px)が指定した値となります。既定値は baseLineWidth (変更していない場合は 1)</dd>
+                   <dt>color : '色の種類',</dt>
+                  <dd>オプション。線の色が指定した色になります。既定値は baseColor (変更していない場合は 'black')</dd>
+                   <dt>lineDash : 数値,</dt>
+                  <dd>オプション。破線の実線部, 空白部の長さ(px)が指定した値となります</dd>
+                  <dt>polygon : true または '色の種類',</dt>
+                  <dd>オプション。 true にすると, 始点・終点を結んで多角形を作ります。色の種類を指定した場合, さらにその内部を指定した色で塗りつぶします</dd>
+                   <dt>});</dt>
+             </dl>
+        </div>
+    <li><a href= "javascript:void(0)" onclick = "openClose('drawArrow')"> drawArrow();</a>&emsp;矢印を描画します。破線の矢印も描けます。</li>
+		<div class = "detail" id = "drawArrow">
+            <dl>
+                <dt>drawArrow({</dt>
+                <dd></dd>
+                <dt>from : [x1, y1],</dt>
+                <dd>必須。始点の座標</dd>
+                <dt>to : [x2, y2],</dt>
+                <dd>必須。終点の座標</dd>
+                <dt>size : 数値,</dt>
+                <dd>オプション。先端の正三角形の一辺の長さ(px)が指定した値となります。既定値は10 </dd>
+                <dt>width : 数値,</dt>
+                <dd>オプション。線の太さ(px)が指定した値となります。既定値は baseLineWidth</dd>
+                <dt>color : '色の種類',</dt>
+                <dd>オプション。線の色が指定した色になります。既定値は baseColor(変更していない場合は 'black')</dd>
+                <dt>lineDash : 数値,</dt>
+                <dd>オプション。破線の実線部, 空白部の長さ(px)が指定した値となります</dd>
+                <dt>});</dt>
+            </dl>
+		</div>
+    <li><a href = "javascript:void(0)" onclick ="openClose('drawEnko')">drawEnko();</a>&emsp; 円弧を描画します。</li>
+		<div class ="detail" id = "drawEnko">
+            <dl>
+                <dt>drawEnko({</dt>
+                <dd></dd>
+                <dt>center : [x, y],</dt>
+                <dd>必須。中心の座標</dd>
+                  <dt>radius : 数値,</dt>
+                <dd>必須。半径</dd>
+                  <dt>startAngle : 数値,</dt>
+                <dd>オプション。円弧を開始する角度\((^\circ)\)です。３時の方向を 0 とし, 反時計回りを正の向きとします。既定値は 0</dd>
+                  <dt>endAngle : 数値,</dt>
+                <dd>オプション。円弧を終了する角度\((^\circ)\)です。３時の方向を 0 とし, 反時計回りを正の向きとします。既定値は 360 </dd>
+                  <dt>clock : true,</dt>
+                <dd>オプション。true のとき, 円弧の開始位置から終了位置までを時計回りに結びます。既定値は false</dd>
+                  <dt>ougi : true, </dt>
+                <dd>オプション。true のとき, 円弧の開始・終了位置を中心と結んで扇型とします。既定値は  false</dd>
+                  <dt>width : 数値,</dt>
+                <dd>オプション。線の太さ(px)が指定した値となります。既定値は baseLineWidth(変更していない場合は 1)</dd>
+                  <dt>color : '色の種類',</dt>
+                <dd>オプション。線の色が指定した色になります。既定値は baseColor(変更していない場合は 'black')</dd>
+                  <dt>lineDash : 数値,</dt>
+                <dd>オプション。破線の実線部, 空白部の長さ(px)が指定した値となります</dd>
+                  <dt>paint : '色の種類',</dt>
+                <dd>オプション。円や扇型の内部を指定した色で塗りつぶします。開始・終了位置の異なる円弧の場合, 両端を線分で結んでから塗りつぶします</dd>
+                <dt>});</dt>
+            </dl>
+            描画領域の縦・横の単位あたりの長さが異なる場合には drawEnko(); は半径が横方向に radius である円を描画します。
+		</div>
+    <li><a href= "javascript:void(0)" onclick = "openClose('angleMark')">angleMark();</a>&emsp;指定した3点 A, B, C に対し \(\angle\mathrm{ABC}\) に角記号(円弧)を描画します。矢印もつけられます</li>
+            <div  class="detail" id ="angleMark">
+                <dl>
+                    <dt>angleMark({</dt>
+                    <dt>points : [</dt>
+                    <dt>[Xa, Ya], [Xb, Yb], [Xc, Yc]</dt>
+                    <dt>], </dt>
+                    <dd>必須。線分 ba から線分 bc にいたる正の回転角に記号をつけます</dd>
+                    <dt>radius : 数値,</dt>
+                    <dd>オプション。与えた数値の10倍が円弧の半径(px)となります。既定値は 1</dd>
+                    <dt>clock : true,</dt>
+                    <dd>オプション。true の場合, 負の回転角に記号を付けます。既定値は false </dd>
+                    <dt>number: 数値,</dt>
+                    <dd>オプション。円弧の個数です。既定値は 1</dd>
+                    <dt>paint : true,</dt>
+                    <dd>オプション。true の場合, 角の内部を塗りつぶします。円弧の個数は強制的に 1 となります</dd>
+                    <dt>width : 数値,</dt>
+                    <dd>オプション。線の太さ(px)が指定した値となります。既定値は baseLineWidth(変更していない場合は 1)</dd>
+                    <dt>color : '色の種類',</dt>
+                    <dd>オプション。線や文字列・塗りつぶし・矢印が指定した色になります。線や文字列・矢印の場合, 既定値は baseColor(変更していない場合は 'black')。塗りつぶしの場合, 既定値は 'lightgray'</dd>
+                    <dt>string : '文字列',</dt>
+                    <dd>オプション。角の内部に描画する文字列</dd>
+                    <dt>font : 'フォントの大きさ・種類',</dt>
+                    <dd>オプション。文字列が指定したフォントの種類・サイズになります。既定値は baseFont (変更していない場合は' 20px serif ')です</dd>
+                    <dt>move : [数値, 数値],</dt>
+                    <dd>オプション。文字列の位置を調節するベクトル量です。単位は, そのコマンドにおいて描画される「x」の幅です</dd>
+                    <dt>arrow : true,</dt>
+                    <dd>オプション。矢印をつけます</dd>
+                    <dt>size : 数値,</dt>
+                    <dd>オプション。矢印の先端の正三角形の一辺の長さ(px)が指定した値になります。既定値は 10</dd>
+                    <dt>bar : true, または false,</dt>
+                    <dd>オプション。等角記号 | をつけます。 true と false では入力位置が反対(中心に関し対称)となります。既定値は 「なし (undefined)」</dd>
+                    <dt>barNumber : 自然数の値,</dt>
+                    <dd>オプション。等角記号 | の本数が指定した値となります。既定値は 1</dd>
+                    <dt>barSize : 数値,</dt>
+                    <dd>オプション。等角記号 | の長さ (px)を指定します。既定値は 8</dd>
+                    <dt>});</dt>
+                </dl>
+        </div>
+          <li><a href= "javascript:void(0)" onclick = "openClose('spiralMark')">spiralMark();</a>&emsp;指定した3点 A, B, C に対し \(\angle\mathrm{ABC}\) に周回する角記号(うずまき状)を描画します。矢印もつけられます</li>
+            <div  class="detail" id ="spiralMark">
+                <dl>
+                    <dt>spiralMark({</dt>
+                    <dt>points : [</dt>
+                    <dt>[Xa, Ya], [Xb, Yb], [Xc, Yc]</dt>
+                    <dt>], </dt>
+                    <dd>必須。線分 ba から線分 bc にいたる正の回転角に記号をつけます</dd>
+                    <dt>radius : 数値,</dt>
+                    <dd>オプション。与えた数値が開始時点の動径の長さ(px)となります。既定値は 10</dd>
+                    <dt>interval : 数値,</dt>
+                    <dd>うずまきの動径が増していく度合いです。既定値は 1</dd>
+                    <dt>clock : true,</dt>
+                    <dd>オプション。true の場合, 負の回転角に記号を付けます。既定値は false </dd>
+                    <dt>number: 数値 (正の整数),</dt>
+                    <dd>オプション。増やすほど周回する回数が増します</dd>
+                    <dt>width : 数値,</dt>
+                    <dd>オプション。線の太さ(px)が指定した値となります。既定値は baseLineWidth(変更していない場合は 1)</dd>
+                    <dt>color : '色の種類',</dt>
+                    <dd>オプション。線や文字列・塗りつぶし・矢印が指定した色になります。線や文字列・矢印の場合, 既定値は baseColor(変更していない場合は 'black')。塗りつぶしの場合, 既定値は 'lightgray'</dd>
+                    <dt>string : '文字列',</dt>
+                    <dd>オプション。角の内部に描画する文字列</dd>
+                    <dt>font : 'フォントの大きさ・種類',</dt>
+                    <dd>オプション。文字列が指定したフォントの種類・サイズになります。既定値は baseFont (変更していない場合は' 20px serif ')です</dd>
+                    <dt>move : [数値, 数値],</dt>
+                    <dd>オプション。文字列の位置を調節するベクトル量です。単位は, そのコマンドにおいて描画される「x」の幅です</dd>
+                    <dt>arrow : true,</dt>
+                    <dd>オプション。矢印をつけます</dd>
+                    <dt>size : 数値,</dt>
+                    <dd>矢印の先端の正三角形の一辺の長さ(px)が指定した値になります。既定値は 10</dd>
+                    <dt>});</dt>
+                </dl>
+        </div>
+		<li><a href= "javascript:void(0)" onclick = "openClose('drawAxisFoot')"> drawAxisFoot();</a>&emsp;指定した点から座標軸に垂線を下ろします。既定値は破線です。
+        垂線の足の位置に文字列を描画することもできます</li>
+		<div class = "detail" id = "drawAxisFoot">
+            <dl>
+                <dt>drawAxisFoot({</dt>
+                <dd></dd>
+                <dt>from : [x, y],</dt>
+                <dd>必須。垂線の基点の座標</dd>
+                <dt>to : 'xy', または 'x', または 'y',</dt>
+                <dd>オプション。それぞれ横軸と縦軸に，横軸のみに，縦軸のみに垂線を下ろします。既定値は 'xy'</dd>
+                <dt>width : 数値,</dt>
+                <dd>オプション。線の太さ(px)が指定した値となります。既定値は 1</dd>
+                <dt>color : '色の種類',</dt>
+                <dd>オプション。線や文字列の色が指定した色になります。既定値は baseColor(変更していない場合は 'black')</dd>
+                <dt>lineDash : 数値,</dt>
+                <dd>オプション。破線の実線部, 空白部の長さ(px)が指定した値となります。false
+					 にすると実線になります</dd>
+                <dt>stringX : '文字列' ,</dt>
+                <dd>オプション。横軸への垂線の足の位置に描画する文字列</dd>
+                <dt>stringY : '文字列' ,</dt>
+                <dd>オプション。縦軸への垂線の足の位置に描画する文字列</dd>
+                <dt>font : 'フォントのサイズ・種類', </dt>
+                <dd>オプション。stringX, stringY のフォントのサイズ・種類です</dd>
+                <dt>stringXmove : [数値, 数値], </dt>
+                <dd>オプション。stringX の位置を調整するベクトル量。単位は, そのコマンドにおいて描画される「x」の幅です</dd>
+                 <dt>stringYmove : [数値, 数値],</dt>
+                <dd>オプション。stringY の位置を調整するベクトル量。単位は, そのコマンドにおいて描画される「x」の幅です</dd>
+                 <dt>});</dt>
+            </dl>
+		</div>
+        
+        <li><a href= "javascript:void(0)" onclick = "openClose('drawHenko')">drawHenko();</a>&emsp;線分の両端を円弧で結びます。文字列を添えて長さを明記することもできます</li>
+        <div class ="detail" id="drawHenko">
+            <dl>
+                <dt>drawHenko({</dt><dd></dd>
+                <dt>from : [x_1, y_1],</dt>
+                <dd>必須。円弧をつける線分の端点の座標</dd>
+                <dt>to : [x_2, y_2],</dt>
+                <dd>必須。円弧をつける線分の端点の座標</dd>
+                <dt>angle : 数値 ( 0 より大きく 90 未満),</dt>
+                <dd>オプション。端点における線分と円弧のなす角(\(^\circ\))。既定値は 30</dd>
+                <dt>clock : true,</dt>
+                <dd>オプション。右に曲がりながら from から to に達する円弧となります。既定値は false</dd>
+                <dt>width : 数値,</dt>
+                <dd>オプション。線の太さ(px)が指定した値となります。既定値は 1 </dd>
+                <dt>color : '色の種類',</dt>
+                <dd>オプション。線や文字, 塗りつぶしの色が指定した色になります。既定値は baseColor(変更していない場合は 'black')。circle・box オプションをつけた場合の線・塗りつぶしの色にもなります </dd>
+                <dt>lineDash : 数値,</dt>
+                <dd>オプション。破線の実線部, 空白部の長さ(px)が指定した値となります</dd>
+                <dt>string : '文字列',</dt>
+                <dd>オプション。円弧の中間に添える文字列</dd>
+                <dt>font : 'フォントの種類・サイズ',</dt>
+                <dd>オプション。文字列が指定したフォント・サイズになります。既定値は baseFont (変更していない場合は' 20px serif ')です</dd>
+                <dt>move : [数値, 数値],</dt>
+                <dd>オプション。文字列の位置を調整するベクトル量。単位は, そのコマンドにおいて描画される「2」の幅です</dd>
+                <dt>circle : true, または false, </dt>
+                <dd>オプション。true の場合, 文字列を円で囲みます。false の場合, 文字列を白抜きにして円で囲みます</dd>
+                <dt>box : true, または false, </dt>
+                <dd>オプション。true の場合, 文字列を四角で囲みます。false の場合, 文字列を白抜きにして四角で囲みます</dd>
+                <dt>number : 数値,</dt>
+                <dd>オプション。等辺記号 (|) を描く場合の個数です。小数がある場合切り下げます。既定値は 0</dd>
+                <dt>size : 数値,</dt>
+                <dd>オプション。等辺記号(|)を描く場合, その長さの基準値からの倍率です。既定値は 1</dd>
+                <dt>interval : 数値,</dt>
+                <dd>オプション。等辺記号 (|) を複数描く場合, その間隔の基準値からの倍率です。既定値は 1</dd>
+                <dt>arrow : true,</dt>
+                <dd>オプション。矢印をつけます。既定値は false</dd>
+                <dt>arrowSize : 数値,</dt>
+                <dd>オプション。矢印の先の正三角形の辺の長さ (px) が指定した数値になります。既定値は 10</dd>
+                <dt>});</dt>
+                <dd></dd>
+            </dl>
+        </div>
+        <li><a href = "javascript:void(0)" onclick = "openClose('verticalMark')">verticalMark();</a>&emsp;垂直記号を描画します。</li>
+        <div id="verticalMark" class="detail">
+            <dl>
+                <dt>verticalMark({</dt>
+                <dd></dd>
+                <dt>at : [Xa, Ya],</dt>
+                <dd>必須。点a に記号を描きます</dd>
+                <dt>to : [Xb, Yb],</dt>
+                <dd>必須。線分 ab に対する垂直記号となります</dd>
+                <dt>clock : true,</dt>
+                <dd>オプション。true の場合, 線分 ab から時計周りの位置に記号を描きます。既定値は false</dd>
+                <dt>size : 数値,</dt>
+                <dd>オプション。与えた数値の 10 倍が直角記号の両端を結ぶ線分(対角線)の長さ(px)となります。既定値は 1</dd>
+                <dt>width : 数値,</dt>
+                <dd>オプション。線の太さ(px)が指定した値となります。既定値は 1 </dd>
+                <dt>color : '色の種類',</dt>
+                <dd>オプション。線の色が指定した色になります。既定値は baseColor(変更していない場合は 'black')</dd>
+            </dl>
+        </div>
+        <li><a href = "javascript:void(0)" onclick = "openClose('segmentMark')">segmentMark();</a>&emsp;　等辺記号を描画します。</li>
+            <div id ="segmentMark" class ="detail">
+                <dl>
+                    <dt>segmentMark({</dt>
+                    <dd></dd>
+                    <dt>between : [</dt>
+                    <dt>[Xa, Ya], [Xb, Yb]</dt>
+                    <dt>],</dt>
+                    <dd>必須。線分の端点 a, b の  座標</dd>
+                    <dt>number : 数値,</dt>
+                    <dd>オプション。等辺記号 (|) の個数です。小数がある場合切り下げます。既定値は 1</dd>
+                    <dt>size : 数値,</dt>
+                    <dd>オプション。等辺記号 (|) の長さの基準値からの倍率です。既定値は 1</dd>
+                    <dt>interval : 数値,</dt>
+                    <dd>オプション。等辺記号 (|) を複数描く場合の間隔を調整します。基準値から倍率となります。既定値は 1</dd>
+                    <dt>width : 数値,</dt>
+                    <dd>オプション。線の太さ(px)が指定した値となります。既定値は 1 </dd>
+                    <dt>color : '色の種類',</dt>
+                    <dd>オプション。線の色が指定した色になります。既定値は baseColor(変更していない場合は 'black')</dd>
+                    <dt>});</dt>
+                </dl>
+            </div>
+        <li><a href = "javascript:void(0)" onclick = "openClose('heikouMark')">heikouMark();</a>&emsp;　平行記号を描画します。</li>
+            <div id ="heikouMark" class ="detail">
+                <dl>
+                    <dt>heikouMark({</dt>
+                    <dd></dd>
+                    <dt>between : [</dt>
+                    <dt>[Xa, Ya], [Xb, Yb]</dt>
+                    <dt>],</dt>
+                    <dd>必須。線分の端点 a, b の  座標。a から b に向かう平行記号 (>) となります</dd>
+                    <dt>number : 数値,</dt>
+                    <dd>オプション。平行記号 (>) の個数です。小数がある場合切り下げます。既定値は 1</dd>
+                    <dt>size : 数値,</dt>
+                    <dd>オプション。平行記号 (>) の大きさの基準値からの倍率です。既定値は 1</dd>
+                    <dt>interval : 数値,</dt>
+                    <dd>オプション。平行記号 (>) を複数描く場合の間隔を調整します。基準値からの倍率となります。既定値は 1</dd>
+                    <dt>direction : true, または false,</dt>
+                    <dd>オプション。false にすると平行記号 (>)の向きが逆になります。既定値は true</dd>
+                    <dt>width : 数値,</dt>
+                    <dd>オプション。線の太さ(px)が指定した値となります。既定値は 1 </dd>
+                    <dt>color : '色の種類',</dt>
+                    <dd>オプション。線の色が指定した色になります。既定値は baseColor(変更していない場合は 'black')</dd>
+                    <dt>});</dt>
+                </dl>
+            </div>
+        <li><a href = "javascript:void(0)" onclick = "openClose('bunten')">点の名前 = bunten();</a>&emsp; 内分点・外分点を定義します。</li>
+        <div id="bunten" class ="detail">
+            <dl>
+                <dt>点の名前 = bunten({</dt>
+                <dt>between : [</dt>
+                <dt>[Xa, Ya], [Xb, Yb]</dt>
+                <dt>],</dt>
+                <dd>必須。線分の端点 a, b の座標</dd>
+                <dt>rate : [m, n],</dt>
+                <dd>必須。線分 ab を m : n に内分する点となります。線分 ab を 2 : 1 に外分したいのであれば, rate : [2, -1] のように, 負の値を用いてください。</dd>
+                <dt>});</dt>
+            </dl>
+        </div>
+        <li><a href = "javascript:void(0)" onclick = "openClose('polar')">点の名前 = polar();</a>&emsp; 原点を極とする極座標で点を定義します</li>
+        <div id="polar" class ="detail">
+            <dl>
+                  <dt>点の名前 = polar({</dt>
+                    <dd></dd>
+                 <dt>radius : 数値, </dt>
+                    <dd>必須。極からの距離(負の数値も可能です)</dd>
+                 <dt>radian : 数値,</dt>
+                    <dd>radian と degree の一方が必須。始線(横軸正方向)からの回転角 [rad]</dd>
+                <dt>degree : 数値,</dt>
+                    <dd>radian と degree の一方が必須。始線(横軸正方向)からの回転角 [\(^\circ\)]</dd>
+                <dt>pole : [Xa, Ya],</dt>
+                <dd>オプション。点a を極とします。既定値 は原点 [0, 0]</dd>
+                <dt>});</dt>
+            </dl>
+          
+        </div>
+    </ul>
+    <h3>関数を用いるもの</h3>
+    <ul style="list-style:disc">
+        <li><a href = "javascript:void(0)" onclick = "openClose('function')"> function 関数名(変数);</a>&emsp; 関数を定義します。 </li>
+		<div class = "detail" id ="function">
+            <dl>
+                <dt>function 関数名(変数){</dt>
+                <dt>return 計算式;</dt>
+                <dt>};</dt>
+            </dl>
+			<p>
+				利用できる各種定数, 関数については次をご覧ください。
+				<a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Math">Math - JavaScript | MDN</a>
+			<p>
+				例えば, 関数 \(f(x)=3x^2-\cos x+4\) を定義するには
+			<ul>
+				<li>function f(x){</li>
+				<ul>
+					<li>return 3*x*x - Math.cos(x) + 4;</li>
+				</ul>
+				<li>};</li>
+			</ul>
+			<p>
+				例えば, 関数 \(g(t)=\dfrac{e^t +e^{-t}}{2}\) を定義するには
+			<ul>
+				<li>function g(t){</li>
+				<ul>
+					<li>return ( Math.exp(-t) + Math.exp(t) ) / 2;</li>
+				</ul>
+				<li>};</li>
+				とします。
+			</ul>
+		</div>
+        <li><a href="javascript:void(0)" onclick="openClose('drawGraph')">drawGraph();</a>&emsp;関数のグラフを描画します。</li>
+        <div id ="drawGraph" class="detail">
+            <dl>
+                <dt>drawGraph({</dt>
+                <dd></dd>
+                <dt>func : 関数名,</dt>
+                <dd>必須。function コマンドで事前に定義が要ります</dd>
+                <dt>xMin : 数値,</dt>
+                <dd>オプション。曲線の左端の x 座標。既定値は描画領域の左端 xStart</dd>
+                <dt>xMax : 数値,</dt>
+                <dd>オプション。曲線の右端の x 座標。既定値は描画領域の右端 xEnd</dd>
+                <dt>width : 数値,</dt>
+                <dd>オプション。線の太さ(px)が指定した値となります。既定値は baseLineWidth (変更していない場合は 1 )</dd>
+                <dt>color : '色の種類',</dt>
+                <dd>オプション。線の色が指定した色になります。既定値は baseColor (変更していない場合は 'black') </dd>
+                <dt>lineDash : 数値,</dt>
+                <dd>オプション。破線の実線部, 空白部の長さ(px)が指定した値となります</dd>
+                <dt>});</dt>
+            </dl>
+        </div>
+        <li><a href="javascript:void(0)" onclick="openClose('drawGraphY')">drawGraphY();</a>&emsp;縦軸の文字(通常は y ) を変数とした関数のグラフを描画します。</li>
+        <div id ="drawGraphY" class="detail">
+                    <dl>
+                <dt>drawGraphY({</dt>
+                <dd></dd>
+                <dt>func : 関数名,</dt>
+                <dd>必須。function コマンドで事前に定義が要ります</dd>
+                <dt>yMin : 数値,</dt>
+                <dd>オプション。曲線の下端の y 座標。既定値は描画領域の下端 yStart</dd>
+                <dt>yMax : 数値,</dt>
+                <dd>オプション。曲線の上端の y 座標。既定値は描画領域の上端 yEnd</dd>
+                <dt>width : 数値,</dt>
+                <dd>オプション。線の太さ(px)が指定した値となります。既定値は baseLineWidth (変更していない場合は 1 )</dd>
+                <dt>color : '色の種類',</dt>
+                <dd>オプション。線の色が指定した色になります。既定値は baseColor (変更していない場合は 'black') </dd>
+                <dt>lineDash : 数値,</dt>
+                <dd>オプション。破線の実線部, 空白部の長さ(px)が指定した値となります</dd>
+                <dt>});</dt>
+            </dl>
+        </div>
+          <li><a href = "javascript:void(0)" onclick = "openClose('drawGraphT')"> drawGraphT();</a>&emsp;パラメータ表示された関数のグラフを描画します</li>
+        <div id ="drawGraphT" class="detail">
+            <dl>
+                <dt>drawGraphT({</dt>
+                <dd></dd>
+                <dt>funcX : 関数名,</dt>
+                <dd>必須。事前に関数の定義が要ります。x 座標のパラメータ表示が x =(関数) となります</dd>
+                   <dt>funcY : 関数名,</dt>
+                <dd>必須。事前に関数の定義が要ります。y 座標のパラメータ表示が y =(関数) となります</dd>
+                <dt>tMin : 数値,</dt>
+                <dd>必須。パラメータの下限の値</dd>
+                <dt>tMax : 数値,</dt>
+                <dd>必須。パラメータの上限の値</dd>
+                <dt>xMin : 数値,</dt>
+                <dd>オプション。描画の条件に「x 座標が xMin 以上」を加えます</dd>
+                 <dt>xMax : 数値,</dt>
+                <dd>オプション。描画の条件に「x 座標が xMax 以下」を加えます</dd>
+                 <dt>yMin : 数値,</dt>
+                <dd>オプション。描画の条件に「y 座標が yMin 以上」を加えます</dd>
+                 <dt>yMax : 数値,</dt>
+                <dd>オプション。描画の条件に「y 座標が yMax 以下」を加えます</dd>
+                <dt>width : 数値,</dt>
+                <dd>オプション。線の太さ(px)が指定した値となります。既定値は baseLineWidth    (変更していない場合は 1)</dd>
+                <dt>color : '色の種類',</dt>
+                <dd>オプション。線の色が指定した色になります。既定値は baseColor (変更していない場合は 'black')</dd>
+                <dt>lineDash : 数値,</dt>
+                <dd>オプション。破線の実線部, 空白部の長さ(px)が指定した値となります</dd>
+                <dt>});</dt>
+            </dl>
+        </div>
+                  <li><a href = "javascript:void(0)" onclick = "openClose('drawGraphR')"> drawGraphR();</a>&emsp;極表示された関数のグラフを描画します</li>
+        <div id ="drawGraphR" class="detail">
+            <dl>
+                <dt>drawGraphR({</dt>
+                <dd></dd>
+                <dt>func : 関数名,</dt>
+                <dd>必須。事前に関数の定義が要ります。横軸正方向を始線として \(r=関数\) のグラフを描きます</dd>
+                <dt>start : 数値,</dt>
+                <dd>変数(偏角)の下限の値</dd>
+                <dt>end : 数値,</dt>
+                <dd>変数(偏角)の上限の値</dd>
+                <dt>pole : [Xa, Ya], </dt>
+                <dd>オプション。極表示の極が点 a だとします。既定値は原点 [0, 0]</dd>
+                <dt>width : 数値,</dt>
+                <dd>オプション。線の太さ(px)が指定した値となります。既定値は baseLineWidth    (変更していない場合は 1)</dd>
+                <dt>color : '色の種類',</dt>
+                <dd>オプション。線の色が指定した色になります。既定値は baseColor (変更していない場合は 'black')</dd>
+                <dt>lineDash : 数値,</dt>
+                <dd>オプション。破線の実線部, 空白部の長さ(px)が指定した値となります</dd>
+                <dt>});</dt>
+            </dl>
+        </div>
+        <li><a href = "javascript:void(0)" onclick = "openClose('xPaint')"> xPaint();</a>&emsp; 指定した２つの曲線や直線を上下の境界とする領域を塗りつぶします。</li>
+			<div class = "detail" id = 'xPaint'>
+				<dl>
+                    <dt>xPaint({</dt>
+                    <dt>func1 : 関数名または数値,</dt>
+                    <dd>必須。y = (関数)または y=(数値) のグラフが１つ目の境界となります</dd>
+                    <dt>func2 : 関数名または数値,</dt>
+                    <dd>必須。y = (関数)または y=(数値) のグラフが２つ目の境界となります</dd>
+                    <dt>xMin : 数値,</dt>
+                    <dd>オプション。塗りつぶしの左端の x 座標</dd>
+						<dt>xMax : 数値,</dt>
+                    <dd>オプション。塗りつぶしの右端の x 座標</dd>
+                    <dt>color : '色の種類',</dt>
+                    <dd>オプション。塗りつぶしに用いる色を指定します。既定値は 'lightgray'</dd>
+                    <dt>});</dt>			
+                </dl>
+			</div>
+        <li><a href = "javascript:void(0)" onclick = "openClose('yPaint')"> yPaint();</a>&emsp; 指定した２つの曲線や直線を左右の境界とする領域を塗りつぶします。</li>
+			<div class = "detail" id = 'yPaint'>
+                <dl>
+                    <dt>yPaint({</dt>
+                    <dt>func1 : 関数名または数値,</dt>
+                    <dd>必須。x = (関数)または x=(数値) のグラフが１つ目の境界となります</dd>
+                    <dt>func2 : 関数名または数値,</dt>
+                    <dd>必須。x = (関数)または x=(数値) のグラフが２つ目の境界となります</dd>
+                    <dt>yMin : 数値,</dt>
+                    <dd>オプション。塗りつぶしの下端の y 座標</dd>
+                    <dt>yMax : 数値,</dt>
+                    <dd>オプション。塗りつぶしの上端の y 座標</dd>
+                    <dt>color : '色の種類',</dt>
+                    <dd>オプション。塗りつぶしに用いる色を指定します。既定値は 'lightgray'</dd>
+                    <dt>});</dt>
+                </dl>	
+			</div>
+             <li><a href = "javascript:void(0)" onclick = "openClose('tPaintX')"> tPaintX();</a>&emsp; パラメータ曲線と x 軸のはさむ領域を塗りつぶします</li>
+	   <div id ="tPaintX" class="detail">
+            <dl>
+                <dt>tPaintX({</dt>
+                <dd></dd>
+                <dt>funcX : 関数名,</dt>
+                <dd>必須。事前に関数の定義が要ります。x 座標のパラメータ表示が x =(関数) となります</dd>
+                   <dt>funcY : 関数名,</dt>
+                <dd>必須。事前に関数の定義が要ります。y 座標のパラメータ表示が y =(関数) となります</dd>
+                <dt>tMin : 数値,</dt>
+                <dd>必須。パラメータの下限の値</dd>
+                <dt>tMax : 数値,</dt>
+                <dd>必須。パラメータの上限の値</dd>
+                <dt>xMin : 数値,</dt>
+                <dd>オプション。塗りつぶしの条件に「x 座標が xMin 以上」を加えます</dd>
+                 <dt>xMax : 数値,</dt>
+                <dd>オプション。塗りつぶしの条件に「x 座標が xMax 以下」を加えます</dd>
+                <dt>color : '色の種類',</dt>
+                <dd>オプション。塗りつぶしの色が指定した色になります。既定値は 'lightgray'</dd>
+                <dt>});</dt>
+            </dl>
+        </div>
+               <li><a href = "javascript:void(0)" onclick = "openClose('tPaintY')"> tPaintY();</a>&emsp; パラメータ曲線と y 軸のはさむ領域を塗りつぶします</li>
+	   <div id ="tPaintY" class="detail">
+            <dl>
+                <dt>tPaintY({</dt>
+                <dd></dd>
+                <dt>funcX : 関数名,</dt>
+                <dd>必須。事前に関数の定義が要ります。x 座標のパラメータ表示が x =(関数) となります</dd>
+                   <dt>funcY : 関数名,</dt>
+                <dd>必須。事前に関数の定義が要ります。y 座標のパラメータ表示が y =(関数) となります</dd>
+                <dt>tMin : 数値,</dt>
+                <dd>必須。パラメータの下限の値</dd>
+                <dt>tMax : 数値,</dt>
+                <dd>必須。パラメータの上限の値</dd>
+                <dt>yMin : 数値,</dt>
+                <dd>オプション。塗りつぶしの条件に「y 座標が yMin 以上」を加えます</dd>
+                 <dt>yMax : 数値,</dt>
+                <dd>オプション。塗りつぶしの条件に「y 座標が yMax 以下」を加えます</dd>
+                <dt>color : '色の種類',</dt>
+                <dd>オプション。塗りつぶしの色が指定した色になります。既定値は 'lightgray'</dd>
+                <dt>});</dt>
+            </dl>
+        </div>
+        <li><a href = "javascript:void(0)" onclick = "openClose('rPaint')"> rPaint();</a>&emsp;極表示された動点と極を結ぶ線分の通過領域を塗りつぶします</li>
+        <div id ="rPaint" class="detail">
+            <dl>
+                <dt>rPaint({</dt>
+                <dd></dd>
+                <dt>func : 関数名,</dt>
+                <dd>必須。事前に関数の定義が要ります。横軸正方向を始線として \(r=関数\) のグラフを描きます</dd>
+                <dt>start : 数値,</dt>
+                <dd>変数(偏角)の下限の値</dd>
+                <dt>end : 数値,</dt>
+                <dd>変数(偏角)の上限の値</dd>
+                <dt>pole : [Xa, Ya], </dt>
+                <dd>オプション。極表示の極が点 a だとします。既定値は原点 [0, 0]</dd>
+                <dt>color : '色の種類',</dt>
+                <dd>オプション。線の色が指定した色になります。既定値は 'lightgray'</dd>
+                <dt>});</dt>
+            </dl>
+        </div>
+    </ul>
+    <h3>数直線に関するもの</h3>
+    <ul style="list-style:disc">
+    <li><a href = "javascript:void(0)" onclick = "openClose('sutyoku')"> sutyoku();</a>&emsp;数直線を描きます。
+        start, end の指定は要りません。数直線の太さ, 色, 目盛りのフォントはbaseLineWidth, baseColor, baseFontで調整してください</li>
+        <div id = "sutyoku" class = "detail">
+            <dl>
+                <dt>sutyoku({</dt>
+                <dd></dd>
+                <dt>range : [min, max],</dt>
+                <dd>必須。数直線の両端点の値</dd>
+                <dt>label : "数直線の名前", </dt>
+                <dd>オプション。数直線の名前を定めます</dd>
+                <dt>scale : true,</dt>
+                <dd>オプション。数直線に目盛りをつけます</dd>
+                <dt>scaleLabel : true,</dt>
+                <dd>オプション。目盛りに値をつけます</dd>
+                <dt>interval :[</dt>
+                <dd>区間を描きます</dd>
+                    <dl>
+                        <dt>{</dt>
+                        <dt>range : [min, max],</dt>
+                        <dd>必須。区間の宣言です。非有界の区間を描くには min や max を数直線の端点から外れた値にしてください</dd>
+                        <dt>height : 数値,</dt>
+                        <dd>オプション。区間の高さです。既定値は 1。最大は 10</dd>
+                        <dt>width : 数値, </dt>
+                        <dd>オプション。線の太さ (px)。既定値は 1</dd>
+                        <dt>size : 数値,</dt>
+                        <dd>オプション。端点の丸の大きさ。既定値は 1</dd>
+                        <dt>color : "色の種類",</dt>
+                        <dd>オプション。色の種類</dd>
+                        <dt> leftOpen : true,</dt>
+                        <dd>オプション。左側が開区間になります。既定値は false</dd>
+                        <dt>rightOpen : true, </dt>
+                        <dd>オプション。右側が開区間になります。既定値は false</dd>
+                        <dt>leftString : "文字列", </dt>
+                        <dd>オプション。区間の下端につける文字列</dd>
+                        <dt>rightString : "文字列",</dt>
+                        <dd>オプション。区間の上端につける文字列</dd>
+                        <dt>leftStringMove : [x, y],</dt>
+                        <dd>オプション。区間の下端につける文字列の位置調節です</dd>
+                        <dt> rightStringMove : [x, y],</dt>
+                        <dd>オプション。区間の上端につける文字列の位置調節です</dd>
+                        <dt>font : "フォントの大きさ・種類",</dt>
+                        <dd>オプション。区間の端点につける文字列のフォント</dd>
+                        <dt>}, </dt>
+                    </dl>
+                <dt>],</dt>
+                <dt>paint : [</dt>
+                <dd>帯状に塗りつぶしを行います</dd>
+                <dl>
+                    <dt>{</dt>
+                    <dt>range : [min, max],</dt>
+                    <dd>必須。塗りつぶす範囲の下端，上端</dd>
+                    <dt>height : 数値,</dt>
+                    <dd>オプション。塗りつぶす高さです。既定値は 1。最大は 10</dd>
+                    <dt>color : "色の種類",</dt>
+                    <dd>オプション。色の種類。既定値は "lightgray"</dd>
+                    <dt>},</dt>
+                </dl>
+                <dt>],</dt>
+                <dt>});</dt>
+            </dl>
+        </div>
+    </ul>
+     <h3>樹形図に関するもの</h3>
+    <ul style="list-style:disc">
+        <li><a href = "javascript:void(0)" onclick = "openClose('branch')"> branch();</a>&emsp;樹形図の先端の要素を描画します。
+            樹形図の先端要素の x 座標を 3 とします。樹形樹の伸縮は start, end を調整することで行えます。
+            <div id = "branch" class = "detail">
+                <dl>
+                <dt>変数名 = branch("文字列", 値 a);</dt>    
+                <dd>文字列を (3, a) に描画し，先端要素とします</dd>
+                </dl>
+            </div>
+        </li>
+        <li><a href = "javascript:void(0)" onclick = "openClose('tree')"> tree();</a>&emsp;樹形図の子要素をもとに親要素を描画し，線分で結びます。
+            <div id = "tree" class = "detail">
+                <dl>
+                <dt>変数名 = tree("文字列", [子要素a, 子要素b, 子要素c，&hellip;]);</dt>    
+                <dd>子要素の x 座標に 1 を加え，子要素の y 座標の平均をとり，親要素の位置とします．
+                    そこに文字列を描画して，各子要素と線分で結びます
+                    </dd>
+                </dl>
+            </div>
+        </li>
+         <li><a href = "javascript:void(0)" onclick = "openClose('treeA')"> treeA();</a>&emsp;樹形図の子要素をもとに親要素を描画し，矢印で結びます。
+            <div id = "treeA" class = "detail">
+                <dl>
+                <dt>変数名 = treeA("文字列", [子要素a, 子要素b, 子要素c，&hellip;]);</dt>    
+                <dd>子要素の x 座標に 1 を加え，子要素の y 座標の平均をとり，親要素の位置とします．
+                    そこに文字列を描画して，各子要素と矢印で結びます
+                    </dd>
+                </dl>
+            </div>
+        </li>
+    </ul>
+        <h3>空間図に関するもの</h3>
+    <ul style="list-style:disc">
+        <li>start = [x1, y1]; end = [x2, y2];&emsp;&emsp;冒頭に必須。空間図の場合, 実際の座標と関係なく，単に射影先の描画領域の指定です。 </li>
+        <li>vf = viewFrom(経度, 緯度);&emsp;&emsp;冒頭に必須。視点の位置の経度・緯度を度数法で指定します。
+        </li>
+        <li> 点の名前 = p3d(x, y, z);&emsp;&emsp;空間座標上の点を定義します。</li>
+        <li><a href = "javascript:void(0)" onclick = "openClose('drawAxis3d')"> drawAxis3d();</a>&emsp;座標軸を描画します。
+            <div id = "drawAxis3d" class = "detail">
+                <dl>
+                <dt>drawAxis3d({</dt>    
+                <dt>length : 数値,</dt>
+                <dd>オプション。３本の座標軸の長さが指定した値となります。規定値は 1</dd>
+                <dt>noOrigin : true, または false,</dt>
+                <dd>オプション。原点を描画しない場合は true にします。規定値は false </dd>    
+                <dt>xLabel : "文字列",</dt>
+                <dd>オプション。軸の名前を x軸から変更する場合に用います</dd>
+                <dt>xLabelMove : [x, y],</dt>
+                <dd> オプション。軸の名前の移動量です</dd>
+                <dt>yLabel : "文字列",</dt>
+                <dd>オプション。軸の名前を y軸から変更する場合に用います</dd>
+                <dt>yLabelMove : [x, y],</dt>
+                <dd> オプション。軸の名前の移動量です</dd>
+                <dt>zLabel : "文字列",</dt>
+                <dd>オプション。軸の名前を z軸から変更する場合に用います</dd>
+                <dt>zLabelMove : [x, y],</dt>
+                <dd> オプション。軸の名前の移動量です</dd>
+                <dt>});</dt>
+                </dl>
+            </div>
+        </li>
+        <li><a href = "javascript:void(0)" onclick = "openClose('drawEnko3d')"> drawEnko3d();</a>&emsp;円弧を描画します。
+            <div id = "drawEnko3d" class = "detail">
+                <dl>
+                <dt>drawEnko3d({</dt>    
+                <dt>center : 点の名前, または [x, y, z],</dt>
+                <dd>必須。 点の名前または座標によって中心を指定します</dd>
+                <dt>radius : 数値,</dt>
+                <dd>必須。半径が指定した値となります</dd>
+                <dt>nv : [a, b, c],</dt>
+                <dd>必須。円を含む平面の法線ベクトルを指定します</dd>
+                <dt>tMin : 数値,</dt>
+                <dd>オプション。円弧の開始角を度数法で指定します。長半径のどちらか一端が 0° です</dd>
+                <dt>tMax : 数値,</dt>
+                <dd>オプション。円弧の終了角を度数法で指定します。長半径のどちらか一端が 0° です</dd>
+                 <dt>width : 数値,</dt>
+                <dd>オプション。線の太さ(px)が指定した値となります。既定値は baseLineWidth(変更していない場合は 1)</dd>
+                  <dt>color : '色の種類',</dt>
+                <dd>オプション。線の色が指定した色になります。既定値は baseColor(変更していない場合は 'black')</dd>
+                  <dt>lineDash : 数値,</dt>
+                <dd>オプション。破線の実線部, 空白部の長さ(px)が指定した値となります</dd>
+                  <dt>paint : '色の種類',</dt>
+                <dd>オプション。円や扇型の内部を指定した色で塗りつぶします。開始・終了位置の異なる円弧の場合, 両端を線分で結んでから塗りつぶします</dd>
+                </dl>
+            </div>
+        </li>
+        <li><a href = "javascript:void(0)" onclick = "openClose('verticalMark3d')"> verticalMark3d();</a>&emsp;垂直記号を描画します。
+            <div id = "verticalMark3d" class = "detail">
+                <dl>
+                <dt>verticalMark3d({</dt>    
+                <dt>points : [点の名前A, 点の名前H, 点の名前B],</dt>
+                <dd>必須。 \(\angle \mathrm{AHC}\) に直角記号を描画します</dd>
+                <dt>size : 数値,</dt>
+                <dd>オプション。与えた数値の 10 倍が垂直記号の点 H から対角までの距離(px)となります。既定値は 1</dd>
+                <dt>width : 数値,</dt>
+                <dd>オプション。線の太さ(px)が指定した値となります。既定値は 1 </dd>
+                <dt>color : '色の種類',</dt>
+                <dd>オプション。線の色が指定した色になります。既定値は baseColor(変更していない場合は 'black')</dd>
+                </dl>
+            </div>
+        <li><a href = "javascript:void(0)" onclick = "openClose('drawGraphT3d')"> drawGraphT();</a>&emsp;空間においてパラメータ表示された関数のグラフを描画します</li>
+        <div id ="drawGraphT3d" class="detail">
+            <dl>
+                <dt>drawGraphT3d({</dt>
+                <dd></dd>
+                <dt>funcX : 関数名,</dt>
+                <dd>必須。事前に関数の定義が要ります。x 座標のパラメータ表示が x =(関数) となります</dd>
+                <dt>funcY : 関数名,</dt>
+                <dd>必須。事前に関数の定義が要ります。y 座標のパラメータ表示が y =(関数) となります</dd>
+                <dt>funcZ : 関数名,</dt>
+                <dd>必須。事前に関数の定義が要ります。z 座標のパラメータ表示が z =(関数) となります</dd>
+                <dt>tMin : 数値,</dt>
+                <dd>必須。パラメータの下限の値</dd>
+                <dt>tMax : 数値,</dt>
+                <dd>必須。パラメータの上限の値</dd>
+                <dt>xMin : 数値,</dt>
+                <dd>オプション。描画の条件に「x 座標が xMin 以上」を加えます</dd>
+                 <dt>xMax : 数値,</dt>
+                <dd>オプション。描画の条件に「x 座標が xMax 以下」を加えます</dd>
+                 <dt>yMin : 数値,</dt>
+                <dd>オプション。描画の条件に「y 座標が yMin 以上」を加えます</dd>
+                 <dt>yMax : 数値,</dt>
+                <dd>オプション。描画の条件に「y 座標が yMax 以下」を加えます</dd>
+                <dt>zMin : 数値,</dt>
+                <dd>オプション。描画の条件に「z 座標が zMin 以上」を加えます</dd>
+                 <dt>zMax : 数値,</dt>
+                <dd>オプション。描画の条件に「z 座標が zMax 以下」を加えます</dd>
+                <dt>width : 数値,</dt>
+                <dd>オプション。線の太さ(px)が指定した値となります。既定値は baseLineWidth    (変更していない場合は 1)</dd>
+                <dt>color : '色の種類',</dt>
+                <dd>オプション。線の色が指定した色になります。既定値は baseColor (変更していない場合は 'black')</dd>
+                <dt>lineDash : 数値,</dt>
+                <dd>オプション。破線の実線部, 空白部の長さ(px)が指定した値となります</dd>
+                <dt>});</dt>
+            </dl>
+        </div>
+        </li>
+    </ul>
+    <h3>箱ひげ図に関するもの</h3>
+    <ul style="list-style:disc">
+        <li><a href = "javascript:void(0)" onclick = "openClose('hakohige')"> hakohige();</a>&emsp;箱ひげ図を描きます。
+        start, end の指定は要りません。線の太さ, 色, 目盛りのフォントはbaseLineWidth, baseColor, baseFontで調整してください
+        <div id = "hakohige" class = "detail">
+            <dl>
+                <dt>hakohige({</dt>
+                <dd></dd>
+                <dt>range : [min, max],</dt>
+                <dd>必須。数直線の両端点の値</dd>
+                <dt>box :[</dt>
+                <dd>必須．箱とヒゲを描きます</dd>
+                <dl>
+                    <dt>[min, Q1, Q2, Q3, max, '名前'],[ ],</dt>
+                    <dd>配列 [最小値，第1四分位数，第2四分位数，第3四分位数，最大値，'名前'] を要素とする配列です。要素を加えるごとに
+                    描画される高さは 1 ずつ増えていきます</dd>
+                </dl>
+                <dt>],</dt>
+                <dt>height : 数値,</dt>
+                <dd>オプション。数直線の高さを 0 とした，箱ヒゲ図の上端の高さです。規定値は 5</dd>
+                <dt>label : "数直線の名前", </dt>
+                <dd>オプション。数直線の名前を定めます。規定値は 'x'。' '(空文字)にすることもできます</dd>
+                <dt>scaleLabel : true,</dt>
+                <dd>オプション。目盛りに値をつけます。規定値は false</dd>
+                <dt>scaleLine : true,</dt>
+                <dd>オプション。目盛を延長した補助線(破線)を描画します。規定値は false</dd>
+                <dt>scaleLineDash : 数値,</dt>
+                <dd>オプション。補助線(破線)の実線部，破線部の長さが指定した長さ(px)になります．規定値は 3</dd>
+                <dt>});</dt>
+            </dl>
+        </div>
+        </li>
+    </ul>
+    <h3>論理回路に関するもの</h3>
+    <ul style="list-style:disc">
+        <li><a href = "javascript:void(0)" onclick = "openClose('andGate')"> andGate();</a>&emsp;AND 回路を描きます。右端点(出力)の座標
+            start を引数として，左端点(入力)の上下I，Jの座標[I, J]を返り値とします。線の太さ, 色, 目盛りのフォントはbaseLineWidth, baseColor, baseFontで調整してください
+            <div id = "andGate" class = "detail">
+                <dl>
+                    <dt>andGate({</dt>
+                    <dd></dd>
+                    <dt>start : [x, y],</dt>
+                    <dd>必須。右端点の座標</dd>
+                        <dt>});</dt>
+                </dl>
+            </div>
+        </li>
+        <li><a href = "javascript:void(0)" onclick = "openClose('orGate')"> orGate();</a>&emsp;OR 回路を描きます。右端点(出力)の座標
+            start を引数として，左端点(入力)の上下I，Jの座標[I, J]を返り値とします。線の太さ, 色, 目盛りのフォントはbaseLineWidth, baseColor, baseFontで調整してください
+            <div id = "orGate" class = "detail">
+                <dl>
+                    <dt>orGate({</dt>
+                    <dd></dd>
+                    <dt>start : [x, y],</dt>
+                    <dd>必須。右端点の座標</dd>
+                        <dt>});</dt>
+                </dl>
+            </div>
+        </li>
+        <li><a href = "javascript:void(0)" onclick = "openClose('notGate')"> notGate();</a>&emsp;NOT 回路を描きます。右端点(出力)の座標
+            start を引数として，左端点(入力)の上下Iの座標[I]を返り値とします。線の太さ, 色, 目盛りのフォントはbaseLineWidth, baseColor, baseFontで調整してください
+            <div id = "notGate" class = "detail">
+                <dl>
+                    <dt>notGate({</dt>
+                    <dd></dd>
+                    <dt>start : [x, y],</dt>
+                    <dd>必須。右端点の座標</dd>
+                        <dt>});</dt>
+                </dl>
+            </div>
+        </li>
+        <li><a href = "javascript:void(0)" onclick = "openClose('nandGate')"> nandGate();</a>&emsp;NAND 回路を描きます。右端点(出力)の座標
+            start を引数として，左端点(入力)の上下I，Jの座標[I, J]を返り値とします。線の太さ, 色, 目盛りのフォントはbaseLineWidth, baseColor, baseFontで調整してください
+            <div id = "nandGate" class = "detail">
+                <dl>
+                    <dt>nandGate({</dt>
+                    <dd></dd>
+                    <dt>start : [x, y],</dt>
+                    <dd>必須。右端点の座標</dd>
+                        <dt>});</dt>
+                </dl>
+            </div>
+            </li>
+            <li><a href = "javascript:void(0)" onclick = "openClose('norGate')"> norGate();</a>&emsp;NOR 回路を描きます。右端点(出力)の座標
+                start を引数として，左端点(入力)の上下I，Jの座標[I, J]を返り値とします。線の太さ, 色, 目盛りのフォントはbaseLineWidth, baseColor, baseFontで調整してください
+                <div id = "norGate" class = "detail">
+                    <dl>
+                        <dt>norGate({</dt>
+                        <dd></dd>
+                        <dt>start : [x, y],</dt>
+                        <dd>必須。右端点の座標</dd>
+                            <dt>});</dt>
+                    </dl>
+                </div>
+            </li>
+            <li><a href = "javascript:void(0)" onclick = "openClose('xorGate')"> xorGate();</a>&emsp;XOR 回路を描きます。右端点(出力)の座標
+                start を引数として，左端点(入力)の上下I，Jの座標[I, J]を返り値とします。線の太さ, 色, 目盛りのフォントはbaseLineWidth, baseColor, baseFontで調整してください
+                <div id = "xorGate" class = "detail">
+                    <dl>
+                        <dt>xorGate({</dt>
+                        <dd></dd>
+                        <dt>start : [x, y],</dt>
+                        <dd>必須。右端点の座標</dd>
+                            <dt>});</dt>
+                    </dl>
+                </div>
+            </li>
+    </ul>
+    <h2>canvasMaker.js について</h2>
+        <ul id="lesson">
+            <li>canvasMaker.js は主に科学・数学分野で用いる図を描画するための JavaScript マクロです。このサイトでは, canvasMaker.js を用いて実際に描画を行います。作成した図は, 
+            右クリックにより画像ファイルとして保存することができます。</li>
+            <li>コードの入力は, 原則として各種コマンドを「; (セミコロン)」で区切って連ねる
+            ことで行います。見やすさのために適宜, 改行を行ってください。改行は canvasMaker.js の実行に影響しません。また非推奨ですが, 改行を行うことでコマンド間の「; (セミコロン)」を省略することもできます。</li>
+            <li>canvasMaker.js は, テキストエリアにおいて「;（半角セミコロン）」または「Esc」が押されると, コードの解読・実行を試みます。コードが正しければ, ただちにプレビュー欄の描画に変化が起こります。(もちろん, それが実際の描画を伴うコマンドであればです。)</li>
+            <li>デバッグは，ブラウザのコンソールに表示されるエラーメッセージを見ながら行います。</li>
+                <ul>
+                    <li>chrome なら「その他のツール」→「デベロッパーツール」→「コンソール」</li>
+                    <li>firefox なら「その他のツール」→「ブラウザーコンソール」</li>
+                    <li>safari なら「設定」→「詳細」の「Web デベロッパ用の機能を表示」にチェック→メニューバー「開発」の「JavaScript コンソールを表示」</li>
+                    <li>edge なら</li>
+                </ul>
+            <li>コマンドの( )内に入力する引数は JavaScript のオブジェクトです。つまり, { }の中に「属性 : 値 (数値, 配列, 文字列など)」からなる項目を「, (カンマ)」で区切って連ねたものです。最低限, 必須の項目がそろっていればよく, 入力する順番は自由です。
+            </li>
+            <li>コードの入力は原則として,
+                <ul>
+                    <li>start = [xStart, yStart];</li>
+                    <li>end = [xEnd, yEnd];</li>
+                </ul>
+                 の形から始まります。つまり, 描画領域のそれぞれ左下・右上の端点である start・end を, 直交座標におけるどの座標に見立てるのかを宣言するというわけです。
+            </li>
+            <li>その他の各種コマンドについては, 上記の説明やサンプルをご覧ください。</li>
+            <li><a href ="javascript:void(0)" onclick = "openClose('code')">HTML の知識をお持ちの方は canvasMaker.js を引用することにより, 各自のウェブサイト上で直接描画を行うこともできます。</a>
+                <div id ="code" class="detail">
+                <p>その場合, &lt;head &gt; &lt;/head&gt; タグ内で</p>
+                <p>&lt;script src = "http://mathemedia.information.jp/canvasMaker.js"&gt;&lt;/script&gt;</p>
+                <p>として canvasMaker.js を引用した上で, 
+                    &lt;body &gt; &lt;/body&gt; タグ内の描画をしたい位置に</p>
+                    <ul>
+                        <li>&lt;canvas id="■■■■"&ensp;width = ●(ピクセル数)&ensp;height = ▲(ピクセル数)> &lt;/canvas&gt;</li>
+                        <li>&lt;script&gt;</li>
+                        <li>var myCanvas = document.getElementById("■■■■");</li>
+                        <li>var canvasWidth = myCanvas.width;</li>
+                        <li>var canvasHeight = myCanvas.height;</li>
+                        <li>var ctx = myCanvas.getContext('2d');</li>
+                        <li>var baseFont = "20px serif";</li>
+                        <li>var baseColor = 'black';</li>
+                        <li>var baseLineWidth = 1;</li>
+                        <li>ctx.font = baseFont;</li> 
+                        <li>var margin = canvasWidth / 30;</li>     
+                        <li>□□</li>
+                        <li>&lt;/script&gt;</li>     
+                </ul>
+                <p>と記述して, □□ に上のテキストエリアのコードをコピー・ペーストして下さい。
+                描画領域の横の長さ●, 縦の長さ▲に異なる値を指定して縦長, 横長の図を描画することもできますが, 円や角度に関するコマンドなど描画が乱れる場合があります。
+                    </p>
+                </div>
+            </li>
+            <li>テキストエリアの下にある「保存する」ボタンを押すことにより, 作成途中のコードを保存することが出来ます。保存されたコードは, ページ右の「保存済み」エリアに表示されます。保存されたコードを呼び出す際には, その時点でテキストエリアにあったコードは消失しますのご注意ください。</li>
+            <li>コードの保存には indexedDataBase を用いています。indexedDataBase はブラウザごとに設けられたローカルな保存領域を利用します。ブラウザにより「Web サイトデータ」「履歴」「キャッシュ」など, 呼び方は異なるようですが, 該当するものを消去するとコードが削除されますのでご注意ください。
+            また, ブラウザの更新・再インストールなどでも削除されることがあるかもしれません。</li>
+            <li>このサイト上にコードをサーバーへ送信するようなタグ・スクリプトは含まれていません。また, 筆者の知る限り, 他のドメインではこのサイトで作成された indexedDataBase を読み出すことができません。それでも万全を期すという方は, 機密性のあるコードを保存しないでください。 </li>
+            <li><!--canvasMaker.js は 小野広平 が作成しました。-->お問い合わせは<a href="mailto:frompage@mathmedia.information.jp"> こちら </a>まで。</li>
+    </ul>
+    <script src = "canvasMaker-main.js"></script>
+    <script src = "canvasMaker2.js"></script>
+    </body>
+</html>
