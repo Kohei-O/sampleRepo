@@ -8,7 +8,7 @@
  *
  */
 function getZahyou(point) {
-    'use strict';
+    "use strict";
 
     if (Array.isArray(point) === false){
 
