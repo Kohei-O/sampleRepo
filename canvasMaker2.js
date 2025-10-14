@@ -225,7 +225,7 @@ function putString(
         // box が true の時
     } else if (box === true) {
 
-        const boxWidth = ctx.measureText(args.string).width;
+        const boxWidth = ctx.measureText(string).width;
         
         const boxHeight = ctx.measureText('w').width;
         
@@ -244,7 +244,7 @@ function putString(
         // box が false の時
     }  else if (box === false) {
 
-        const boxWidth = ctx.measureText(args.string).width;
+        const boxWidth = ctx.measureText(string).width;
 
         const boxHeight = ctx.measureText('w').width;
         
