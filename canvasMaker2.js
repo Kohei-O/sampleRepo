@@ -83,6 +83,8 @@ function getZahyouInverse(point) {
  * @param {boolean} [options.arrow=false] - true のとき文字列上に矢印を描画。
  * @param {number[]} options.at - 描画する仮想座標 [x, y]（必須）。
  * @param {boolean} [options.vector=false] - 互換性用フラグ（arrow と同様の動作）。
+ * @param {boolean} [options.vertical=false] - true のとき縦書きにする。
+ * @param {number} [options.y_adjust = 5] - 縦書きのときの文字の間隔（px）。
  *
  * @description 文字列を描画します。文字を四角や丸で囲んだり，矢印をつけることもできます。グローバル変数 baseFont, baseColor, baseLineWidth, ctx を利用します。内部で getZahyou, getZahyouInverse, drawArrow, baseCFL を呼び出します。
  *
@@ -100,7 +102,9 @@ function putString(
         circle = undefined,
         arrow = false,
         at = undefined,
-        //広報互換性のための処理
+        vertical = false,
+        y_adjust = 5,
+        //後方互換性のための処理
         vector = false
     } = {}
 ){
@@ -143,7 +147,7 @@ function putString(
 
         throw new Error("【putString】 move には配列 [数値, 数値] を代入してください")
     
-        // numberが数値でないまたは0以下の時
+        // widthが数値でないまたは0以下の時
     } else if (typeof width !== 'number' || width <= 0){
 
         throw new Error('【putString】width には正の数値を代入してください')
@@ -162,6 +166,16 @@ function putString(
     } else if (typeof arrow !== 'boolean') {
 
         throw new Error('【putString】arrow には true か false を代入してください')
+
+        // vertical が true/false でない時
+    } else if (typeof vertical !== 'boolean') {
+
+        throw new Error('【putString】vertical には true か false を代入してください')
+
+         // y_adjustが数値でないまたは0以下の時
+    } else if (typeof y_adjust !== 'number' || y_adjust <= 0){
+
+        throw new Error('【putString】y_adjust には正の整数値を代入してください')
 
     }
 
@@ -291,9 +305,31 @@ function putString(
             }
         );
     
-        //他の場合のとき
-    } else {
+        //縦書きのとき
+    } else if (vertical === true) {
+
+        //縦書きのときに用いる単位高さはAとする
+        const unitHeight = ctx.measureText('A').fontBoundingBoxAscent;
+
+        ctx.fillStyle = color;
+
+        let Y = zahyou[1] + moveY;
+
+        let str = "";
+
+        for (let i = 0; i < string.length; i++){
+
+            str = string[i]
+
+            ctx.fillText(str, zahyou[0]+ moveX, Y); 
+
+            Y = Y + unitHeight + y_adjust;
+
+        }
     
+        //他の場合の時
+    } else {
+
         ctx.fillStyle = color;
     
         ctx.fillText(string, zahyou[0]+ moveX, zahyou[1] + moveY); 
