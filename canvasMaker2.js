@@ -3464,3 +3464,159 @@ function flowInput(args){//フローチャートの平行四辺形
     }
     return obj;
 }
+
+/**
+ * @description 棒グラフを描きます。
+ * @param {object} options - 描画オプションを指定するオブジェクト。
+ * @param {number} [options.chartWidth = undefined] - 棒グラフ全体の幅の目安。既定値は(棒の個数) + 1。
+ * @param {number} [options.chartHeight] - 棒グラフ全体の幅。データの最大値以上の値。必須です。
+ * @param {number} [options.barWidth = 0.25] - 棒の幅。
+ * @param {Array<obj>} [options.input = []] - 棒グラフのデータ配列。各要素は各棒の高さを表します。
+ * @param {number} [options.padding_x = 0.1] - 棒グラフの左 (右)の余白のchartWidthに対する割合。
+ * @param {number} [options.padding_y = 0.1] - 棒グラフの下 (上)の余白のchartHeightに対する割合。
+ * @returns {undefined} なし
+ */
+function barChart(//棒グラフを書く関数
+    {
+    chartWidth = undefined,
+    chartHeight = undefined,
+    barWidth = 0.25,
+    input = [{n : "", v : 1}],
+    paddingX = 0.1,
+    paddingY = 0.1,
+    color = "#a3a3a3",
+    nameVertical = false,
+    nameFont = baseFont,
+    nameMove = [-0.5,-2],
+    scale = 0,
+    lineDash = 3,
+    scaleMove = [-1.6, -0.6],
+    scaleFont = baseFont,
+    } = {}
+){
+    //chartWidthの入力がない場合は，データ数（棒の数）+ 1 を chartWidthとする
+    if (chartWidth === undefined){
+        
+        chartWidth = input.length + 1;
+
+    }
+
+    //chartHeightの入力がない場合は，データの最大値 + 1を chartHeightとする
+    if (chartHeight === undefined){
+    
+        let max = 0;
+
+        for (let i = 0; i < input.length; i++){
+
+            if (input[i].v > max){
+
+                max = input[i].v;
+
+            }
+        
+        }
+        
+        chartHeight = max + 1;
+
+    }
+
+    //描画領域是全体と棒グラフのサイズの設定
+    start = [- paddingX * chartWidth, - paddingY * chartHeight];
+
+    end = [(1 + paddingX) * chartWidth, (1 + paddingY) * chartHeight];
+
+    const aria_start = getZahyou(start);
+    
+    const aria_end = getZahyou(end);
+
+    const chart_start = getZahyou([0, 0]);
+
+    const chart_end = getZahyou([end[0] - paddingX * chartWidth, end[1] - paddingY * chartHeight]);
+    
+    //棒グラフの外枠を描く
+    ctx.beginPath();
+
+    ctx.moveTo(chart_start[0], chart_start[1]);
+
+    ctx.lineTo(chart_start[0], chart_end[1]);
+
+    ctx.lineTo(chart_end[0], chart_end[1]);
+
+    ctx.lineTo(chart_end[0], chart_start[1]);
+
+    ctx.lineTo(chart_start[0], chart_start[1]);
+
+    ctx.lineWidth = baseLineWidth;
+    
+    ctx.stroke()
+
+    //データ数(棒の数)の取得
+    const bar_number = input.length;
+
+    //棒の描画
+    for (let i = 1; i <= bar_number; i++){
+
+        const bar_sw = getZahyou([i - barWidth, 0]);
+        const bar_se = getZahyou([i + barWidth, 0]);
+        const bar_nw = getZahyou([i - barWidth, input[i - 1].v]);
+        const bar_ne = getZahyou([i + barWidth, input[i - 1].v]);
+
+        ctx.beginPath();
+        ctx.moveTo(bar_sw[0], bar_sw[1]);
+        ctx.lineTo(bar_se[0], bar_se[1]);
+        ctx.lineTo(bar_ne[0], bar_ne[1]);
+        ctx.lineTo(bar_nw[0], bar_nw[1]);
+        ctx.lineTo(bar_sw[0], bar_sw[1]);
+        ctx.fillStyle = color;
+        ctx.fill();
+        
+    }
+
+    //棒の名前の描画
+    for (let i = 1; i <= bar_number; i++){
+
+        putString({
+            at : [i, 0],
+            string : input[i - 1].n,
+            vertical : nameVertical,
+            font : nameFont,
+            move : nameMove
+        });
+    
+    }
+
+    //目盛り線の描画。目盛線の間隔として正の値を入力した場合に行う
+    if (typeof scale  === "number" && scale > 0){
+
+        for (let y = scale; y < chartHeight; y += scale){
+
+            const line_start = getZahyou([0, y]);
+
+            const line_end = getZahyou([chartWidth, y]);
+
+            ctx.beginPath();
+
+            ctx.moveTo(line_start[0], line_start[1]);
+
+            ctx.lineTo(line_end[0], line_end[1]);
+
+            ctx.lineWidth = baseLineWidth;
+
+            ctx.setLineDash([lineDash, lineDash]);
+
+            ctx.stroke();
+
+            putString({
+                at : [0, y],
+                string : String(y),
+                move : scaleMove,
+                font : scaleFont
+            })
+
+        }
+        
+        //実線に戻す
+        ctx.setLineDash([]);
+
+    }
+}
