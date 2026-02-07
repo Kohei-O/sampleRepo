@@ -3467,21 +3467,35 @@ function flowInput(args){//フローチャートの平行四辺形
 
 /**
  * @description 棒グラフを描きます。
- * @param {object} options - 描画オプションを指定するオブジェクト。
- * @param {number} [options.chartWidth = undefined] - 棒グラフ全体の幅の目安。既定値は(棒の個数) + 1。
- * @param {number} [options.chartHeight] - 棒グラフ全体の幅。データの最大値以上の値。必須です。
- * @param {number} [options.barWidth = 0.25] - 棒の幅。
- * @param {Array<obj>} [options.input = []] - 棒グラフのデータ配列。各要素は各棒の高さを表します。
- * @param {number} [options.padding_x = 0.1] - 棒グラフの左 (右)の余白のchartWidthに対する割合。
- * @param {number} [options.padding_y = 0.1] - 棒グラフの下 (上)の余白のchartHeightに対する割合。
+ * @param {Object} args - 描画オプションを指定するオブジェクト。
+ * @param {Array<{name : string, value : number}>} [args.input = [{name : "", value : 1}]] それぞれの棒の名前と値のペアを要素とする配列。
+ * @param {number} [args.chartWidth = undefined] - 棒グラフ全体の幅の目安。既定値は(棒の個数) + 1。
+ * @param {number} [args.chartHeight] - 棒グラフ全体の高さ。定値は(データの最大値) + 1。
+ * @param {number} [args.barWidth = 0.25] - 棒の幅。
+ * @param {number} [args.padding_x = 0.1] - 棒グラフ全体に対する左 (右)の余白の割合。
+ * @param {number} [args.padding_y = 0.1] - 棒グラフ全体に対する下 (上)の余白の割合。
+ * @param {string} [args.color = "#a3a3a3"] - 棒の色。
+ * @param {boolean} [args.nameVertical = false] - 棒の名前を縦書きにするかどうか。
+ * @param {string} [args.nameFont = baseFont] - 棒の名前のフォント設定。
+ * @param {Array<number>} [args.nameMove = [-0.5,-2]] - 棒の名前の位置調整。
+ * @param {number} [args.scale = 0] - 目盛り線の間隔。正の値を入力すると，それを間隔として目盛線を描きます
+ * @param {number} [args.lineDash = 3] - 目盛り線の破線の細かさ。
+ * @param {Array<number>} [args.scaleMove = [-1.6, -0.6]] - 目盛りの数値ラベルの位置調整。
+ * @param {string} [args.scaleFont = baseFont] - 目盛りの数値ラベルのフォント設定。
+ * @param {string} [args.label = ""] - 棒グラフの縦軸ラベル。
+ * @param {string} [args.labelFont = baseFont] - 縦軸ラベルのフォント設定。
+ * @param {Array<number>} [args.labelMove = [-2.5, 0]] - 縦軸ラベルの位置調整。
+ * @param {string} [args.unit = ""] - 棒グラフの単位表示。
+ * @param {string} [args.unitFont = baseFont] - 単位表示のフォント設定。
+ * @param {Array<number>} [args.unitMove = [-2.5, 0]] - 単位表示の位置調整。
  * @returns {undefined} なし
  */
 function barChart(//棒グラフを書く関数
     {
+    input = [{name : "", value : 1}],
     chartWidth = undefined,
     chartHeight = undefined,
     barWidth = 0.25,
-    input = [{n : "", v : 1}],
     paddingX = 0.1,
     paddingY = 0.1,
     color = "#a3a3a3",
@@ -3492,6 +3506,12 @@ function barChart(//棒グラフを書く関数
     lineDash = 3,
     scaleMove = [-1.6, -0.6],
     scaleFont = baseFont,
+    label = "",
+    labelFont = baseFont,
+    labelMove = [-2.5, 0],
+    unit = "",
+    unitFont = baseFont,
+    unitMove = [-2.5, 0],
     } = {}
 ){
     //chartWidthの入力がない場合は，データ数（棒の数）+ 1 を chartWidthとする
@@ -3508,9 +3528,9 @@ function barChart(//棒グラフを書く関数
 
         for (let i = 0; i < input.length; i++){
 
-            if (input[i].v > max){
+            if (input[i].value > max){
 
-                max = input[i].v;
+                max = input[i].value;
 
             }
         
@@ -3558,8 +3578,8 @@ function barChart(//棒グラフを書く関数
 
         const bar_sw = getZahyou([i - barWidth, 0]);
         const bar_se = getZahyou([i + barWidth, 0]);
-        const bar_nw = getZahyou([i - barWidth, input[i - 1].v]);
-        const bar_ne = getZahyou([i + barWidth, input[i - 1].v]);
+        const bar_nw = getZahyou([i - barWidth, input[i - 1].value]);
+        const bar_ne = getZahyou([i + barWidth, input[i - 1].value]);
 
         ctx.beginPath();
         ctx.moveTo(bar_sw[0], bar_sw[1]);
@@ -3577,7 +3597,7 @@ function barChart(//棒グラフを書く関数
 
         putString({
             at : [i, 0],
-            string : input[i - 1].n,
+            string : input[i - 1].name,
             vertical : nameVertical,
             font : nameFont,
             move : nameMove
@@ -3612,11 +3632,35 @@ function barChart(//棒グラフを書く関数
                 move : scaleMove,
                 font : scaleFont
             })
-
         }
         
         //実線に戻す
         ctx.setLineDash([]);
+    }
+
+    //ラベルの表示
+    if (label !== "") {
+
+        putString({
+            at: [- 0.05 * chartWidth, chartHeight / 2],
+            string: label,
+            move: labelMove,
+            font: labelFont,
+            vertical: true
+        });
 
     }
+
+    //単位の表示
+    if (unit !== "") {
+
+        putString({
+            at: [0, chartHeight],
+            string: unit,
+            move: unitMove,
+            font: unitFont
+        });
+        
+    }
+
 }
