@@ -3482,6 +3482,7 @@ function flowInput(args){//フローチャートの平行四辺形
  * @param {number} [args.lineDash = 3] - 目盛り線の破線の細かさ。
  * @param {Array<number>} [args.scaleMove = [-1.6, -0.6]] - 目盛りの数値ラベルの位置調整。
  * @param {string} [args.scaleFont = baseFont] - 目盛りの数値ラベルのフォント設定。
+ * @param {number} [args.scaleAdjust = 1] - 数値をこの値で割った値を目盛りの数値ラベルにします。
  * @param {string} [args.label = ""] - 棒グラフの縦軸ラベル。
  * @param {string} [args.labelFont = baseFont] - 縦軸ラベルのフォント設定。
  * @param {Array<number>} [args.labelMove = [-2.5, 0]] - 縦軸ラベルの位置調整。
@@ -3506,6 +3507,7 @@ function barChart(//棒グラフを書く関数
     lineDash = 3,
     scaleMove = [-1.6, -0.6],
     scaleFont = baseFont,
+    scaleAdjust = 1,
     label = "",
     labelFont = baseFont,
     labelMove = [-2.5, 0],
@@ -3628,7 +3630,7 @@ function barChart(//棒グラフを書く関数
 
             putString({
                 at : [0, y],
-                string : String(y),
+                string : String(y / scaleAdjust),
                 move : scaleMove,
                 font : scaleFont
             })
@@ -3687,6 +3689,7 @@ function stackedBarChart(//棒グラフを書く関数
     scaleLine = false,
     scaleMove = [-1.6, -0.6],
     scaleFont = baseFont,
+    scaleAdjust = 1,
     label = "",
     labelFont = baseFont,
     labelMove = [-2.5, 0],
@@ -3874,11 +3877,10 @@ function stackedBarChart(//棒グラフを書く関数
             //目盛りの数値ラベルを書く
             putString({
                 at : [0, y],
-                string : String(y),
+                string : String(y / scaleAdjust),
                 move : scaleMove,
                 font : scaleFont
             })
-            
         }
         
     }
