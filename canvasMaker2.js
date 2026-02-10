@@ -3664,3 +3664,248 @@ function barChart(//棒グラフを書く関数
     }
 
 }
+
+function stackedBarChart(//棒グラフを書く関数
+    {
+    input = [
+        {name : "", values : [1, 2]},
+        {name : "", values : [2, 3]}
+    ],
+    elementName = ["", ""],
+    color = ["#a3a3a3", "#e3e3e3"],
+    chartWidth = undefined,
+    chartHeight = undefined,
+    barWidth = 0.25,
+    paddingX = 0.1,
+    paddingY = 0.1,
+    //color = "#a3a3a3",
+    nameVertical = false,
+    nameFont = baseFont,
+    nameMove = [-0.5,-2],
+    scale = 0,
+    lineDash = 3,
+    scaleLine = false,
+    scaleMove = [-1.6, -0.6],
+    scaleFont = baseFont,
+    label = "",
+    labelFont = baseFont,
+    labelMove = [-2.5, 0],
+    unit = "",
+    unitFont = baseFont,
+    unitMove = [-2.5, 0],
+    gridWidth = 3,
+    } = {}
+){
+    //chartWidthの入力がない場合は，データ数（棒の数）+ 1 を chartWidthとする
+    if (chartWidth === undefined){
+        
+        chartWidth = input.length + 1;
+
+    }
+
+    //chartHeightの入力がない場合は，角棒の高さの最大値 + 1を chartHeightとする
+    if (chartHeight === undefined){
+    
+        let max = 0;
+
+        for (let i = 0; i < input.length; i++){
+
+            let sum = 0;
+
+            const barValues = input[i].values;
+
+            for (let j = 0; j < barValues.length; j++){
+
+                sum = sum + barValues[j];
+
+            }
+
+            if (sum > max){
+
+                max = sum;
+
+            }
+        
+        }
+        
+        chartHeight = max + 1;
+
+    }
+
+    //描画領域全体と棒グラフのサイズの設定
+    start = [- paddingX * chartWidth, - paddingY * chartHeight];
+
+    end = [(1 + paddingX) * chartWidth, (1 + paddingY) * chartHeight];
+
+    const aria_start = getZahyou(start);
+    
+    const aria_end = getZahyou(end);
+
+    const chart_start = getZahyou([0, 0]);
+
+    const chart_end = getZahyou([end[0] - paddingX * chartWidth, end[1] - paddingY * chartHeight]);
+    
+    //棒グラフの外枠を描く
+    ctx.beginPath();
+
+    ctx.moveTo(chart_start[0], chart_start[1]);
+
+    ctx.lineTo(chart_start[0], chart_end[1]);
+
+    ctx.lineTo(chart_end[0], chart_end[1]);
+
+    ctx.lineTo(chart_end[0], chart_start[1]);
+
+    ctx.lineTo(chart_start[0], chart_start[1]);
+
+    ctx.lineWidth = baseLineWidth;
+    
+    ctx.stroke()
+
+    //データ数(棒の数)の取得
+    const bar_number = input.length;
+
+    //破線の描画のための配列を初期化
+    let elements_ne_before = [];
+
+    //それぞれの棒の描画
+    for (let i = 1; i <= bar_number; i++){
+
+        let position_y = 0;
+
+        const element = input[i - 1].values;
+       
+        //棒の中の積み上げ箱の描画
+        for (let j = 0; j < element.length; j++){
+
+            const element_sw = getZahyou([i - barWidth, position_y]);
+            const element_se = getZahyou([i + barWidth, position_y]);
+            const element_ne = getZahyou([i + barWidth, position_y + element[j]]);
+            const element_nw = getZahyou([i - barWidth, position_y + element[j]]);
+
+            if (i > 1){//2本目以降の棒に対して行う破線の描画
+                
+                ctx.beginPath();
+                ctx.moveTo(elements_ne_before[j][0], elements_ne_before[j][1]);
+                ctx.lineTo(element_nw[0], element_nw[1]);
+                ctx.lineWidth = baseLineWidth;
+                ctx.setLineDash([lineDash, lineDash]);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+            }
+
+            //破線を書いたら配列の要素を更新
+            elements_ne_before[j] = element_ne;
+        
+            ctx.beginPath();
+            ctx.moveTo(element_sw[0], element_sw[1]);
+            ctx.lineTo(element_se[0], element_se[1]);
+            ctx.lineTo(element_ne[0], element_ne[1]);
+            ctx.lineTo(element_nw[0], element_nw[1]);
+            ctx.lineTo(element_sw[0], element_sw[1]);
+            ctx.fillStyle = color[j];
+            ctx.fill();
+
+            position_y = position_y + element[j];
+
+        }
+      
+    }
+
+    //棒の名前の描画
+    for (let i = 1; i <= bar_number; i++){
+
+        putString({
+            at : [i, 0],
+            string : input[i - 1].name,
+            vertical : nameVertical,
+            font : nameFont,
+            move : nameMove
+        });
+    
+    }
+
+    //目盛りの描画。目盛りの間隔として正の値を入力した場合に行う
+    if (typeof scale  === "number" && scale > 0){
+
+        for (let y = scale; y < chartHeight; y += scale){
+
+            //scaleLine が true のときだけ破線を描く
+            if (scaleLine === true){ 
+
+                const line_start = getZahyou([0, y]);
+
+                const line_end = getZahyou([chartWidth, y]);
+
+                ctx.beginPath();
+
+                ctx.moveTo(line_start[0], line_start[1]);
+
+                ctx.lineTo(line_end[0], line_end[1]);
+
+                ctx.lineWidth = baseLineWidth;
+
+                ctx.setLineDash([lineDash, lineDash]);
+
+                ctx.stroke();
+
+                //実線に戻す
+                ctx.setLineDash([]);
+            }
+            //y軸状の刻み目を書く
+             
+            const grid_center = getZahyou([0, y]);
+
+            const grid_left = [grid_center[0] - gridWidth, grid_center[1]];
+
+            const grid_right = [grid_center[0] + gridWidth, grid_center[1]];
+
+            ctx.beginPath();
+
+            ctx.moveTo(grid_left[0], grid_left[1]);
+
+            ctx.lineTo(grid_right[0], grid_right[1]);
+
+            ctx.lineWidth = baseLineWidth;
+
+            ctx.stroke();
+
+            //目盛りの数値ラベルを書く
+            putString({
+                at : [0, y],
+                string : String(y),
+                move : scaleMove,
+                font : scaleFont
+            })
+            
+        }
+        
+    }
+
+    //ラベルの表示
+    if (label !== "") {
+
+        putString({
+            at: [- 0.05 * chartWidth, chartHeight / 2],
+            string: label,
+            move: labelMove,
+            font: labelFont,
+            vertical: true
+        });
+
+    }
+
+    //単位の表示
+    if (unit !== "") {
+
+        putString({
+            at: [0, chartHeight],
+            string: unit,
+            move: unitMove,
+            font: unitFont
+        });
+        
+    }
+
+}
