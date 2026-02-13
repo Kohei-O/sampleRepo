@@ -3874,6 +3874,8 @@ function stackedBarChart(//棒グラフを書く関数
 
             ctx.stroke();
 
+            console.log(String(y / scaleAdjust));
+
             //目盛りの数値ラベルを書く
             putString({
                 at : [0, y],
@@ -3910,4 +3912,106 @@ function stackedBarChart(//棒グラフを書く関数
         
     }
 
+}
+function circleChart(
+    {
+    size = 1.3,
+    input = [
+        {value : 1, name : "", move : [0, 0]},
+        {value : 2, name : "", move : [0, 0]}
+        ],
+    color = ["#a3a3a3", "#e3e3e3"],
+    lineWidth = 1,
+    lineColor = "#000000",
+    nameColor = "#000000",
+    nameFont = baseFont
+    } = {}
+){
+    //描画領域の設定
+    start = [- size, - size];
+    end = [size,  size];
+
+    //合計数の計算
+    let sum = 0;
+    
+    for (let i = 0; i < input.length; i++){
+
+        sum = sum + input[i].value;
+    
+    }
+
+    //角度(度数)を格納する配列の作成。開始位置の90が最初の要素
+    angle = [90];
+
+    for (let i = 1; i <= input.length; i++){
+
+            angle[i] = angle[i - 1] - 360 * input[i - 1].value / sum;
+    
+    }
+
+    //中央の点(仮想座標)を格納する外列
+
+    let center_points = [];
+
+    //円グラフの描画
+    for (let i = 0; i < input.length; i++){
+
+        drawEnko(
+            {
+            center :[0, 0],
+            radius : 1,
+            startAngle : angle[i],
+            endAngle : angle[i + 1],
+            clock : true,
+            ougi : true,
+            color : lineColor,
+            paint : color[i],
+            width : lineWidth
+            }
+        );
+        
+        //中央の点の獲得
+        center_points[i] = [
+            0.5 * Math.cos((angle[i] + angle[i + 1]) / 2 * Math.PI / 180),
+            0.5 * Math.sin((angle[i] + angle[i + 1]) / 2 * Math.PI / 180)
+        ];
+
+        //ラベルの移動量の指定がないとき，移動量は[0, 0]とする
+        if (input[i].move === undefined){
+
+            input[i].move = [0, 0];
+        }
+
+        //input[i].name が undefinedのときは，中央の点に valueを文字列として表示
+        if (input[i].name === undefined){
+
+            putString({
+                    at: center_points[i],
+                    string : String(input[i].value),
+                    font : nameFont,
+                    color : nameColor,
+                    move : input[i].move
+                }
+            );
+
+        //input[i].name が空文字のときは，何も表示しない    
+        } else if(input[i].name === ""){
+        
+        } else if(typeof input[i].name === "string"){
+
+            putString({
+                    at: center_points[i],
+                    string : input[i].name,
+                    font : nameFont,
+                    color : nameColor,
+                    move : input[i].move
+                }
+            );
+
+        }
+    
+    }
+
+    //中央の点の配列を返す
+    return center_points;
 }
