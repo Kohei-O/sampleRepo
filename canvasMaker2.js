@@ -1754,6 +1754,7 @@ function drawGraphT(args){
     //args.width
     //args.color
     //args.lineDash
+    //args.paint
     if (args.width === undefined) {
         ctx.lineWidth = baseLineWidth;
     } else {
@@ -1817,6 +1818,12 @@ function drawGraphT(args){
             ctx.moveTo(nextPoint[0], nextPoint[1])
         }
     }
+    ctx.fillStyle = baseColor;
+    if(args.paint){
+        ctx.closePath();
+        ctx.fillStyle = args.paint;
+        ctx.fill();
+        }
     ctx.stroke();
     baseCFL();
 }
@@ -2480,6 +2487,7 @@ function drawEnko3d(args){
     //args.width
     //args.color
     //args.lineDash
+    //args.paint
     var inputTMin;
     var inputTMax;
     if(typeof(args.tMin) !== "number"){
@@ -2524,7 +2532,8 @@ function drawEnko3d(args){
         tMax : inputTMax,
         width : args.width,
         color : args.color,
-        lineDash : args.lineDash
+        lineDash : args.lineDash,
+        paint : args.paint
     });
 }
 function verticalMark3d(args){
@@ -2578,6 +2587,7 @@ function drawGraphT3d(args){
     //args.width
     //args.color
     //args.lineDash
+    //args.paint
     if (args.width === undefined) {
         ctx.lineWidth = baseLineWidth;
     } else {
@@ -2654,6 +2664,12 @@ function drawGraphT3d(args){
             ctx.moveTo(nextPoint[0], nextPoint[1])
         }
     }
+    ctx.fillStyle = baseColor;
+    if(args.paint){
+		ctx.closePath();
+		ctx.fillStyle = args.paint;
+		ctx.fill();
+        }
     ctx.stroke();
     baseCFL();
 }
