@@ -601,6 +601,8 @@
                 <dt>lineDash : 数値,</dt>
                 <dd>オプション。破線の実線部, 空白部の長さ(px)が指定した値となります</dd>
                 <dt>});</dt>
+                 <dt>paint : '色の種類',</dt>
+                <dd>オプション。両端を結ぶ線分と曲線の囲む部分を塗りつぶします。既定値は baseColor (変更していない場合は 'black')</dd>
             </dl>
         </div>
                   <li><a href = "javascript:void(0)" onclick = "openClose('drawGraphR')"> drawGraphR();</a>&emsp;極表示された関数のグラフを描画します</li>
@@ -862,14 +864,14 @@
                 <dd>オプション。円弧の開始角を度数法で指定します。長半径のどちらか一端が 0° です</dd>
                 <dt>tMax : 数値,</dt>
                 <dd>オプション。円弧の終了角を度数法で指定します。長半径のどちらか一端が 0° です</dd>
-                 <dt>width : 数値,</dt>
+                <dt>width : 数値,</dt>
                 <dd>オプション。線の太さ(px)が指定した値となります。既定値は baseLineWidth(変更していない場合は 1)</dd>
-                  <dt>color : '色の種類',</dt>
+                <dt>color : '色の種類',</dt>
                 <dd>オプション。線の色が指定した色になります。既定値は baseColor(変更していない場合は 'black')</dd>
-                  <dt>lineDash : 数値,</dt>
+                <dt>lineDash : 数値,</dt>
                 <dd>オプション。破線の実線部, 空白部の長さ(px)が指定した値となります</dd>
-                  <dt>paint : '色の種類',</dt>
-                <dd>オプション。円や扇型の内部を指定した色で塗りつぶします。開始・終了位置の異なる円弧の場合, 両端を線分で結んでから塗りつぶします</dd>
+                <dt>paint : '色の種類',</dt>
+                <dd>オプション。円の内部を指定した色で塗りつぶします。開始・終了位置の異なる円弧の場合, 両端を線分で結んでから塗りつぶします。既定値は baseColor (変更していない場合は 'black')</dd>
                 </dl>
             </div>
         </li>
@@ -887,7 +889,7 @@
                 <dd>オプション。線の色が指定した色になります。既定値は baseColor(変更していない場合は 'black')</dd>
                 </dl>
             </div>
-        <li><a href = "javascript:void(0)" onclick = "openClose('drawGraphT3d')"> drawGraphT();</a>&emsp;空間においてパラメータ表示された関数のグラフを描画します</li>
+        <li><a href = "javascript:void(0)" onclick = "openClose('drawGraphT3d')"> drawGraphT3d();</a>&emsp;空間においてパラメータ表示された関数のグラフを描画します</li>
         <div id ="drawGraphT3d" class="detail">
             <dl>
                 <dt>drawGraphT3d({</dt>
@@ -921,6 +923,8 @@
                 <dt>lineDash : 数値,</dt>
                 <dd>オプション。破線の実線部, 空白部の長さ(px)が指定した値となります</dd>
                 <dt>});</dt>
+                 <dt>paint : '色の種類',</dt>
+                <dd>オプション。両端を結ぶ線分と曲線の囲む部分を塗りつぶします。既定値は baseColor (変更していない場合は 'black')</dd>
             </dl>
         </div>
         </li>
